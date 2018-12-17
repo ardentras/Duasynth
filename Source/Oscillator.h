@@ -3,7 +3,7 @@
 
     This file was auto-generated!
 
-    It contains the basic framework code for a JUCE plugin processor.
+    It contains the basic framework code for a JUCE plugin editor.
 
   ==============================================================================
 */
@@ -11,52 +11,30 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Knob.h"
+#include "WFView.h"
 
 //==============================================================================
 /**
 */
-class Oscillator  : public AudioProcessor
+class Oscillator  : public Component
 {
 public:
-    //==============================================================================
-    Oscillator();
+	Oscillator();
     ~Oscillator();
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
-
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
-
-    void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
-
-    //==============================================================================
-    AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
-
-    //==============================================================================
-    const String getName() const override;
-
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool isMidiEffect() const override;
-    double getTailLengthSeconds() const override;
-
-    //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
-    void changeProgramName (int index, const String& newName) override;
-
-    //==============================================================================
-    void getStateInformation (MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void paint (Graphics&) override;
+    void resized() override;
 
 private:
-    //==============================================================================
+	// This reference is provided as a quick way for your editor to
+	// access the processor object that created it.
+	Knob coarse;
+	Knob fine;
+	Slider volume;
+	WFView wfView;
+
 	Synthesiser synth;
 	SynthesiserSound::Ptr curr_wf;
 

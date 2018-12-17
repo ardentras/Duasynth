@@ -3,29 +3,31 @@
 
     This file was auto-generated!
 
-    It contains the basic framework code for a JUCE plugin processor.
+    It contains the basic framework code for a JUCE plugin editor.
 
   ==============================================================================
 */
 
 #include "Oscillator.h"
-#include "OscillatorEditor.h"
 
 //==============================================================================
-Oscillator::Oscillator() : 
-#ifndef JucePlugin_PreferredChannelConfigurations
-     AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", AudioChannelSet::stereo(), true)
-                     #endif
-                       ),
-#endif
-	synth()
+Oscillator::Oscillator ()
+    : synth(), coarse(), fine()
 {
+	addAndMakeVisible(coarse);
+	addAndMakeVisible(fine);
 
+	volume.setSliderStyle(Slider::LinearBarVertical);
+	volume.setRange(0.0, 127.0, 1.0);
+	volume.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+	volume.setValue(1.0);
+	addAndMakeVisible(volume);
+
+	addAndMakeVisible(wfView);
+
+    // Make sure that before the constructor has finished, you've set the
+    // editor's size to whatever you need it to be.
+    setSize (150, 100);
 }
 
 Oscillator::~Oscillator()
@@ -33,161 +35,23 @@ Oscillator::~Oscillator()
 }
 
 //==============================================================================
-const String Oscillator::getName() const
+void Oscillator::paint (Graphics& g)
 {
-    return JucePlugin_Name;
+	g.setColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
+	g.fillRect(15.0f, 2.0f, getWidth() - 22.0f, getHeight() / 2.0f);
 }
 
-bool Oscillator::acceptsMidi() const
+void Oscillator::resized()
 {
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
-}
+    // This is generally where you'll want to lay out the positions of any
+    // subcomponents in your editor..
+	auto area = getLocalBounds();
 
-bool Oscillator::producesMidi() const
-{
-   #if JucePlugin_ProducesMidiOutput
-    return true;
-   #else
-    return false;
-   #endif
-}
+	auto dialArea = area.removeFromTop(area.getHeight() / 2);
+	coarse.setBounds(50.0f, getHeight() - 50.0f, 50.0f, 50.0f);
+	fine.setBounds(100.0f, getHeight() - 50.0f, 50.0f, 50.0f);
 
-bool Oscillator::isMidiEffect() const
-{
-   #if JucePlugin_IsMidiEffect
-    return true;
-   #else
-    return false;
-   #endif
-}
+	volume.setBounds(2.0f, 2.0f, 10.0f, getHeight() - 2.0f);
 
-double Oscillator::getTailLengthSeconds() const
-{
-    return 0.0;
-}
-
-int Oscillator::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
-}
-
-int Oscillator::getCurrentProgram()
-{
-    return 0;
-}
-
-void Oscillator::setCurrentProgram (int index)
-{
-}
-
-const String Oscillator::getProgramName (int index)
-{
-    return {};
-}
-
-void Oscillator::changeProgramName (int index, const String& newName)
-{
-}
-
-//==============================================================================
-void Oscillator::prepareToPlay (double sampleRate, int samplesPerBlock)
-{
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-}
-
-void Oscillator::releaseResources()
-{
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
-}
-
-#ifndef JucePlugin_PreferredChannelConfigurations
-bool Oscillator::isBusesLayoutSupported (const BusesLayout& layouts) const
-{
-  #if JucePlugin_IsMidiEffect
-    ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-        return false;
-
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
-
-    return true;
-  #endif
-}
-#endif
-
-void Oscillator::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
-{
-    ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
-}
-
-//==============================================================================
-bool Oscillator::hasEditor() const
-{
-    return true; // (change this to false if you choose to not supply an editor)
-}
-
-AudioProcessorEditor* Oscillator::createEditor()
-{
-    return new OscillatorEditor (*this);
-}
-
-//==============================================================================
-void Oscillator::getStateInformation (MemoryBlock& destData)
-{
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
-}
-
-void Oscillator::setStateInformation (const void* data, int sizeInBytes)
-{
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-}
-
-//==============================================================================
-// This creates new instances of the plugin..
-AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-    return new Oscillator();
+	wfView.setBounds(24.0f, 10.0f, getWidth() - 34.0f, (getWidth() - 34.0f) / 2);
 }
