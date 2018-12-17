@@ -2310,6 +2310,10 @@
     <ClCompile Include="..\..\Source\Oscillator.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
+    <ClCompile Include="TriangleWaveSound.cpp" />
+    <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp">
+      <Filter>Duasynth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Knob.h">
@@ -4534,6 +4538,10 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Oscillator.h">
       <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleWaveSound.h" />
+    <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h">
+      <Filter>Duasynth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

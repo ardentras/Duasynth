@@ -17,13 +17,6 @@ WFView::WFView() : waveform()
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 
-	Path path;
-
-	path.addLineSegment(Line<float>(0.0f, 32.5f, 65.0f, 0.0f), 2.0f);
-	path.addLineSegment(Line<float>(65.0f, 0.0f, 130.0f, 32.5f), 2.0f);
-
-	waveform.setPath(path);
-
 	addAndMakeVisible(waveform);
 }
 
@@ -31,12 +24,20 @@ WFView::~WFView()
 {
 }
 
+void WFView::setWaveform(DrawablePath path)
+{
+	waveform.setPath(path.getPath());
+}
+
 void WFView::paint (Graphics& g)
 {
-	waveform.paint(g);
+	g.setColour(Colour(1.0f, 0.0f, 1.0f, 1.0f));
+	g.fillRect(0.0f, 0.0f, (float)getWidth(), (float)getHeight());
 }
 
 void WFView::resized()
 {
-
+	Path temp = waveform.getPath();
+	temp.scaleToFit(0, 0, getWidth(), getHeight(), true);
+	waveform.setPath(temp);
 }

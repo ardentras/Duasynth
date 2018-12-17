@@ -21,7 +21,7 @@ public:
     WFView();
     ~WFView();
 
-	void setType(DrawablePath());
+	void setWaveform(DrawablePath);
 
     void paint (Graphics&) override;
     void resized() override;

@@ -33,6 +33,9 @@ private:
 	// access the processor object that created it.
 	DuasynthAudioProcessor& processor;
 	Oscillator a_osc;
+	Oscillator b_osc;
+
+	const float ELEM_PADDING = 5.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DuasynthAudioProcessorEditor)
 };
