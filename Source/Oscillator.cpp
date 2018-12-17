@@ -8,35 +8,37 @@
   ==============================================================================
 */
 
-#include "DuasynthAudioProcessor.h"
-#include "DuasynthAudioProcessorEditor.h"
+#include "Oscillator.h"
+#include "OscillatorEditor.h"
 
 //==============================================================================
-DuasynthAudioProcessor::DuasynthAudioProcessor()
+Oscillator::Oscillator() : 
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+     AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
 #endif
+	synth()
 {
+
 }
 
-DuasynthAudioProcessor::~DuasynthAudioProcessor()
+Oscillator::~Oscillator()
 {
 }
 
 //==============================================================================
-const String DuasynthAudioProcessor::getName() const
+const String Oscillator::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool DuasynthAudioProcessor::acceptsMidi() const
+bool Oscillator::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -45,7 +47,7 @@ bool DuasynthAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool DuasynthAudioProcessor::producesMidi() const
+bool Oscillator::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -54,7 +56,7 @@ bool DuasynthAudioProcessor::producesMidi() const
    #endif
 }
 
-bool DuasynthAudioProcessor::isMidiEffect() const
+bool Oscillator::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -63,50 +65,50 @@ bool DuasynthAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double DuasynthAudioProcessor::getTailLengthSeconds() const
+double Oscillator::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int DuasynthAudioProcessor::getNumPrograms()
+int Oscillator::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int DuasynthAudioProcessor::getCurrentProgram()
+int Oscillator::getCurrentProgram()
 {
     return 0;
 }
 
-void DuasynthAudioProcessor::setCurrentProgram (int index)
+void Oscillator::setCurrentProgram (int index)
 {
 }
 
-const String DuasynthAudioProcessor::getProgramName (int index)
+const String Oscillator::getProgramName (int index)
 {
     return {};
 }
 
-void DuasynthAudioProcessor::changeProgramName (int index, const String& newName)
+void Oscillator::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void Oscillator::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void DuasynthAudioProcessor::releaseResources()
+void Oscillator::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool DuasynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool Oscillator::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
@@ -129,7 +131,7 @@ bool DuasynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 }
 #endif
 
-void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void Oscillator::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -159,25 +161,25 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 }
 
 //==============================================================================
-bool DuasynthAudioProcessor::hasEditor() const
+bool Oscillator::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* DuasynthAudioProcessor::createEditor()
+AudioProcessorEditor* Oscillator::createEditor()
 {
-    return new DuasynthAudioProcessorEditor (*this);
+    return new OscillatorEditor (*this);
 }
 
 //==============================================================================
-void DuasynthAudioProcessor::getStateInformation (MemoryBlock& destData)
+void Oscillator::getStateInformation (MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void DuasynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void Oscillator::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -187,5 +189,5 @@ void DuasynthAudioProcessor::setStateInformation (const void* data, int sizeInBy
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new DuasynthAudioProcessor();
+    return new Oscillator();
 }

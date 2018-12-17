@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="tgRQBv" name="Duasynth" projectType="audioplug" jucerVersion="5.4.1">
+<JUCERPROJECT id="tgRQBv" name="Duasynth" projectType="audioplug" jucerVersion="5.4.1"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
-      <FILE id="MXWpQ1" name="DuasynthAudioProcessor.cpp" compile="1" resource="0"
-            file="Source/DuasynthAudioProcessor.cpp"/>
-      <FILE id="qxpHqO" name="DuasynthAudioProcessor.h" compile="0" resource="0"
-            file="Source/DuasynthAudioProcessor.h"/>
-      <FILE id="YJN9NX" name="DuasynthAudioProcessorEditor.cpp" compile="1"
-            resource="0" file="Source/DuasynthAudioProcessorEditor.cpp"/>
-      <FILE id="oaUcr6" name="DuasynthAudioProcessorEditor.h" compile="0"
-            resource="0" file="Source/DuasynthAudioProcessorEditor.h"/>
+      <FILE id="BXLBqM" name="DuasynthMainComponent.cpp" compile="1" resource="0"
+            file="Source/DuasynthMainComponent.cpp"/>
+      <FILE id="tFekKq" name="DuasynthMainComponent.h" compile="0" resource="0"
+            file="Source/DuasynthMainComponent.h"/>
+      <FILE id="XhHlId" name="Knob.cpp" compile="1" resource="0" file="Source/Knob.cpp"/>
+      <FILE id="h4STqJ" name="Knob.h" compile="0" resource="0" file="Source/Knob.h"/>
+      <FILE id="MXWpQ1" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
+      <FILE id="qxpHqO" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+      <FILE id="YJN9NX" name="OscillatorEditor.cpp" compile="1" resource="0"
+            file="Source/OscillatorEditor.cpp"/>
+      <FILE id="oaUcr6" name="OscillatorEditor.h" compile="0" resource="0"
+            file="Source/OscillatorEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <VS2017 targetFolder="Builds/VisualStudio2017">
+    <VS2017 targetFolder="Builds/VisualStudio2017" windowsTargetPlatformVersion="10.0.17134.0"
+            IPPLibrary="true">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug"/>
         <CONFIGURATION isDebug="0" name="Release"/>
@@ -57,7 +63,7 @@
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
   <LIVE_SETTINGS>
-    <WINDOWS/>
+    <WINDOWS buildEnabled="0" windowsTargetPlatformVersion="10.0.17134.0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>

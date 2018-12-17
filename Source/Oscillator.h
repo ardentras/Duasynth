@@ -15,12 +15,12 @@
 //==============================================================================
 /**
 */
-class DuasynthAudioProcessor  : public AudioProcessor
+class Oscillator  : public AudioProcessor
 {
 public:
     //==============================================================================
-    DuasynthAudioProcessor();
-    ~DuasynthAudioProcessor();
+    Oscillator();
+    ~Oscillator();
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -57,5 +57,8 @@ public:
 
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DuasynthAudioProcessor)
+	Synthesiser synth;
+	SynthesiserSound::Ptr curr_wf;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
 };

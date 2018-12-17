@@ -11,25 +11,29 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "DuasynthAudioProcessor.h"
+#include "Oscillator.h"
+#include "Knob.h"
 
 //==============================================================================
 /**
 */
-class DuasynthAudioProcessorEditor  : public AudioProcessorEditor
+class OscillatorEditor  : public AudioProcessorEditor
 {
 public:
-    DuasynthAudioProcessorEditor (DuasynthAudioProcessor&);
-    ~DuasynthAudioProcessorEditor();
+	OscillatorEditor(Oscillator& p);
+    ~OscillatorEditor();
 
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-    DuasynthAudioProcessor& processor;
+	// This reference is provided as a quick way for your editor to
+	// access the processor object that created it.
+	Oscillator& processor;
+	Knob coarse;
+	Knob fine;
+	Slider volume;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DuasynthAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscillatorEditor)
 };

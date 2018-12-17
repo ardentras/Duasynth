@@ -442,10 +442,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp">
+    <ClCompile Include="..\..\Source\DuasynthMainComponent.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\DuasynthAudioProcessorEditor.cpp">
+    <ClCompile Include="..\..\Source\Knob.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Oscillator.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OscillatorEditor.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2430,10 +2436,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h">
+    <ClInclude Include="..\..\Source\DuasynthMainComponent.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\DuasynthAudioProcessorEditor.h">
+    <ClInclude Include="..\..\Source\Knob.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Oscillator.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OscillatorEditor.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
