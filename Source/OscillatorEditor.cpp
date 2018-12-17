@@ -22,11 +22,13 @@ OscillatorEditor::OscillatorEditor (Oscillator& p)
 	volume.setRange(0.0, 127.0, 1.0);
 	volume.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
 	volume.setValue(1.0);
-	addAndMakeVisible(&volume);
+	addAndMakeVisible(volume);
+
+	addAndMakeVisible(wfView);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (500, 500);
+    setSize (150, 100);
 }
 
 OscillatorEditor::~OscillatorEditor()
@@ -36,9 +38,8 @@ OscillatorEditor::~OscillatorEditor()
 //==============================================================================
 void OscillatorEditor::paint (Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-
+	g.setColour(Colour(0.0f, 0.0f, 0.0f, 1.0f));
+	g.fillRect(15.0f, 2.0f, getWidth() - 22.0f, getHeight() / 2.0f);
 }
 
 void OscillatorEditor::resized()
@@ -48,8 +49,10 @@ void OscillatorEditor::resized()
 	auto area = getLocalBounds();
 
 	auto dialArea = area.removeFromTop(area.getHeight() / 2);
-	coarse.setBounds(dialArea.removeFromLeft(dialArea.getWidth() / 2).reduced(4));
-	fine.setBounds(dialArea.reduced(4));
+	coarse.setBounds(50.0f, getHeight() - 50.0f, 50.0f, 50.0f);
+	fine.setBounds(100.0f, getHeight() - 50.0f, 50.0f, 50.0f);
 
-	volume.setBounds(300, 30, 20, getHeight() - 60);
+	volume.setBounds(2.0f, 2.0f, 10.0f, getHeight() - 2.0f);
+
+	wfView.setBounds(24.0f, 10.0f, getWidth() - 34.0f, (getWidth() - 34.0f) / 2);
 }

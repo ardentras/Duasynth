@@ -454,6 +454,9 @@
     <ClCompile Include="..\..\Source\OscillatorEditor.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\WFView.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <Filter>JUCE Modules\juce_audio_basics\buffers</Filter>
     </ClCompile>
@@ -2446,6 +2449,9 @@
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\OscillatorEditor.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WFView.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

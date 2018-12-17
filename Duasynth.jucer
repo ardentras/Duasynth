@@ -16,6 +16,8 @@
             file="Source/OscillatorEditor.cpp"/>
       <FILE id="oaUcr6" name="OscillatorEditor.h" compile="0" resource="0"
             file="Source/OscillatorEditor.h"/>
+      <FILE id="p5EF8x" name="WFView.cpp" compile="1" resource="0" file="Source/WFView.cpp"/>
+      <FILE id="jfZWJz" name="WFView.h" compile="0" resource="0" file="Source/WFView.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

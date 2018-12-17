@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Oscillator.h"
 #include "Knob.h"
+#include "WFView.h"
 
 //==============================================================================
 /**
@@ -34,6 +35,7 @@ private:
 	Knob coarse;
 	Knob fine;
 	Slider volume;
+	WFView wfView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscillatorEditor)
 };

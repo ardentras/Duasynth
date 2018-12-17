@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\Source\Knob.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator.cpp"/>
     <ClCompile Include="..\..\Source\OscillatorEditor.cpp"/>
+    <ClCompile Include="..\..\Source\WFView.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1972,6 +1973,7 @@
     <ClInclude Include="..\..\Source\Knob.h"/>
     <ClInclude Include="..\..\Source\Oscillator.h"/>
     <ClInclude Include="..\..\Source\OscillatorEditor.h"/>
+    <ClInclude Include="..\..\Source\WFView.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

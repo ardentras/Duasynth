@@ -30,6 +30,8 @@ private:
     MidiKeyboardState keyboardState;
 	Oscillator a_osc;
 	OscillatorEditor a_osc_editor;
+	/*Oscillator b_osc;
+	OscillatorEditor b_osc_editor;*/
     //PresetBank presetBank;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DuasynthMainComponent)
 };
