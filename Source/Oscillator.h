@@ -14,8 +14,10 @@
 using std::list;
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Waveforms/DuasynthWaveSound.h"
 #include "Knob.h"
 #include "WFView.h"
+#include "WFChanged.h"
 
 //==============================================================================
 /**
@@ -30,6 +32,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	void mouseMagnify(const MouseEvent& event, float scaleFactor);
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
@@ -41,14 +44,17 @@ private:
 	Knob fine;
 	Slider octave;
 	Label lOctave;
-	Label lOctVal;
+	Slider wfSelect;
 	Slider volume;
 	WFView wfView;
 
 	// Practical Elements
 	Synthesiser synth;
-	SynthesiserSound::Ptr curr_wf;
-	list<SynthesiserSound::Ptr> waveforms;
+	DuasynthWaveSound* curr_wf;
+	list<DuasynthWaveSound*> waveforms;
+
+	// Listeners
+	WFChanged wfChanged;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
 };

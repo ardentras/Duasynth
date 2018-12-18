@@ -4,18 +4,31 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
-      <FILE id="BXLBqM" name="DuasynthMainComponent.cpp" compile="1" resource="0"
-            file="Source/DuasynthMainComponent.cpp"/>
-      <FILE id="tFekKq" name="DuasynthMainComponent.h" compile="0" resource="0"
-            file="Source/DuasynthMainComponent.h"/>
+      <GROUP id="{EDD8F234-4BE6-7CFA-9B49-0F90955B16F6}" name="Waveforms">
+        <FILE id="Vy1Jat" name="DuasynthWaveSound.h" compile="0" resource="0"
+              file="Source/Waveforms/DuasynthWaveSound.h"/>
+        <FILE id="PQvXHr" name="SawWaveSound.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SawWaveSound.cpp"/>
+        <FILE id="fUHY5C" name="SawWaveSound.h" compile="0" resource="0" file="Source/Waveforms/SawWaveSound.h"/>
+        <FILE id="DQZkyX" name="TriangleWaveSound.cpp" compile="1" resource="0"
+              file="Source/Waveforms/TriangleWaveSound.cpp"/>
+        <FILE id="ODElZ6" name="TriangleWaveSound.h" compile="0" resource="0"
+              file="Source/Waveforms/TriangleWaveSound.h"/>
+      </GROUP>
+      <FILE id="RgB44k" name="DuasynthAudioProcessor.cpp" compile="1" resource="0"
+            file="Source/DuasynthAudioProcessor.cpp"/>
+      <FILE id="IKQevl" name="DuasynthAudioProcessor.h" compile="0" resource="0"
+            file="Source/DuasynthAudioProcessor.h"/>
+      <FILE id="dhtDLj" name="DuasynthAudioProcessorEditor.cpp" compile="1"
+            resource="0" file="Source/DuasynthAudioProcessorEditor.cpp"/>
+      <FILE id="cIKCHG" name="DuasynthAudioProcessorEditor.h" compile="0"
+            resource="0" file="Source/DuasynthAudioProcessorEditor.h"/>
       <FILE id="XhHlId" name="Knob.cpp" compile="1" resource="0" file="Source/Knob.cpp"/>
       <FILE id="h4STqJ" name="Knob.h" compile="0" resource="0" file="Source/Knob.h"/>
       <FILE id="MXWpQ1" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
       <FILE id="qxpHqO" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
-      <FILE id="YJN9NX" name="OscillatorEditor.cpp" compile="1" resource="0"
-            file="Source/OscillatorEditor.cpp"/>
-      <FILE id="oaUcr6" name="OscillatorEditor.h" compile="0" resource="0"
-            file="Source/OscillatorEditor.h"/>
+      <FILE id="IS3QRL" name="WFChanged.cpp" compile="1" resource="0" file="Source/WFChanged.cpp"/>
+      <FILE id="Tl6xIL" name="WFChanged.h" compile="0" resource="0" file="Source/WFChanged.h"/>
       <FILE id="p5EF8x" name="WFView.cpp" compile="1" resource="0" file="Source/WFView.cpp"/>
       <FILE id="jfZWJz" name="WFView.h" compile="0" resource="0" file="Source/WFView.h"/>
     </GROUP>
