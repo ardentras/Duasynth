@@ -100,6 +100,11 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     // initialisation that you need..
 
 	a_osc.getSynth().setCurrentPlaybackSampleRate(sampleRate);
+	for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
+	{
+		a_osc.getSynth().getVoice(i)->setCurrentPlaybackSampleRate(sampleRate);
+	}
+	a_osc.getSynth().setMinimumRenderingSubdivisionSize(samplesPerBlock);
 	midiCollector.reset(sampleRate);
 }
 

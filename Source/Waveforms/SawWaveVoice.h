@@ -51,7 +51,7 @@ public:
 		This method is called by the synth, and subclasses can access the current rate with
 		the currentSampleRate member.
 	*/
-	void setCurrentPlaybackSampleRate(double newRate) override {}
+	void setCurrentPlaybackSampleRate(double newRate) override { SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);  }
 
 private:
 	double currentAngle;
