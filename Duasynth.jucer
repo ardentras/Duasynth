@@ -7,6 +7,8 @@
       <GROUP id="{EDD8F234-4BE6-7CFA-9B49-0F90955B16F6}" name="Waveforms">
         <FILE id="Vy1Jat" name="DuasynthWaveSound.h" compile="0" resource="0"
               file="Source/Waveforms/DuasynthWaveSound.h"/>
+        <FILE id="mCyW39" name="DuasynthWaveVoice.h" compile="0" resource="0"
+              file="Source/Waveforms/DuasynthWaveVoice.h"/>
         <FILE id="PQvXHr" name="SawWaveSound.cpp" compile="1" resource="0"
               file="Source/Waveforms/SawWaveSound.cpp"/>
         <FILE id="fUHY5C" name="SawWaveSound.h" compile="0" resource="0" file="Source/Waveforms/SawWaveSound.h"/>

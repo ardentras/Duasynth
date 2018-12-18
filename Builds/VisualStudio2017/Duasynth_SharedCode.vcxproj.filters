@@ -2457,6 +2457,9 @@
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveSound.h">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveVoice.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>

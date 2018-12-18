@@ -11,11 +11,12 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "DuasynthWaveVoice.h"
 
-class SawWaveVoice : public SynthesiserVoice
+class SawWaveVoice : public DuasynthWaveVoice
 {
 public:
-	SawWaveVoice() {}
+	SawWaveVoice() : coarse(0.0), fine(0.0), oct(0.0) {}
 	~SawWaveVoice() {}
 
 	bool canPlaySound(SynthesiserSound*) override;
@@ -53,9 +54,17 @@ public:
 	*/
 	void setCurrentPlaybackSampleRate(double newRate) override { SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);  }
 
+	void setOct(double val) { oct = val; }
+	void setCoarse(double val) { coarse = val; }
+	void setFine(double val) { fine = val; }
+
 private:
 	double currentAngle;
 	double angleDelta;
 	double level;
 	double tailOff;
+
+	double coarse;
+	double fine;
+	double oct;
 };

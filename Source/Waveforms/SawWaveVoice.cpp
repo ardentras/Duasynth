@@ -7,6 +7,7 @@
 
   ==============================================================================
 */
+#include <cmath>
 
 #include "SawWaveVoice.h"
 
@@ -21,8 +22,8 @@ void SawWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSoun
 	level = velocity * 0.15;
 	tailOff = 0.0;
 
-	auto cyclesPerSecond = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-	auto cyclesPerSample = cyclesPerSecond / getSampleRate();
+	double cyclesPerSecond = MidiMessage::getMidiNoteInHertz(midiNoteNumber) * std::pow(2.0, ((oct * 1200.0) + (coarse * 100.0) + fine) / 1200.0);
+	double cyclesPerSample = cyclesPerSecond / getSampleRate();
 	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
@@ -34,7 +35,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				auto currentSample = (float)(level / MathConstants<double>::pi * currentAngle * tailOff);
+				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle * tailOff);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;
@@ -57,7 +58,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0) // [6]
 			{
-				auto currentSample = (float)(level / MathConstants<double>::pi * currentAngle);
+				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;

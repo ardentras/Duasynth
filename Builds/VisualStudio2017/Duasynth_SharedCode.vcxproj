@@ -1974,6 +1974,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveSound.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h"/>

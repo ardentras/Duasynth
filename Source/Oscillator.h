@@ -22,7 +22,7 @@ using std::list;
 //==============================================================================
 /**
 */
-class Oscillator  : public Component
+class Oscillator  : public Component, private Slider::Listener
 {
 public:
 	Oscillator();
@@ -33,13 +33,16 @@ public:
     void resized() override;
 
 	void clearSounds();
-	void prepareToPlay(int samplesPerBlock, double sampleRate);
+	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void releaseResources();
-	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
+	void getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages);
 
 	// This event shouldn't happen in normal use so I'm using it as a way
 	// for the listener to communicate back to the parent component (this one).
 	void mouseMagnify(const MouseEvent& event, float scaleFactor);
+
+	void sliderValueChanged(Slider* slider) override;
+	void sliderDragEnded(Slider* slider) override;
 
 	Synthesiser& getSynth() { return synth; }
 	DuasynthWaveSound* getCurrWF() { return curr_wf; }

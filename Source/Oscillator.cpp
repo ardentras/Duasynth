@@ -27,6 +27,8 @@ Oscillator::Oscillator()
 	// Coarse tuning
 	coarse.setRange(-24.0f, 24.0f, 1.0);
 	coarse.setValue(0.0f);
+	coarse.addListener(this);
+	coarse.setName("coarse_knob");
 	addAndMakeVisible(coarse);
 
 	lCoarse.setFont(Font(16.0f, Font::plain));
@@ -35,8 +37,10 @@ Oscillator::Oscillator()
 	addAndMakeVisible(lCoarse);
 
 	// Fine tuning
-	fine.setRange(-24.0f, 24.0f, 1.0);
+	fine.setRange(-100.0f, 100.0f, 1.0);
 	fine.setValue(0.0f);
+	fine.addListener(this);
+	fine.setName("fine_knob");
 	addAndMakeVisible(fine);
 
 	lFine.setFont(Font(16.0f, Font::plain));
@@ -48,6 +52,8 @@ Oscillator::Oscillator()
 	octave.setSliderStyle(Slider::SliderStyle::IncDecButtons);
 	octave.setRange(-2.0, 2.0, 1.0);
 	octave.setTextBoxIsEditable(false);
+	octave.addListener(this);
+	octave.setName("octave_adj");
 	addAndMakeVisible(octave);
 
 	lOctave.setFont(Font(16.0f, Font::plain));
@@ -123,9 +129,14 @@ void Oscillator::clearSounds()
 
 }
 
-void Oscillator::prepareToPlay(int samplesPerBlock, double sampleRate)
+void Oscillator::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-
+	//synth.setCurrentPlaybackSampleRate(sampleRate);
+	for (int i = 0; i < synth.getNumVoices(); i++)
+	{
+		synth.getVoice(i)->setCurrentPlaybackSampleRate(sampleRate);
+	}
+	//synth.setMinimumRenderingSubdivisionSize(samplesPerBlock);
 }
 
 void Oscillator::releaseResources()
@@ -133,9 +144,37 @@ void Oscillator::releaseResources()
 
 }
 
-void Oscillator::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
+void Oscillator::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
+	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+}
 
+void Oscillator::sliderValueChanged(Slider* slider)
+{
+	for (int i = 0; i < synth.getNumVoices(); i++)
+	{
+		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
+		if (slider->getName() == "coarse_knob")
+		{
+			voice->setCoarse(slider->getValue());
+		}
+		else if (slider->getName() == "fine_knob")
+		{
+			voice->setFine(slider->getValue());
+		}
+	}
+}
+
+void Oscillator::sliderDragEnded(Slider* slider)
+{
+	for (int i = 0; i < synth.getNumVoices(); i++)
+	{
+		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
+		if (slider->getName() == "octave_adj")
+		{
+			voice->setOct(slider->getValue());
+		}
+	}
 }
 
 void Oscillator::mouseMagnify(const MouseEvent& event, float scaleFactor)

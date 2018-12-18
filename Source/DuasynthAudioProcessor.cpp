@@ -99,12 +99,7 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 
-	a_osc.getSynth().setCurrentPlaybackSampleRate(sampleRate);
-	for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
-	{
-		a_osc.getSynth().getVoice(i)->setCurrentPlaybackSampleRate(sampleRate);
-	}
-	a_osc.getSynth().setMinimumRenderingSubdivisionSize(samplesPerBlock);
+	a_osc.prepareToPlay(sampleRate, samplesPerBlock);
 	midiCollector.reset(sampleRate);
 }
 
@@ -168,7 +163,7 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
-	a_osc.getSynth().renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+	a_osc.getNextAudioBlock(buffer, midiMessages);
 }
 
 //==============================================================================
