@@ -13,10 +13,10 @@
 
 //==============================================================================
 DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcessor& p)
-	: AudioProcessorEditor(&p), processor(p), a_osc()
+	: AudioProcessorEditor(&p), processor(p)
 {
-	addAndMakeVisible(a_osc);
-	addAndMakeVisible(b_osc);
+	addAndMakeVisible(processor.getAOsc());
+	addAndMakeVisible(processor.getBOsc());
 
 	setSize (500, 600);
 }
@@ -35,6 +35,6 @@ void DuasynthAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 	
-	a_osc.setBounds(ELEM_PADDING, ELEM_PADDING, a_osc.getWidth(), a_osc.getHeight());
-	b_osc.setBounds((ELEM_PADDING * 2) + a_osc.getWidth(), ELEM_PADDING, b_osc.getWidth(), b_osc.getHeight());
+	processor.getAOsc().setBounds(ELEM_PADDING, ELEM_PADDING, processor.getAOsc().getWidth(), processor.getAOsc().getHeight());
+	processor.getBOsc().setBounds((ELEM_PADDING * 2) + processor.getAOsc().getWidth(), ELEM_PADDING, processor.getBOsc().getWidth(), processor.getBOsc().getHeight());
 }

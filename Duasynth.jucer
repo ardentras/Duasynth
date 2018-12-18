@@ -10,6 +10,9 @@
         <FILE id="PQvXHr" name="SawWaveSound.cpp" compile="1" resource="0"
               file="Source/Waveforms/SawWaveSound.cpp"/>
         <FILE id="fUHY5C" name="SawWaveSound.h" compile="0" resource="0" file="Source/Waveforms/SawWaveSound.h"/>
+        <FILE id="RQKzl6" name="SawWaveVoice.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SawWaveVoice.cpp"/>
+        <FILE id="MdRNkp" name="SawWaveVoice.h" compile="0" resource="0" file="Source/Waveforms/SawWaveVoice.h"/>
         <FILE id="DQZkyX" name="TriangleWaveSound.cpp" compile="1" resource="0"
               file="Source/Waveforms/TriangleWaveSound.cpp"/>
         <FILE id="ODElZ6" name="TriangleWaveSound.h" compile="0" resource="0"

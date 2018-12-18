@@ -7,12 +7,9 @@
 
   ==============================================================================
 */
-#define _USE_MATH_DEFINES
-
-#include <cmath>
-
 #include "Oscillator.h"
 #include "Waveforms/SawWaveSound.h"
+#include "Waveforms/SawWaveVoice.h"
 #include "Waveforms/TriangleWaveSound.h"
 
 //==============================================================================
@@ -23,6 +20,9 @@ Oscillator::Oscillator()
 	waveforms.push_back(new SawWaveSound());
 	waveforms.push_back(new TriangleWaveSound());
 	curr_wf = waveforms.front();
+
+	synth.addVoice(new SawWaveVoice());
+	synth.addSound(curr_wf);
 
 	// Coarse tuning
 	coarse.setRange(-24.0f, 24.0f, 1.0);
@@ -116,6 +116,26 @@ void Oscillator::resized()
 	
 	fine.setBounds(105.0f, getHeight() - 57.5f, 50.0f, 50.0f);
 	lFine.setBounds(105.0f, getHeight() - 15.0f, 50.0f, 15.0f);
+}
+
+void Oscillator::clearSounds()
+{
+
+}
+
+void Oscillator::prepareToPlay(int samplesPerBlock, double sampleRate)
+{
+
+}
+
+void Oscillator::releaseResources()
+{
+
+}
+
+void Oscillator::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
+{
+
 }
 
 void Oscillator::mouseMagnify(const MouseEvent& event, float scaleFactor)

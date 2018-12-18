@@ -11,6 +11,8 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#define LINE_WEIGHT 5.0f
+
 class DuasynthWaveSound : public SynthesiserSound
 {
 public:

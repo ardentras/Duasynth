@@ -32,8 +32,6 @@ private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
 	DuasynthAudioProcessor& processor;
-	Oscillator a_osc;
-	Oscillator b_osc;
 
 	const float ELEM_PADDING = 5.0f;
 

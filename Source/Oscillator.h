@@ -32,7 +32,17 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	void clearSounds();
+	void prepareToPlay(int samplesPerBlock, double sampleRate);
+	void releaseResources();
+	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
+
+	// This event shouldn't happen in normal use so I'm using it as a way
+	// for the listener to communicate back to the parent component (this one).
 	void mouseMagnify(const MouseEvent& event, float scaleFactor);
+
+	Synthesiser& getSynth() { return synth; }
+	DuasynthWaveSound* getCurrWF() { return curr_wf; }
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.

@@ -448,6 +448,9 @@
     <ClCompile Include="..\..\Source\Waveforms\SawWaveSound.cpp">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\SawWaveVoice.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClCompile>
@@ -2455,6 +2458,9 @@
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\SawWaveVoice.h">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h">

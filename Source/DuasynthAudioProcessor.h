@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Oscillator.h"
 
 //==============================================================================
 /**
@@ -55,7 +56,17 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+	Oscillator& getAOsc() { return a_osc; }
+	Oscillator& getBOsc() { return b_osc; }
+
+	MidiMessageCollector* getMidiCollector() { return &midiCollector; }
+
 private:
     //==============================================================================
+	Oscillator a_osc;
+	Oscillator b_osc;
+
+	MidiMessageCollector midiCollector;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DuasynthAudioProcessor)
 };
