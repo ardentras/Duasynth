@@ -54,9 +54,9 @@ public:
 	*/
 	void setCurrentPlaybackSampleRate(double newRate) override { SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);  }
 
-	void setOct(double val) { oct = val; }
-	void setCoarse(double val) { coarse = val; }
-	void setFine(double val) { fine = val; }
+	void setOct(double val) { angleDelta *= std::pow(2.0, val - oct); oct = val; }
+	void setCoarse(double val) { angleDelta *= std::pow(2.0, ((val - coarse) * 100.0) / 1200.0); coarse = val; }
+	void setFine(double val) { angleDelta *= std::pow(2.0, (val - fine) / 1200.0); fine = val; }
 
 private:
 	double currentAngle;
