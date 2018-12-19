@@ -454,6 +454,9 @@
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\TriangleWaveVoice.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
@@ -464,9 +467,6 @@
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Oscillator.cpp">
-      <Filter>Duasynth\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\WFChanged.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\WFView.cpp">
@@ -2469,6 +2469,9 @@
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\TriangleWaveVoice.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
@@ -2479,9 +2482,6 @@
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Oscillator.h">
-      <Filter>Duasynth\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\WFChanged.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\WFView.h">

@@ -11,19 +11,24 @@
 #include "Waveforms/SawWaveSound.h"
 #include "Waveforms/SawWaveVoice.h"
 #include "Waveforms/TriangleWaveSound.h"
+#include "Waveforms/TriangleWaveVoice.h"
 
 //==============================================================================
 Oscillator::Oscillator()
 	: lCoarse("coarse_knob", "Coarse"), lFine("fine_knob", "Fine"),
 	  lOctave("octave_adj", "Oct")
 {
-	waveforms.push_back(new SawWaveSound());
-	waveforms.push_back(new TriangleWaveSound());
-	curr_wf = waveforms.front();
+	initialiseSynth();
 
-	synth.addVoice(new SawWaveVoice());
-	synth.addSound(curr_wf);
+	initialiseUI();
+}
 
+Oscillator::~Oscillator()
+{
+}
+
+void Oscillator::initialiseUI()
+{
 	// Coarse tuning
 	coarse.setRange(-24.0f, 24.0f, 1.0);
 	coarse.setValue(0.0f);
@@ -67,7 +72,8 @@ Oscillator::Oscillator()
 	wfSelect.setMinAndMaxValues(0.0, 1.0);
 	wfSelect.setRange(wfSelect.getMinValue(), wfSelect.getMaxValue(), 1.0);
 	wfSelect.setTextBoxIsEditable(false);
-	wfSelect.addListener(&wfChanged);
+	wfSelect.addListener(this);
+	wfSelect.setName("wf_select");
 	addAndMakeVisible(wfSelect);
 
 	// Volume adj.
@@ -78,24 +84,54 @@ Oscillator::Oscillator()
 	addAndMakeVisible(volume);
 
 	// Waveform view
-	wfView.setWaveform(curr_wf->getShape());
 	addAndMakeVisible(wfView);
 
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (150, 160);
+	// Make sure that before the constructor has finished, you've set the
+	// editor's size to whatever you need it to be.
+	setSize(150, 160);
 }
 
-Oscillator::~Oscillator()
+void Oscillator::initialiseSynth()
 {
-	while (!waveforms.empty())
+	waveforms.push_back("saw");
+	waveforms.push_back("triangle");
+	//waveforms.push_back("sine");
+	//waveforms.push_back("square");
+	//waveforms.push_back("noise");
+
+	curr_wf = waveforms.front();
+
+	updateSynth();
+}
+
+void Oscillator::updateSynth()
+{
+	synth.clearVoices();
+	synth.clearSounds();
+
+	if (curr_wf == "saw")
 	{
-		DuasynthWaveSound* sound = waveforms.front();
-		waveforms.pop_front();
-		delete sound;
+		for (int i = 0; i < NUM_VOICES; i++)
+		{
+			synth.addVoice(new SawWaveVoice());
+			synth.addSound(new SawWaveSound());
+		}
+	}
+	else if (curr_wf == "triangle")
+	{
+		for (int i = 0; i < NUM_VOICES; i++)
+		{
+			synth.addVoice(new TriangleWaveVoice());
+			synth.addSound(new TriangleWaveSound());
+		}
 	}
 
-	curr_wf = nullptr;
+	DuasynthWaveSound* temp = (DuasynthWaveSound*)&*(synth.getSound(0));
+	wfView.setWaveform(temp->getShape());
+
+	sliderDragEnded(&octave);
+	sliderValueChanged(&coarse);
+	sliderValueChanged(&fine);
 }
 
 //==============================================================================
@@ -124,24 +160,20 @@ void Oscillator::resized()
 	lFine.setBounds(105.0f, getHeight() - 15.0f, 50.0f, 15.0f);
 }
 
-void Oscillator::clearSounds()
-{
-
-}
-
 void Oscillator::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	//synth.setCurrentPlaybackSampleRate(sampleRate);
+	synth.setCurrentPlaybackSampleRate(sampleRate);
 	for (int i = 0; i < synth.getNumVoices(); i++)
 	{
 		synth.getVoice(i)->setCurrentPlaybackSampleRate(sampleRate);
 	}
-	//synth.setMinimumRenderingSubdivisionSize(samplesPerBlock);
+	synth.setMinimumRenderingSubdivisionSize(samplesPerBlock);
 }
 
 void Oscillator::releaseResources()
 {
-
+	synth.clearSounds();
+	synth.clearVoices();
 }
 
 void Oscillator::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
@@ -151,53 +183,53 @@ void Oscillator::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiM
 
 void Oscillator::sliderValueChanged(Slider* slider)
 {
-	for (int i = 0; i < synth.getNumVoices(); i++)
+	if (slider->getName() == "coarse_knob" || slider->getName() == "fine_knob")
 	{
-		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
-		if (slider->getName() == "coarse_knob")
+		for (int i = 0; i < synth.getNumVoices(); i++)
 		{
-			voice->setCoarse(slider->getValue());
-		}
-		else if (slider->getName() == "fine_knob")
-		{
-			voice->setFine(slider->getValue());
+			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
+			if (slider->getName() == "coarse_knob")
+			{
+				voice->setCoarse(slider->getValue());
+			}
+			else if (slider->getName() == "fine_knob")
+			{
+				voice->setFine(slider->getValue());
+			}
 		}
 	}
 }
 
 void Oscillator::sliderDragEnded(Slider* slider)
 {
-	for (int i = 0; i < synth.getNumVoices(); i++)
+	if (slider->getName() == "octave_adj")
 	{
-		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
-		if (slider->getName() == "octave_adj")
+		for (int i = 0; i < synth.getNumVoices(); i++)
 		{
+			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
 			voice->setOct(slider->getValue());
 		}
 	}
-}
-
-void Oscillator::mouseMagnify(const MouseEvent& event, float scaleFactor)
-{
-	DuasynthWaveSound* temp = nullptr;
-	if (scaleFactor > 0)
+	else if (slider->getName() == "wf_select")
 	{
-		temp = waveforms.front();
-		waveforms.pop_front();
-		waveforms.push_back(temp);
+		string temp;
+		if (slider->getValue() >= slider->getMaxValue())
+		{
+			temp = waveforms.front();
+			waveforms.pop_front();
+			waveforms.push_back(temp);
+		}
+		else if (slider->getValue() <= slider->getMinValue())
+		{
+			temp = waveforms.back();
+			waveforms.pop_back();
+			waveforms.push_front(temp);
+		}
 
 		curr_wf = waveforms.front();
-		wfView.setWaveform(curr_wf->getShape());
-	}
-	else if (scaleFactor < 0)
-	{
-		temp = waveforms.back();
-		waveforms.pop_back();
-		waveforms.push_front(temp);
 
-		curr_wf = waveforms.front();
-		wfView.setWaveform(curr_wf->getShape());
+		updateSynth();
+		
+		wfView.resized();
 	}
-
-	wfView.resized();
 }

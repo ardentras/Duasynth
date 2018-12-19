@@ -19,6 +19,10 @@
               file="Source/Waveforms/TriangleWaveSound.cpp"/>
         <FILE id="ODElZ6" name="TriangleWaveSound.h" compile="0" resource="0"
               file="Source/Waveforms/TriangleWaveSound.h"/>
+        <FILE id="RWuJBB" name="TriangleWaveVoice.cpp" compile="1" resource="0"
+              file="Source/Waveforms/TriangleWaveVoice.cpp"/>
+        <FILE id="USWREs" name="TriangleWaveVoice.h" compile="0" resource="0"
+              file="Source/Waveforms/TriangleWaveVoice.h"/>
       </GROUP>
       <FILE id="RgB44k" name="DuasynthAudioProcessor.cpp" compile="1" resource="0"
             file="Source/DuasynthAudioProcessor.cpp"/>
@@ -32,8 +36,6 @@
       <FILE id="h4STqJ" name="Knob.h" compile="0" resource="0" file="Source/Knob.h"/>
       <FILE id="MXWpQ1" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
       <FILE id="qxpHqO" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
-      <FILE id="IS3QRL" name="WFChanged.cpp" compile="1" resource="0" file="Source/WFChanged.cpp"/>
-      <FILE id="Tl6xIL" name="WFChanged.h" compile="0" resource="0" file="Source/WFChanged.h"/>
       <FILE id="p5EF8x" name="WFView.cpp" compile="1" resource="0" file="Source/WFView.cpp"/>
       <FILE id="jfZWJz" name="WFView.h" compile="0" resource="0" file="Source/WFView.h"/>
     </GROUP>

@@ -141,11 +141,11 @@
     <ClCompile Include="..\..\Source\Waveforms\SawWaveSound.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\TriangleWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\Source\Knob.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator.cpp"/>
-    <ClCompile Include="..\..\Source\WFChanged.cpp"/>
     <ClCompile Include="..\..\Source\WFView.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1978,11 +1978,11 @@
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\TriangleWaveVoice.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\Source\Knob.h"/>
     <ClInclude Include="..\..\Source\Oscillator.h"/>
-    <ClInclude Include="..\..\Source\WFChanged.h"/>
     <ClInclude Include="..\..\Source\WFView.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>

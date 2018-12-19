@@ -1,22 +1,22 @@
 /*
   ==============================================================================
 
-    SawWaveVoice.cpp
-    Created: 17 Dec 2018 8:10:14pm
+    TriangleWaveVoice.cpp
+    Created: 18 Dec 2018 3:59:55pm
     Author:  shaun.rasmusen
 
   ==============================================================================
 */
 #include <cmath>
 
-#include "SawWaveVoice.h"
+#include "TriangleWaveVoice.h"
 
-bool SawWaveVoice::canPlaySound(SynthesiserSound* sound)
+bool TriangleWaveVoice::canPlaySound(SynthesiserSound* sound)
 {
 	return true;
 }
 
-void SawWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
+void TriangleWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
 {
 	currentAngle = 0.0;
 	level = velocity * 0.15;
@@ -27,7 +27,7 @@ void SawWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSoun
 	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
-void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
+void TriangleWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
 	if (angleDelta != 0.0)
 	{
@@ -35,7 +35,17 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle * tailOff);
+				double currentSample;
+
+				if (currentAngle < MathConstants<double>::pi)
+				{
+					currentSample = (double)(((level * -1) + ((2 * level / MathConstants<double>::pi) * currentAngle)) * tailOff);
+				}
+				else
+				{
+					currentSample = (double)(((level * 3) - ((2 * level / MathConstants<double>::pi) * currentAngle)) * tailOff);
+				}
+
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;
@@ -58,7 +68,17 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle);
+				double currentSample;
+
+				if (currentAngle < MathConstants<double>::pi)
+				{
+					currentSample = (double)((level * 3) - ((2 * level / MathConstants<double>::pi) * currentAngle));
+				}
+				else
+				{
+					currentSample = (double)((level * -1) + ((2 * level / MathConstants<double>::pi) * currentAngle));
+				}
+
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;
@@ -73,7 +93,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 	}
 }
 
-void SawWaveVoice::stopNote(float velocity, bool allowTailOff)
+void TriangleWaveVoice::stopNote(float velocity, bool allowTailOff)
 {
 	if (allowTailOff)
 	{

@@ -13,11 +13,16 @@
 #include <list>
 using std::list;
 
+#include <string>
+using std::string;
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Waveforms/DuasynthWaveSound.h"
+#include "Waveforms/DuasynthWaveVoice.h"
 #include "Knob.h"
 #include "WFView.h"
-#include "WFChanged.h"
+
+#define NUM_VOICES 6
 
 //==============================================================================
 /**
@@ -28,24 +33,24 @@ public:
 	Oscillator();
     ~Oscillator();
 
+	void initialiseUI();
+	void initialiseSynth();
+
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
 
-	void clearSounds();
 	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void releaseResources();
 	void getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages);
 
-	// This event shouldn't happen in normal use so I'm using it as a way
-	// for the listener to communicate back to the parent component (this one).
-	void mouseMagnify(const MouseEvent& event, float scaleFactor);
-
 	void sliderValueChanged(Slider* slider) override;
 	void sliderDragEnded(Slider* slider) override;
 
+	void updateSynth();
+
 	Synthesiser& getSynth() { return synth; }
-	DuasynthWaveSound* getCurrWF() { return curr_wf; }
+	string getCurrWF() { return curr_wf; }
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
@@ -63,11 +68,8 @@ private:
 
 	// Practical Elements
 	Synthesiser synth;
-	DuasynthWaveSound* curr_wf;
-	list<DuasynthWaveSound*> waveforms;
-
-	// Listeners
-	WFChanged wfChanged;
+	string curr_wf;
+	list<string> waveforms;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
 };
