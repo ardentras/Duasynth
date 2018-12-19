@@ -144,9 +144,11 @@
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\Source\Filter.cpp"/>
     <ClCompile Include="..\..\Source\Knob.cpp"/>
     <ClCompile Include="..\..\Source\Oscillator.cpp"/>
     <ClCompile Include="..\..\Source\WFView.cpp"/>
+    <ClCompile Include="..\..\Source\FilterView.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1981,9 +1983,11 @@
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveVoice.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\Source\Filter.h"/>
     <ClInclude Include="..\..\Source\Knob.h"/>
     <ClInclude Include="..\..\Source\Oscillator.h"/>
     <ClInclude Include="..\..\Source\WFView.h"/>
+    <ClInclude Include="..\..\Source\FilterView.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

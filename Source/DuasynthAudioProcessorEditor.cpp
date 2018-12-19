@@ -17,6 +17,7 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 {
 	addAndMakeVisible(processor.getAOsc());
 	addAndMakeVisible(processor.getBOsc());
+	addAndMakeVisible(processor.getAFilter());
 
 	setSize (500, 600);
 }
@@ -37,4 +38,5 @@ void DuasynthAudioProcessorEditor::resized()
 	
 	processor.getAOsc().setBounds(ELEM_PADDING, ELEM_PADDING, processor.getAOsc().getWidth(), processor.getAOsc().getHeight());
 	processor.getBOsc().setBounds((ELEM_PADDING * 2) + processor.getAOsc().getWidth(), ELEM_PADDING, processor.getBOsc().getWidth(), processor.getBOsc().getHeight());
+	processor.getAFilter().setBounds(ELEM_PADDING, ELEM_PADDING + processor.getAOsc().getHeight(), processor.getAFilter().getWidth(), processor.getAFilter().getHeight());
 }

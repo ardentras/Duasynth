@@ -32,12 +32,16 @@
             resource="0" file="Source/DuasynthAudioProcessorEditor.cpp"/>
       <FILE id="cIKCHG" name="DuasynthAudioProcessorEditor.h" compile="0"
             resource="0" file="Source/DuasynthAudioProcessorEditor.h"/>
+      <FILE id="NtpaQu" name="Filter.cpp" compile="1" resource="0" file="Source/Filter.cpp"/>
+      <FILE id="y4jCui" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>
       <FILE id="XhHlId" name="Knob.cpp" compile="1" resource="0" file="Source/Knob.cpp"/>
       <FILE id="h4STqJ" name="Knob.h" compile="0" resource="0" file="Source/Knob.h"/>
       <FILE id="MXWpQ1" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
       <FILE id="qxpHqO" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
       <FILE id="p5EF8x" name="WFView.cpp" compile="1" resource="0" file="Source/WFView.cpp"/>
       <FILE id="jfZWJz" name="WFView.h" compile="0" resource="0" file="Source/WFView.h"/>
+      <FILE id="clIhOe" name="FilterView.cpp" compile="1" resource="0" file="Source/FilterView.cpp"/>
+      <FILE id="P1XqKn" name="FilterView.h" compile="0" resource="0" file="Source/FilterView.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

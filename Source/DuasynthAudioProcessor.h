@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Oscillator.h"
+#include "Filter.h"
 
 //==============================================================================
 /**
@@ -56,15 +57,18 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-	Oscillator& getAOsc() { return a_osc; }
-	Oscillator& getBOsc() { return b_osc; }
-
 	MidiMessageCollector* getMidiCollector() { return &midiCollector; }
 
+	Oscillator& getAOsc() { return a_osc; }
+	Oscillator& getBOsc() { return b_osc; }
+	Filter& getAFilter() { return a_filter; }
+	Filter& getBFilter() { return b_filter; }
 private:
     //==============================================================================
 	Oscillator a_osc;
 	Oscillator b_osc;
+	Filter a_filter;
+	Filter b_filter;
 
 	MidiMessageCollector midiCollector;
 
