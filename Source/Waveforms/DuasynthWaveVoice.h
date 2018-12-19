@@ -19,4 +19,5 @@ public:
 	virtual void setOct(double val) = 0;
 	virtual void setCoarse(double val) = 0;
 	virtual void setFine(double val) = 0;
+	virtual void setVolume(double val) = 0;
 };

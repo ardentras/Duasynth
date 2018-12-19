@@ -39,11 +39,11 @@ void TriangleWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int st
 
 				if (currentAngle < MathConstants<double>::pi)
 				{
-					currentSample = (double)(((level * -1) + ((2 * level / MathConstants<double>::pi) * currentAngle)) * tailOff);
+					currentSample = (double)(((level * (volume / 127.0f) * -1) + ((2 * level * (volume / 127.0f) / MathConstants<double>::pi) * currentAngle)) * tailOff);
 				}
 				else
 				{
-					currentSample = (double)(((level * 3) - ((2 * level / MathConstants<double>::pi) * currentAngle)) * tailOff);
+					currentSample = (double)(((level * (volume / 127.0f) * 3) - ((2 * level * (volume / 127.0f) / MathConstants<double>::pi) * currentAngle)) * tailOff);
 				}
 
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
@@ -72,11 +72,11 @@ void TriangleWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int st
 
 				if (currentAngle < MathConstants<double>::pi)
 				{
-					currentSample = (double)((level * 3) - ((2 * level / MathConstants<double>::pi) * currentAngle));
+					currentSample = (double)((level * (volume / 127.0f) * 3) - ((2 * level * (volume / 127.0f) / MathConstants<double>::pi) * currentAngle));
 				}
 				else
 				{
-					currentSample = (double)((level * -1) + ((2 * level / MathConstants<double>::pi) * currentAngle));
+					currentSample = (double)((level * (volume / 127.0f) * -1) + ((2 * level * (volume / 127.0f) / MathConstants<double>::pi) * currentAngle));
 				}
 
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)

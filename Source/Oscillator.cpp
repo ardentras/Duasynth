@@ -81,6 +81,8 @@ void Oscillator::initialiseUI()
 	volume.setRange(0.0, 127.0, 1.0);
 	volume.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
 	volume.setValue(127.0f * 0.8f);
+	volume.addListener(this);
+	volume.setName("volume");
 	addAndMakeVisible(volume);
 
 	// Waveform view
@@ -132,6 +134,7 @@ void Oscillator::updateSynth()
 	sliderDragEnded(&octave);
 	sliderValueChanged(&coarse);
 	sliderValueChanged(&fine);
+	sliderValueChanged(&volume);
 }
 
 //==============================================================================
@@ -183,7 +186,7 @@ void Oscillator::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiM
 
 void Oscillator::sliderValueChanged(Slider* slider)
 {
-	if (slider->getName() == "coarse_knob" || slider->getName() == "fine_knob")
+	if (slider->getName() == "coarse_knob" || slider->getName() == "fine_knob" || slider->getName() == "volume")
 	{
 		for (int i = 0; i < synth.getNumVoices(); i++)
 		{
@@ -195,6 +198,10 @@ void Oscillator::sliderValueChanged(Slider* slider)
 			else if (slider->getName() == "fine_knob")
 			{
 				voice->setFine(slider->getValue());
+			}
+			else if (slider->getName() == "volume")
+			{
+				voice->setVolume(slider->getValue());
 			}
 		}
 	}

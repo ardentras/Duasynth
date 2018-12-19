@@ -35,7 +35,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle * tailOff);
+				double currentSample = (double)(level * (volume / 127.0f) / MathConstants<double>::pi * currentAngle * tailOff);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;
@@ -58,7 +58,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample = (double)(level / MathConstants<double>::pi * currentAngle);
+				double currentSample = (double)(level * (volume / 127.0f) / MathConstants<double>::pi * currentAngle);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				currentAngle += angleDelta;
