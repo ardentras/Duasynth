@@ -161,18 +161,21 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
 
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
 	a_osc.getNextAudioBlock(buffer, midiMessages);
 	b_osc.getNextAudioBlock(buffer, midiMessages);
-	a_filter.processSamples(buffer);
+
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        float* channelData = buffer.getWritePointer (channel);
+
+        // ..do something to the data...
+    }
+	
+	a_filter.processSamples(buffer, buffer.getNumSamples());
+
 }
 
 //==============================================================================

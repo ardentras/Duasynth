@@ -33,7 +33,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
-	void processSamples(AudioBuffer<float>& buffer);
+	void processSamples(AudioBuffer<float>& buffer, int numSamples);
 	void releaseResources();
 
 	void sliderValueChanged(Slider* slider) override;

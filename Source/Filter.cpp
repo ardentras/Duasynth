@@ -103,10 +103,6 @@ void Filter::initialiseUI()
 
 void Filter::initialiseFilter()
 {
-	for (int i = 0; i < filter.size(); i++)
-	{
-		filter[i]->makeInactive();
-	}
 }
 
 void Filter::updateFilter()
@@ -149,24 +145,25 @@ void Filter::resized()
 	lRes.setBounds(100.0f, getHeight() - 15.0f, 50.0f, 15.0f);
 }
 
-void Filter::processSamples(AudioBuffer<float>& buffer)
+void Filter::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
-	if (filter.empty())
+	while (filter.size() < buffer.getNumChannels())
 	{
-		for (int i = 0; i < buffer.getNumChannels(); i++)
+		IIRFilter* f = new IIRFilter();
+		if (isActive)
 		{
-			filter.push_back(new IIRFilter());
+			f->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 500, 0.5));
 		}
-		for (int i = 0; i < filter.size(); i++)
+		else
 		{
-			filter[i]->makeInactive();
+			f->makeInactive();
 		}
+		filter.push_back(f);
 	}
 
-	for (int i = 0; i < buffer.getNumChannels(); i++)
+	for (int channel = 0; channel < buffer.getNumChannels(); channel++)
 	{
-		filter[i]->reset();
-		filter[i]->processSamples(buffer.getWritePointer(i), buffer.getNumSamples());
+		filter[channel]->processSamples(buffer.getWritePointer(channel), numSamples);
 	}
 }
 
