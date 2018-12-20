@@ -448,7 +448,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Filters\BandPassFilter.cpp">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Filters\HighPassFilter.cpp">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Filters\LowPassFilter.cpp">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Filters\NotchFilter.cpp">
       <Filter>Duasynth\Source\Filters</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveSound.cpp">
@@ -2466,10 +2475,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Filters\BandPassFilter.h">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Filters\FilterType.h">
       <Filter>Duasynth\Source\Filters</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Filters\HighPassFilter.h">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Filters\LowPassFilter.h">
+      <Filter>Duasynth\Source\Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Filters\NotchFilter.h">
       <Filter>Duasynth\Source\Filters</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveSound.h">

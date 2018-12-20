@@ -5,10 +5,20 @@
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
       <GROUP id="{257C5B05-8CF4-B9CE-8720-1BF83361BE29}" name="Filters">
+        <FILE id="SVUhg3" name="BandPassFilter.cpp" compile="1" resource="0"
+              file="Source/Filters/BandPassFilter.cpp"/>
+        <FILE id="moAAxa" name="BandPassFilter.h" compile="0" resource="0"
+              file="Source/Filters/BandPassFilter.h"/>
         <FILE id="kj1vBQ" name="FilterType.h" compile="0" resource="0" file="Source/Filters/FilterType.h"/>
+        <FILE id="CLVZ1m" name="HighPassFilter.cpp" compile="1" resource="0"
+              file="Source/Filters/HighPassFilter.cpp"/>
+        <FILE id="faGIlx" name="HighPassFilter.h" compile="0" resource="0"
+              file="Source/Filters/HighPassFilter.h"/>
         <FILE id="kBafXM" name="LowPassFilter.cpp" compile="1" resource="0"
               file="Source/Filters/LowPassFilter.cpp"/>
         <FILE id="OuMeMT" name="LowPassFilter.h" compile="0" resource="0" file="Source/Filters/LowPassFilter.h"/>
+        <FILE id="coWgJo" name="NotchFilter.cpp" compile="1" resource="0" file="Source/Filters/NotchFilter.cpp"/>
+        <FILE id="R8fr72" name="NotchFilter.h" compile="0" resource="0" file="Source/Filters/NotchFilter.h"/>
       </GROUP>
       <GROUP id="{EDD8F234-4BE6-7CFA-9B49-0F90955B16F6}" name="Waveforms">
         <FILE id="Vy1Jat" name="DuasynthWaveSound.h" compile="0" resource="0"

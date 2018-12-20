@@ -20,7 +20,6 @@ using std::list;
 #include "Knob.h"
 #include "FilterView.h"
 #include "Filters/FilterType.h"
-#include "Filters/LowPassFilter.h"
 
 //==============================================================================
 /**

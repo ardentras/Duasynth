@@ -20,10 +20,15 @@
   ==============================================================================
 */
 #include "Filter.h"
+#include "Filters/HighPassFilter.h"
+#include "Filters/BandPassFilter.h"
+#include "Filters/LowPassFilter.h"
+#include "Filters/NotchFilter.h"
 #include "Waveforms/SawWaveSound.h"
 #include "Waveforms/SawWaveVoice.h"
 #include "Waveforms/TriangleWaveSound.h"
 #include "Waveforms/TriangleWaveVoice.h"
+
 
 //==============================================================================
 Filter::Filter()
@@ -105,6 +110,9 @@ void Filter::initialiseUI()
 void Filter::initialiseFilter()
 {
 	filters.push_front(new LowPassFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new BandPassFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new HighPassFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new NotchFilter(0.0f, 0.0f, 0.0f));
 }
 
 void Filter::updateFilter()
@@ -114,6 +122,8 @@ void Filter::updateFilter()
 	sliderValueChanged(&cutoff);
 	sliderValueChanged(&slope);
 	sliderValueChanged(&res);
+
+	filterView.resized();
 }
 
 //==============================================================================
@@ -191,11 +201,26 @@ void Filter::sliderValueChanged(Slider* slider)
 
 		filters.front()->createShape(f, g, q);
 		filterView.setFilter(filters.front()->getShape());
-		filterView.resized();
 
+		string name = filters.front()->getName();
 		for (int i = 0; i < filter.size(); i++)
 		{
-			filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 2.0 * pow(10, f), q));
+			if (name == "low_pass")
+			{
+				filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 2.0 * pow(10, f), q));
+			}
+			else if (name == "high_pass")
+			{
+				filter[i]->setCoefficients(IIRCoefficients::makeHighPass(sampleRate, 2.0 * pow(10, f), q));
+			}
+			else if (name == "band_pass")
+			{
+				filter[i]->setCoefficients(IIRCoefficients::makeBandPass(sampleRate, 2.0 * pow(10, f), q));
+			}
+			else if (name == "notch")
+			{
+				filter[i]->setCoefficients(IIRCoefficients::makeNotchFilter(sampleRate, 2.0 * pow(10, f), q));
+			}
 		}
 	}
 }
@@ -204,6 +229,20 @@ void Filter::sliderDragEnded(Slider* slider)
 {
 	if (slider->getName() == "filter_select")
 	{
+		FilterType* temp;
+		if (slider->getValue() >= slider->getMaxValue())
+		{
+			temp = filters.front();
+			filters.pop_front();
+			filters.push_back(temp);
+		}
+		else if (slider->getValue() <= slider->getMinValue())
+		{
+			temp = filters.back();
+			filters.pop_back();
+			filters.push_front(temp);
+		}
 
+		updateFilter();
 	}
 }
