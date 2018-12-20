@@ -42,8 +42,8 @@ Filter::~Filter()
 void Filter::initialiseUI()
 {
 	// Cutoff
-	cutoff.setRange(20.0f, 20000.0f, (20000.0f - 20.0f) / 150);
-	cutoff.setValue(20000.0f);
+	cutoff.setRange(1.0f, 4.0f, 3.0f / 150);
+	cutoff.setValue(2.5f);
 	cutoff.addListener(this);
 	cutoff.setName("cutoff_knob");
 	addAndMakeVisible(cutoff);
@@ -112,11 +112,6 @@ void Filter::updateFilter()
 	sliderValueChanged(&cutoff);
 	sliderValueChanged(&slope);
 	sliderValueChanged(&res);
-
-	for (int i = 0; i < filter.size(); i++)
-	{
-		filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 500, 1.0));
-	}
 }
 
 //==============================================================================
@@ -147,18 +142,18 @@ void Filter::resized()
 
 void Filter::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
+	bool added_filters = false;
 	while (filter.size() < buffer.getNumChannels())
 	{
 		IIRFilter* f = new IIRFilter();
-		if (isActive)
-		{
-			f->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 500, 0.5));
-		}
-		else
-		{
-			f->makeInactive();
-		}
+		f->makeInactive();
 		filter.push_back(f);
+		added_filters = true;
+	}
+
+	if (added_filters)
+	{
+		updateFilter();
 	}
 
 	for (int channel = 0; channel < buffer.getNumChannels(); channel++)
@@ -177,10 +172,30 @@ void Filter::releaseResources()
 
 void Filter::sliderValueChanged(Slider* slider)
 {
-	
+	if (isActive)
+	{
+		if (slider->getName() == "cutoff_knob")
+		{
+			for (int i = 0; i < filter.size(); i++)
+			{
+				filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 2.0 * pow(10, slider->getValue()), 0.5));
+			}
+		}
+		else if (slider->getName() == "slope_knob")
+		{
+
+		}
+		else if (slider->getName() == "res_knob")
+		{
+
+		}
+	}
 }
 
 void Filter::sliderDragEnded(Slider* slider)
 {
-	
+	if (slider->getName() == "filter_select")
+	{
+
+	}
 }

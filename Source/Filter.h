@@ -48,17 +48,17 @@ public:
 	void buttonClicked(Button* button) {
 		if (isActive) 
 		{
+			isActive = false;
 			for (int i = 0; i < filter.size(); i++)
 				filter[i]->makeInactive();
 			button->setButtonText("Enable");
 		}
 		else 
 		{
-			updateFilter(); 
+			isActive = true;
+			updateFilter();
 			button->setButtonText("Disable");
 		}
-
-		isActive = !isActive;
 	}
 
 private:
