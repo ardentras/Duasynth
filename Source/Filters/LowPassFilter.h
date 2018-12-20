@@ -15,11 +15,16 @@
 class LowPassFilter : public FilterType
 {
 public:
-	LowPassFilter(double f, double g, double q) : cutoff(f), slope(g), res(q), name("low_pass")
+	LowPassFilter() : FilterType(632.45, 0.0, 1.0), name("low_pass")
+	{
+		createShape(cutoff, slope, res);
+	}
+
+	LowPassFilter(double f, double g, double q) : FilterType(f, g, q), name("low_pass")
 	{ 
 		createShape(f, g, q); 
 	}
-	LowPassFilter() : FilterType(), name("low_pass") {}
+
 	~LowPassFilter() {}
 
 	DrawablePath getShape() { return shape; }
@@ -27,13 +32,6 @@ public:
 	string getName() { return name; }
 
 	virtual void createShape(double f, double g, double q);
-
-protected:
-	DrawablePath shape;
-
-	double cutoff;
-	double slope;
-	double res;
 
 private:
 	string name;

@@ -23,7 +23,8 @@ using std::string;
 class FilterType
 {
 public:
-	FilterType() : cutoff(0.0), slope(0.0), res(0.0) {}
+	FilterType() {}
+	FilterType(double f, double g, double q) : cutoff(f), slope(g), res(q) {}
 	~FilterType() {}
 
 	DrawablePath getShape()

@@ -17,6 +17,7 @@ using std::vector;
 using std::list;
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
 #include "Knob.h"
 #include "FilterView.h"
 #include "Filters/FilterType.h"

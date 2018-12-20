@@ -8,27 +8,11 @@
   ==============================================================================
 */
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Filter.h"
-/*
-  ==============================================================================
-
-	This file was auto-generated!
-
-	It contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 #include "Filter.h"
 #include "Filters/HighPassFilter.h"
 #include "Filters/BandPassFilter.h"
 #include "Filters/LowPassFilter.h"
 #include "Filters/NotchFilter.h"
-#include "Waveforms/SawWaveSound.h"
-#include "Waveforms/SawWaveVoice.h"
-#include "Waveforms/TriangleWaveSound.h"
-#include "Waveforms/TriangleWaveVoice.h"
-
 
 //==============================================================================
 Filter::Filter()
@@ -94,6 +78,7 @@ void Filter::initialiseUI()
 	addAndMakeVisible(filterSelect);
 
 	// Filter view
+	filterView.setFilter(filters.front()->getShape());
 	addAndMakeVisible(filterView);
 
 	// Enable button
