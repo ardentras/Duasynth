@@ -4,6 +4,12 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <GROUP id="{257C5B05-8CF4-B9CE-8720-1BF83361BE29}" name="Filters">
+        <FILE id="kj1vBQ" name="FilterType.h" compile="0" resource="0" file="Source/Filters/FilterType.h"/>
+        <FILE id="kBafXM" name="LowPassFilter.cpp" compile="1" resource="0"
+              file="Source/Filters/LowPassFilter.cpp"/>
+        <FILE id="OuMeMT" name="LowPassFilter.h" compile="0" resource="0" file="Source/Filters/LowPassFilter.h"/>
+      </GROUP>
       <GROUP id="{EDD8F234-4BE6-7CFA-9B49-0F90955B16F6}" name="Waveforms">
         <FILE id="Vy1Jat" name="DuasynthWaveSound.h" compile="0" resource="0"
               file="Source/Waveforms/DuasynthWaveSound.h"/>

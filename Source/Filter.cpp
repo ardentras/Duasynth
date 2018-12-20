@@ -55,19 +55,20 @@ void Filter::initialiseUI()
 
 	// Slope
 	slope.setRange(0.0f, 127.0f, 1.0);
-	slope.setValue(127.0 * 0.5);
+	slope.setValue(0.0f);
 	slope.addListener(this);
 	slope.setName("slope_knob");
+	slope.setEnabled(false);
 	addAndMakeVisible(slope);
 
 	lSlope.setFont(Font(16.0f, Font::plain));
-	lSlope.setColour(Label::textColourId, Colours::white);
+	lSlope.setColour(Label::textColourId, Colours::lightgrey);
 	lSlope.setJustificationType(Justification::centred);
 	addAndMakeVisible(lSlope);
 
 	// Resonance
 	res.setRange(1.0f, 6.0f, 0.05f);
-	res.setValue(3.5f);
+	res.setValue(1.0f);
 	res.addListener(this);
 	res.setName("res_knob");
 	addAndMakeVisible(res);
@@ -103,6 +104,7 @@ void Filter::initialiseUI()
 
 void Filter::initialiseFilter()
 {
+	filters.push_front(new LowPassFilter(0.0f, 0.0f, 0.0f));
 }
 
 void Filter::updateFilter()
@@ -180,12 +182,16 @@ void Filter::sliderValueChanged(Slider* slider)
 		}
 		else if (slider->getName() == "slope_knob")
 		{
-
+			g = slider->getValue();
 		}
 		else if (slider->getName() == "res_knob")
 		{
 			q = slider->getValue();
 		}
+
+		filters.front()->createShape(f, g, q);
+		filterView.setFilter(filters.front()->getShape());
+		filterView.resized();
 
 		for (int i = 0; i < filter.size(); i++)
 		{

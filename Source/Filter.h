@@ -13,9 +13,14 @@
 #include <vector>
 using std::vector;
 
+#include <list>
+using std::list;
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Knob.h"
 #include "FilterView.h"
+#include "Filters/FilterType.h"
+#include "Filters/LowPassFilter.h"
 
 //==============================================================================
 /**
@@ -84,6 +89,8 @@ private:
 	double f;
 	double g;
 	double q;
+
+	list<FilterType*> filters;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Filter)
 };

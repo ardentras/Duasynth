@@ -128,6 +128,8 @@ void Oscillator::updateSynth()
 		}
 	}
 
+	// Need to get reference and then immediately dereference to thwart
+	// the annoying Ptr wrapper on getSound()'s return type
 	DuasynthWaveSound* temp = (DuasynthWaveSound*)&*(synth.getSound(0));
 	wfView.setWaveform(temp->getShape());
 

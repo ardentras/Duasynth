@@ -138,6 +138,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Filters\LowPassFilter.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveSound.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp"/>
@@ -1975,6 +1976,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Filters\FilterType.h"/>
+    <ClInclude Include="..\..\Source\Filters\LowPassFilter.h"/>
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h"/>
