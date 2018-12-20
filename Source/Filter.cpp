@@ -109,10 +109,10 @@ void Filter::initialiseUI()
 
 void Filter::initialiseFilter()
 {
-	filters.push_front(new LowPassFilter(0.0f, 0.0f, 0.0f));
-	filters.push_front(new BandPassFilter(0.0f, 0.0f, 0.0f));
-	filters.push_front(new HighPassFilter(0.0f, 0.0f, 0.0f));
 	filters.push_front(new NotchFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new HighPassFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new BandPassFilter(0.0f, 0.0f, 0.0f));
+	filters.push_front(new LowPassFilter(0.0f, 0.0f, 0.0f));
 }
 
 void Filter::updateFilter()

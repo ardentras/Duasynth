@@ -103,6 +103,7 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	b_osc.prepareToPlay(sampleRate, samplesPerBlock);
 
 	a_filter.setSampleRate(sampleRate);
+	b_filter.setSampleRate(sampleRate);
 
 	midiCollector.reset(sampleRate);
 }
@@ -114,6 +115,7 @@ void DuasynthAudioProcessor::releaseResources()
 	a_osc.releaseResources();
 	b_osc.releaseResources();
 	a_filter.releaseResources();
+	b_filter.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -175,6 +177,7 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     }
 	
 	a_filter.processSamples(buffer, buffer.getNumSamples());
+	b_filter.processSamples(buffer, buffer.getNumSamples());
 
 }
 
