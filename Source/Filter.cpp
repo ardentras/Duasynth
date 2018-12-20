@@ -55,7 +55,7 @@ void Filter::initialiseUI()
 
 	// Slope
 	slope.setRange(0.0f, 127.0f, 1.0);
-	slope.setValue(127.0 * 0.8);
+	slope.setValue(127.0 * 0.5);
 	slope.addListener(this);
 	slope.setName("slope_knob");
 	addAndMakeVisible(slope);
@@ -66,8 +66,8 @@ void Filter::initialiseUI()
 	addAndMakeVisible(lSlope);
 
 	// Resonance
-	res.setRange(0.0f, 127.0f, 1.0);
-	res.setValue(127.0 * 0.8);
+	res.setRange(1.0f, 6.0f, 0.05f);
+	res.setValue(3.5f);
 	res.addListener(this);
 	res.setName("res_knob");
 	addAndMakeVisible(res);
@@ -176,10 +176,7 @@ void Filter::sliderValueChanged(Slider* slider)
 	{
 		if (slider->getName() == "cutoff_knob")
 		{
-			for (int i = 0; i < filter.size(); i++)
-			{
-				filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 2.0 * pow(10, slider->getValue()), 0.5));
-			}
+			f = slider->getValue();
 		}
 		else if (slider->getName() == "slope_knob")
 		{
@@ -187,7 +184,12 @@ void Filter::sliderValueChanged(Slider* slider)
 		}
 		else if (slider->getName() == "res_knob")
 		{
+			q = slider->getValue();
+		}
 
+		for (int i = 0; i < filter.size(); i++)
+		{
+			filter[i]->setCoefficients(IIRCoefficients::makeLowPass(sampleRate, 2.0 * pow(10, f), q));
 		}
 	}
 }

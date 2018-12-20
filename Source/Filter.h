@@ -81,6 +81,9 @@ private:
 	// Practical Elements
 	vector<IIRFilter*> filter;
 	double sampleRate;
+	double f;
+	double g;
+	double q;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Filter)
 };
