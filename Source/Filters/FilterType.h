@@ -20,7 +20,7 @@ using std::string;
 //==============================================================================
 /*
 */
-class FilterType
+class FilterType : Component
 {
 public:
 	FilterType() {}
@@ -50,6 +50,14 @@ public:
 	}
 
 	virtual string getName() { return ""; }
+
+	void paint(Graphics& g)
+	{
+		g.strokePath(shape.getPath(), PathStrokeType(LINE_WEIGHT));
+	}
+
+	void resized() { }
+
 
 protected:
 	DrawablePath shape;

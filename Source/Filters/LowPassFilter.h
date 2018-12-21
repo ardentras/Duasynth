@@ -15,7 +15,7 @@
 class LowPassFilter : public FilterType
 {
 public:
-	LowPassFilter() : FilterType(632.45, 0.0, 1.0), name("low_pass")
+	LowPassFilter() : FilterType(2.5, 0.0, 1.0), name("low_pass")
 	{
 		createShape(cutoff, slope, res);
 	}

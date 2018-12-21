@@ -38,7 +38,7 @@ void FilterView::paint(Graphics& g)
 void FilterView::resized()
 {
 	Path temp = filter.getPath();
-	temp.scaleToFit(0, 0, getWidth(), getHeight(), true);
+	//temp.scaleToFit(0, 0, getWidth(), getHeight(), true);
 	filter.setPath(temp);
 }
 
