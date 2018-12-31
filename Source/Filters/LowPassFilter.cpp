@@ -12,23 +12,14 @@
 
 void LowPassFilter::createShape(double f, double g, double q)
 {
-	/*Path path;
-
-	shape.setSize(133, 78);
-
-	path.addLineSegment(Line<float>(0.0f, shape.getHeight() / 2, ((2 * pow(10, f)) / 20000.0f) * shape.getWidth() - 10.0f, shape.getHeight() / 2), LINE_WEIGHT);
-	path.addArc(((2 * pow(10, f)) / 20000.0f) * shape.getWidth() - 10.0f, shape.getHeight() / 2, 10.0f, 0.0f, MathConstants<float>::pi / 2.0f, false);
-	path.addLineSegment(Line<float>(((2 * pow(10, f)) / 20000.0f) * shape.getWidth(), (shape.getHeight() / 2.0f) + 10.0f, (f / 20000.0f) * shape.getWidth(), shape.getHeight()), LINE_WEIGHT);
-
-	shape.setPath(path);*/
-
 	Path path;
 
 	shape.setSize(133, 78);
 
 	path.startNewSubPath(Point<float>(0.0, shape.getHeight() / 2));
-	path.lineTo(((f - 1.0f) / 3.0f * shape.getWidth()), shape.getHeight() / 2);
-	path.quadraticTo(((f - 1.0f) / 3.0f * shape.getWidth()) + 5.0f, shape.getHeight() / 2, (f - 1.0f) / 3.0f * shape.getWidth() + 10.0f, shape.getHeight());
+	path.lineTo(((f - 1.0f) / 3.0f * shape.getWidth()) - 10.0f, shape.getHeight() / 2);
+	path.quadraticTo(((f - 1.0f) / 3.0f * shape.getWidth()) - 5.0f, shape.getHeight() / 2, (f - 1.0f) / 3.0f * shape.getWidth(), (shape.getHeight() / 2) - (((q / 3.0f) - (1.0f / 3.0f)) * shape.getHeight() / 2));
+	path.quadraticTo(((f - 1.0f) / 3.0f * shape.getWidth()) + 5.0f, (shape.getHeight() / 2) - (((q / 3.0f) - (1.0f / 3.0f)) * shape.getHeight()), (f - 1.0f) / 3.0f * shape.getWidth() + 10.0f, shape.getHeight());
 	path.lineTo(0.0, shape.getHeight());
 	path.closeSubPath();
 

@@ -15,11 +15,16 @@
 class BandPassFilter : public FilterType
 {
 public:
-	BandPassFilter(double f, double g, double q) : cutoff(f), slope(g), res(q), name("band_pass")
+	BandPassFilter() : FilterType(2.5, 0.0, 1.0), name("band_pass")
+	{
+		createShape(cutoff, slope, res);
+	}
+
+	BandPassFilter(double f, double g, double q) : FilterType(f, g, q), name("band_pass")
 	{
 		createShape(f, g, q);
 	}
-	BandPassFilter() : FilterType(), name("band_pass") {}
+
 	~BandPassFilter() {}
 
 	DrawablePath getShape() { return shape; }
@@ -27,13 +32,6 @@ public:
 	string getName() { return name; }
 
 	virtual void createShape(double f, double g, double q);
-
-protected:
-	DrawablePath shape;
-
-	double cutoff;
-	double slope;
-	double res;
 
 private:
 	string name;

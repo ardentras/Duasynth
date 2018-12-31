@@ -56,7 +56,7 @@ void Filter::initialiseUI()
 	addAndMakeVisible(lSlope);
 
 	// Resonance
-	res.setRange(1.0f, 6.0f, 0.05f);
+	res.setRange(1.0f, 3.0f, 0.05f);
 	res.setValue(1.0f);
 	res.addListener(this);
 	res.setName("res_knob");

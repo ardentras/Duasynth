@@ -15,11 +15,16 @@
 class NotchFilter : public FilterType
 {
 public:
-	NotchFilter(double f, double g, double q) : cutoff(f), slope(g), res(q), name("notch")
+	NotchFilter() : FilterType(2.5, 0.0, 1.0), name("notch")
+	{
+		createShape(cutoff, slope, res);
+	}
+
+	NotchFilter(double f, double g, double q) : FilterType(f, g, q), name("notch")
 	{
 		createShape(f, g, q);
 	}
-	NotchFilter() : FilterType(), name("notch") {}
+
 	~NotchFilter() {}
 
 	DrawablePath getShape() { return shape; }
@@ -27,13 +32,6 @@ public:
 	string getName() { return name; }
 
 	virtual void createShape(double f, double g, double q);
-
-protected:
-	DrawablePath shape;
-
-	double cutoff;
-	double slope;
-	double res;
 
 private:
 	string name;
