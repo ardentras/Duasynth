@@ -6,9 +6,11 @@ TriangleWaveSound::TriangleWaveSound()
 
 	shape.setSize(150, 100);
 
-	path.addLineSegment(Line<float>(0.0f, shape.getHeight() / 2, shape.getWidth() / 4, 0.0f), LINE_WEIGHT);
-	path.addLineSegment(Line<float>(shape.getWidth() / 4, 0.0f, shape.getWidth() / 4 * 3, shape.getHeight()), LINE_WEIGHT);
-	path.addLineSegment(Line<float>(shape.getWidth() / 4 * 3, shape.getHeight(), shape.getWidth(), shape.getHeight() / 2), LINE_WEIGHT);
+	path.startNewSubPath(0.0f, shape.getHeight() / 2);
+	path.lineTo(shape.getWidth() / 4, 0.0f);
+	path.lineTo(shape.getWidth() / 4 * 3, shape.getHeight());
+	path.lineTo(shape.getWidth(), shape.getHeight() / 2);
+	path.closeSubPath();
 
 	shape.setPath(path);
 }

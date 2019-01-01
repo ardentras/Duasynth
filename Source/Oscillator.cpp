@@ -12,6 +12,10 @@
 #include "Waveforms/SawWaveVoice.h"
 #include "Waveforms/TriangleWaveSound.h"
 #include "Waveforms/TriangleWaveVoice.h"
+#include "Waveforms/SineWaveSound.h"
+#include "Waveforms/SineWaveVoice.h"
+#include "Waveforms/SquareWaveSound.h"
+#include "Waveforms/SquareWaveVoice.h"
 
 //==============================================================================
 Oscillator::Oscillator()
@@ -97,8 +101,8 @@ void Oscillator::initialiseSynth()
 {
 	waveforms.push_back("saw");
 	waveforms.push_back("triangle");
-	//waveforms.push_back("sine");
-	//waveforms.push_back("square");
+	waveforms.push_back("sine");
+	waveforms.push_back("square");
 	//waveforms.push_back("noise");
 
 	curr_wf = waveforms.front();
@@ -125,6 +129,22 @@ void Oscillator::updateSynth()
 		{
 			synth.addVoice(new TriangleWaveVoice());
 			synth.addSound(new TriangleWaveSound());
+		}
+	}
+	else if (curr_wf == "sine")
+	{
+		for (int i = 0; i < NUM_VOICES; i++)
+		{
+			synth.addVoice(new SineWaveVoice());
+			synth.addSound(new SineWaveSound());
+		}
+	}
+	else if (curr_wf == "square")
+	{
+		for (int i = 0; i < NUM_VOICES; i++)
+		{
+			synth.addVoice(new SquareWaveVoice());
+			synth.addSound(new SquareWaveSound());
 		}
 	}
 

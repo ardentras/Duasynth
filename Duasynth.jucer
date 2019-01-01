@@ -4,6 +4,8 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="PbaLNV" name="Waveshaper.cpp" compile="1" resource="0" file="Source/Waveshaper.cpp"/>
+      <FILE id="XqCdeU" name="Waveshaper.h" compile="0" resource="0" file="Source/Waveshaper.h"/>
       <GROUP id="{257C5B05-8CF4-B9CE-8720-1BF83361BE29}" name="Filters">
         <FILE id="SVUhg3" name="BandPassFilter.cpp" compile="1" resource="0"
               file="Source/Filters/BandPassFilter.cpp"/>
@@ -31,6 +33,20 @@
         <FILE id="RQKzl6" name="SawWaveVoice.cpp" compile="1" resource="0"
               file="Source/Waveforms/SawWaveVoice.cpp"/>
         <FILE id="MdRNkp" name="SawWaveVoice.h" compile="0" resource="0" file="Source/Waveforms/SawWaveVoice.h"/>
+        <FILE id="x2DZJ4" name="SineWaveSound.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SineWaveSound.cpp"/>
+        <FILE id="OuuP6a" name="SineWaveSound.h" compile="0" resource="0" file="Source/Waveforms/SineWaveSound.h"/>
+        <FILE id="X3dr38" name="SineWaveVoice.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SineWaveVoice.cpp"/>
+        <FILE id="pjjV9E" name="SineWaveVoice.h" compile="0" resource="0" file="Source/Waveforms/SineWaveVoice.h"/>
+        <FILE id="WTWXQa" name="SquareWaveSound.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SquareWaveSound.cpp"/>
+        <FILE id="Rlgjpb" name="SquareWaveSound.h" compile="0" resource="0"
+              file="Source/Waveforms/SquareWaveSound.h"/>
+        <FILE id="de8F62" name="SquareWaveVoice.cpp" compile="1" resource="0"
+              file="Source/Waveforms/SquareWaveVoice.cpp"/>
+        <FILE id="eWN4XL" name="SquareWaveVoice.h" compile="0" resource="0"
+              file="Source/Waveforms/SquareWaveVoice.h"/>
         <FILE id="DQZkyX" name="TriangleWaveSound.cpp" compile="1" resource="0"
               file="Source/Waveforms/TriangleWaveSound.cpp"/>
         <FILE id="ODElZ6" name="TriangleWaveSound.h" compile="0" resource="0"

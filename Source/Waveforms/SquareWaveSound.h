@@ -1,11 +1,11 @@
 #pragma once
 #include "DuasynthWaveSound.h"
 
-class SawWaveSound : public DuasynthWaveSound
+class SquareWaveSound : public DuasynthWaveSound
 {
 public:
-	SawWaveSound();
-	~SawWaveSound() {}
+	SquareWaveSound();
+	~SquareWaveSound() {}
 
 	bool appliesToNote(int midiNoteNumber) override
 	{

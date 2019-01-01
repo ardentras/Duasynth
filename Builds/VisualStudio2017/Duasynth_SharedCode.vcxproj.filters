@@ -448,6 +448,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Waveshaper.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Filters\BandPassFilter.cpp">
       <Filter>Duasynth\Source\Filters</Filter>
     </ClCompile>
@@ -464,6 +467,18 @@
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveVoice.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\SineWaveSound.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\SineWaveVoice.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\SquareWaveSound.cpp">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms\SquareWaveVoice.cpp">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp">
@@ -2475,6 +2490,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Waveshaper.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Filters\BandPassFilter.h">
       <Filter>Duasynth\Source\Filters</Filter>
     </ClInclude>
@@ -2500,6 +2518,18 @@
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveVoice.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\SineWaveSound.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\SineWaveVoice.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\SquareWaveSound.h">
+      <Filter>Duasynth\Source\Waveforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms\SquareWaveVoice.h">
       <Filter>Duasynth\Source\Waveforms</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h">

@@ -138,12 +138,17 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Waveshaper.cpp"/>
     <ClCompile Include="..\..\Source\Filters\BandPassFilter.cpp"/>
     <ClCompile Include="..\..\Source\Filters\HighPassFilter.cpp"/>
     <ClCompile Include="..\..\Source\Filters\LowPassFilter.cpp"/>
     <ClCompile Include="..\..\Source\Filters\NotchFilter.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveSound.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\SawWaveVoice.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\SineWaveSound.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\SineWaveVoice.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\SquareWaveSound.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\SquareWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp"/>
@@ -1979,6 +1984,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Waveshaper.h"/>
     <ClInclude Include="..\..\Source\Filters\BandPassFilter.h"/>
     <ClInclude Include="..\..\Source\Filters\FilterType.h"/>
     <ClInclude Include="..\..\Source\Filters\HighPassFilter.h"/>
@@ -1988,6 +1994,10 @@
     <ClInclude Include="..\..\Source\Waveforms\DuasynthWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\SawWaveVoice.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\SineWaveSound.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\SineWaveVoice.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\SquareWaveSound.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\SquareWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveVoice.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h"/>

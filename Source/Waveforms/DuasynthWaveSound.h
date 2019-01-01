@@ -21,5 +21,13 @@ public:
 	virtual bool appliesToNote(int midiNoteNumber) = 0;
 	virtual bool appliesToChannel(int midiChannel) = 0;
 	virtual DrawablePath getShape() = 0;
+
+	virtual void paint(Graphics& g)
+	{
+		g.fillPath(shape.getPath());
+	}
+
+protected:
+	DrawablePath shape;
 };
 

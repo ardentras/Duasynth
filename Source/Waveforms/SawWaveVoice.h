@@ -16,7 +16,7 @@
 class SawWaveVoice : public DuasynthWaveVoice
 {
 public:
-	SawWaveVoice() : coarse(0.0), fine(0.0), oct(0.0) {}
+	SawWaveVoice() {}
 	~SawWaveVoice() {}
 
 	bool canPlaySound(SynthesiserSound*) override;
@@ -53,20 +53,4 @@ public:
 		the currentSampleRate member.
 	*/
 	void setCurrentPlaybackSampleRate(double newRate) override { SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);  }
-
-	void setOct(double val) { angleDelta *= std::pow(2.0, val - oct); oct = val; }
-	void setCoarse(double val) { angleDelta *= std::pow(2.0, ((val - coarse) * 100.0) / 1200.0); coarse = val; }
-	void setFine(double val) { angleDelta *= std::pow(2.0, (val - fine) / 1200.0); fine = val; }
-	void setVolume(double val) { volume = val; }
-
-private:
-	double currentAngle;
-	double angleDelta;
-	double level;
-	double tailOff;
-
-	double coarse;
-	double fine;
-	double oct;
-	double volume;
 };

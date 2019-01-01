@@ -13,11 +13,11 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthWaveVoice.h"
 
-class TriangleWaveVoice : public DuasynthWaveVoice
+class SineWaveVoice : public DuasynthWaveVoice
 {
 public:
-	TriangleWaveVoice() {}
-	~TriangleWaveVoice() {}
+	SineWaveVoice() {}
+	~SineWaveVoice() {}
 
 	bool canPlaySound(SynthesiserSound*) override;
 	void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;

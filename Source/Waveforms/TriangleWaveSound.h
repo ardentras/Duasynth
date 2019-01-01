@@ -19,8 +19,5 @@ public:
 	{
 		return shape;
 	}
-
-private:
-	DrawablePath shape;
 };
 
