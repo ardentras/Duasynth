@@ -167,7 +167,9 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
 	a_osc.getNextAudioBlock(buffer, midiMessages);
+	a_filter.processSamples(buffer, buffer.getNumSamples());
 	b_osc.getNextAudioBlock(buffer, midiMessages);
+	b_filter.processSamples(buffer, buffer.getNumSamples());
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -176,8 +178,6 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
         // ..do something to the data...
     }
 	
-	a_filter.processSamples(buffer, buffer.getNumSamples());
-	b_filter.processSamples(buffer, buffer.getNumSamples());
 
 }
 

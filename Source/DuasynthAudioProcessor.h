@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Oscillator.h"
 #include "Filter.h"
+#include "Waveshaper.h"
 
 //==============================================================================
 /**
@@ -63,12 +64,15 @@ public:
 	Oscillator& getBOsc() { return b_osc; }
 	Filter& getAFilter() { return a_filter; }
 	Filter& getBFilter() { return b_filter; }
+	Waveshaper& getWaveshaper() { return waveshaper; }
+
 private:
     //==============================================================================
 	Oscillator a_osc;
 	Oscillator b_osc;
 	Filter a_filter;
 	Filter b_filter;
+	Waveshaper waveshaper;
 
 	MidiMessageCollector midiCollector;
 

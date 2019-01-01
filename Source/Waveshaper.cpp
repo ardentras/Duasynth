@@ -11,7 +11,11 @@
 #include "Waveshaper.h"
 
 //==============================================================================
-Waveshaper::Waveshaper()
+Waveshaper::Waveshaper() :
+	lMix("mix_knob", "Wet/Dry"), lVolume("volume_knob", "Volume"),
+	lAttack("attack_knob", "Attack"), lKnee("knee_knob", "Knee"),
+	lCurve("curve_knob", "Curve"), theName("name_label", "Waveshaper"),
+	isActive(false)
 {
 	initialiseWaveshaper();
 
@@ -24,42 +28,71 @@ Waveshaper::~Waveshaper()
 
 void Waveshaper::initialiseUI()
 {
-	// Cutoff
-	cutoff.setRange(1.0f, 4.0f, 3.0f / 150);
-	cutoff.setValue(2.5f);
-	cutoff.addListener(this);
-	cutoff.setName("cutoff_knob");
-	addAndMakeVisible(cutoff);
+	// Name
+	theName.setFont(Font(24.0f, Font::plain));
+	theName.setColour(Label::textColourId, Colours::white);
+	theName.setJustificationType(Justification::centred);
+	addAndMakeVisible(theName);
 
-	lCutoff.setFont(Font(16.0f, Font::plain));
-	lCutoff.setColour(Label::textColourId, Colours::white);
-	lCutoff.setJustificationType(Justification::centred);
-	addAndMakeVisible(lCutoff);
+	// Mix
+	mix.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	mix.setValue(0.0f);
+	mix.addListener(this);
+	mix.setName("mix_knob");
+	addAndMakeVisible(mix);
 
-	// Slope
-	slope.setRange(0.0f, 127.0f, 1.0);
-	slope.setValue(0.0f);
-	slope.addListener(this);
-	slope.setName("slope_knob");
-	slope.setEnabled(false);
-	addAndMakeVisible(slope);
+	lMix.setFont(Font(16.0f, Font::plain));
+	lMix.setColour(Label::textColourId, Colours::white);
+	lMix.setJustificationType(Justification::centred);
+	addAndMakeVisible(lMix);
 
-	lSlope.setFont(Font(16.0f, Font::plain));
-	lSlope.setColour(Label::textColourId, Colours::lightgrey);
-	lSlope.setJustificationType(Justification::centred);
-	addAndMakeVisible(lSlope);
+	// Volume
+	volume.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	volume.setValue(0.0f);
+	volume.addListener(this);
+	volume.setName("volume_knob");
+	addAndMakeVisible(volume);
 
-	// Resonance
-	res.setRange(1.0f, 3.0f, 0.05f);
-	res.setValue(1.0f);
-	res.addListener(this);
-	res.setName("res_knob");
-	addAndMakeVisible(res);
+	lVolume.setFont(Font(16.0f, Font::plain));
+	lVolume.setColour(Label::textColourId, Colours::lightgrey);
+	lVolume.setJustificationType(Justification::centred);
+	addAndMakeVisible(lVolume);
 
-	lRes.setFont(Font(16.0f, Font::plain));
-	lRes.setColour(Label::textColourId, Colours::white);
-	lRes.setJustificationType(Justification::centred);
-	addAndMakeVisible(lRes);
+	// Attack
+	attack.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	attack.setValue(0.0f);
+	attack.addListener(this);
+	attack.setName("attack_knob");
+	addAndMakeVisible(attack);
+
+	lAttack.setFont(Font(16.0f, Font::plain));
+	lAttack.setColour(Label::textColourId, Colours::white);
+	lAttack.setJustificationType(Justification::centred);
+	addAndMakeVisible(lAttack);
+
+	// Knee
+	knee.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	knee.setValue(0.0f);
+	knee.addListener(this);
+	knee.setName("knee_knob");
+	addAndMakeVisible(knee);
+
+	lKnee.setFont(Font(16.0f, Font::plain));
+	lKnee.setColour(Label::textColourId, Colours::white);
+	lKnee.setJustificationType(Justification::centred);
+	addAndMakeVisible(lKnee);
+
+	// Curve
+	curve.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	curve.setValue(0.0f);
+	curve.addListener(this);
+	curve.setName("curve_knob");
+	addAndMakeVisible(curve);
+
+	lCurve.setFont(Font(16.0f, Font::plain));
+	lCurve.setColour(Label::textColourId, Colours::white);
+	lCurve.setJustificationType(Justification::centred);
+	addAndMakeVisible(lCurve);
 
 	// Enable button
 	enable.setButtonText("Enable");
@@ -69,7 +102,7 @@ void Waveshaper::initialiseUI()
 
 	// Make sure that before the constructor has finished, you've set the
 	// editor's size to whatever you need it to be.
-	setSize(150, 160);
+	setSize(100, 200);
 }
 
 void Waveshaper::initialiseWaveshaper()
@@ -78,9 +111,11 @@ void Waveshaper::initialiseWaveshaper()
 
 void Waveshaper::updateWaveshaper()
 {
-	sliderValueChanged(&cutoff);
-	sliderValueChanged(&slope);
-	sliderValueChanged(&res);
+	sliderValueChanged(&mix);
+	sliderValueChanged(&volume);
+	sliderValueChanged(&attack);
+	sliderValueChanged(&knee);
+	sliderValueChanged(&curve);
 }
 
 //==============================================================================
@@ -92,16 +127,24 @@ void Waveshaper::resized()
 {
 	// This is generally where you'll want to lay out the positions of any
 	// subcomponents in your editor...
-	enable.setBounds(getWidth() - 57.0f, 2.0f, 50.0f, 18.0f);
+	theName.setBounds(0.0f, 0.0f, getWidth(), 25.0f);
 
-	cutoff.setBounds(0.0f, getHeight() - 57.5f, 50.0f, 50.0f);
-	lCutoff.setBounds(0.0f, getHeight() - 15.0f, 50.0f, 15.0f);
+	mix.setBounds(getWidth() / 4.0f, 20.0f, 50.0f, 50.0f);
+	lMix.setBounds(getWidth() / 4.0f, 62.5, 50.0f, 15.0f);
 
-	slope.setBounds(50.0f, getHeight() - 57.5f, 50.0f, 50.0f);
-	lSlope.setBounds(50.0f, getHeight() - 15.0f, 50.0f, 15.0f);
+	volume.setBounds(0.0f, 70.0f, 50.0f, 50.0f);
+	lVolume.setBounds(0.0f, 112.5f, 50.0f, 15.0f);
 
-	res.setBounds(100.0f, getHeight() - 57.5f, 50.0f, 50.0f);
-	lRes.setBounds(100.0f, getHeight() - 15.0f, 50.0f, 15.0f);
+	attack.setBounds(50.0f, 70.0f, 50.0f, 50.0f);
+	lAttack.setBounds(50.0f, 112.5f, 50.0f, 15.0f);
+
+	knee.setBounds(0.0f, 120.0f, 50.0f, 50.0f);
+	lKnee.setBounds(0.0f, 162.5f, 50.0f, 15.0f);
+
+	curve.setBounds(50.0f, 120.0f, 50.0f, 50.0f);
+	lCurve.setBounds(50.0f, 162.5f, 50.0f, 15.0f);
+
+	enable.setBounds((getWidth() / 2.0f) - 25.0f, 180.0f, 50.0f, 18.0f);
 }
 
 void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)

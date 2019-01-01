@@ -32,6 +32,9 @@ private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
 	DuasynthAudioProcessor& processor;
+	Label oscs;
+	Label filters;
+	Label lfos;
 
 	const float ELEM_PADDING = 5.0f;
 

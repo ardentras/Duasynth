@@ -45,10 +45,12 @@ public:
 		if (isActive)
 		{
 			isActive = false;
+			button->setButtonText("Enable");
 		}
 		else
 		{
 			isActive = true;
+			button->setButtonText("Disable");
 		}
 	}
 
@@ -59,17 +61,26 @@ private:
 	bool isActive;
 
 	// UI Elements
-	Label lCutoff;
-	Knob cutoff;
-	Label lSlope;
-	Knob slope;
-	Label lRes;
-	Knob res;
+	Label theName;
+	Label lMix;
+	Knob mix;
+	Label lVolume;
+	Knob volume;
+	Label lAttack;
+	Knob attack;
+	Label lKnee;
+	Knob knee;
+	Label lCurve;
+	Knob curve;
 	TextButton enable;
 
 	// Practical Elements
-
 	double sampleRate;
+	double m;
+	double v;
+	double a;
+	double k;
+	double c;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Waveshaper)
 };
