@@ -154,13 +154,31 @@ void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 
 void Waveshaper::releaseResources()
 {
-
 }
 
 void Waveshaper::sliderValueChanged(Slider* slider)
 {
 	if (isActive)
 	{
-		
+		if (slider->getName() == "mix_knob")
+		{
+			m = slider->getValue();
+		}
+		else if (slider->getName() == "volume_knob")
+		{
+			v = slider->getValue();
+		}
+		else if (slider->getName() == "attack_knob")
+		{
+			a = slider->getValue();
+		}
+		else if (slider->getName() == "knee_knob")
+		{
+			k = slider->getValue();
+		}
+		else if (slider->getName() == "curve_knob")
+		{
+			c = slider->getValue();
+		}
 	}
 }

@@ -57,6 +57,7 @@ void DuasynthAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 	
+	// Oscillators
 	oscs.setBounds(
 		ELEM_PADDING, // x
 		ELEM_PADDING, // y
@@ -73,6 +74,7 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getBOsc().getWidth(), 
 		processor.getBOsc().getHeight());
 	
+	// Filters
 	filters.setBounds(
 		ELEM_PADDING, 
 		10.0f + ELEM_PADDING + processor.getAOsc().getHeight() + oscs.getBounds().getHeight(), 
@@ -89,5 +91,10 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getBFilter().getWidth(), 
 		processor.getBFilter().getHeight());
 
-	processor.getWaveshaper().setBounds((ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40, ELEM_PADDING + processor.getAFilter().getHeight(), processor.getWaveshaper().getWidth(), processor.getWaveshaper().getHeight());
+	// Right Column (Preset, Chorus, WS)
+	processor.getWaveshaper().setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40, 
+		ELEM_PADDING + processor.getAFilter().getHeight() + processor.getWaveshaper().getHeight(), 
+		processor.getWaveshaper().getWidth(), 
+		processor.getWaveshaper().getHeight());
 }

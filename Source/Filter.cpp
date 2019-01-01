@@ -169,24 +169,24 @@ void Filter::releaseResources()
 
 void Filter::sliderValueChanged(Slider* slider)
 {
+	if (slider->getName() == "cutoff_knob")
+	{
+		f = slider->getValue();
+	}
+	else if (slider->getName() == "slope_knob")
+	{
+		g = slider->getValue();
+	}
+	else if (slider->getName() == "res_knob")
+	{
+		q = slider->getValue();
+	}
+
+	filters.front()->createShape(f, g, q);
+	filterView.setFilter(filters.front()->getShape());
+
 	if (isActive)
 	{
-		if (slider->getName() == "cutoff_knob")
-		{
-			f = slider->getValue();
-		}
-		else if (slider->getName() == "slope_knob")
-		{
-			g = slider->getValue();
-		}
-		else if (slider->getName() == "res_knob")
-		{
-			q = slider->getValue();
-		}
-
-		filters.front()->createShape(f, g, q);
-		filterView.setFilter(filters.front()->getShape());
-
 		string name = filters.front()->getName();
 		for (int i = 0; i < filter.size(); i++)
 		{

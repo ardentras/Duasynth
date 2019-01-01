@@ -105,6 +105,8 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	a_filter.setSampleRate(sampleRate);
 	b_filter.setSampleRate(sampleRate);
 
+	waveshaper.setSampleRate(sampleRate);
+
 	midiCollector.reset(sampleRate);
 }
 
@@ -116,6 +118,7 @@ void DuasynthAudioProcessor::releaseResources()
 	b_osc.releaseResources();
 	a_filter.releaseResources();
 	b_filter.releaseResources();
+	waveshaper.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -166,19 +169,19 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
-	a_osc.getNextAudioBlock(buffer, midiMessages);
-	a_filter.processSamples(buffer, buffer.getNumSamples());
-	b_osc.getNextAudioBlock(buffer, midiMessages);
-	b_filter.processSamples(buffer, buffer.getNumSamples());
-
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         float* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
-	
 
+	a_osc.getNextAudioBlock(buffer, midiMessages);
+	a_filter.processSamples(buffer, buffer.getNumSamples());
+	b_osc.getNextAudioBlock(buffer, midiMessages);
+	b_filter.processSamples(buffer, buffer.getNumSamples());
+
+	waveshaper.processSamples(buffer, buffer.getNumSamples());
 }
 
 //==============================================================================
