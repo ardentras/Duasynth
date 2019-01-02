@@ -36,7 +36,7 @@ void Waveshaper::initialiseUI()
 
 	// Mix
 	mix.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	mix.setValue(0.0f);
+	mix.setValue(1.0f);
 	mix.addListener(this);
 	mix.setName("mix_knob");
 	addAndMakeVisible(mix);
@@ -114,6 +114,8 @@ void Waveshaper::initialiseWaveshaper()
 	preGain.setGainDecibels(30.0f);
 	auto& postGain = processorChain.template get<2>();
 	postGain.setGainDecibels((100 * (((1.0f - 0.35f) * 0.8f) + 0.35f)) - 100.0f);
+
+	updateWaveshaper();
 }
 
 void Waveshaper::updateWaveshaper()
@@ -154,6 +156,11 @@ void Waveshaper::resized()
 	enable.setBounds((getWidth() / 2.0f) - 25.0f, 180.0f, 50.0f, 18.0f);
 }
 
+void Waveshaper::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
+	processorChain.prepare({ sampleRate, (uint32)samplesPerBlock, 2 });
+}
+
 void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
 	if (isActive)
@@ -169,8 +176,19 @@ void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 
 		// Mix the two signals
 		block = context.getOutputBlock();
-		block.multiply(m);
-		block.addWithMultiply(juce::dsp::AudioBlock<float>(initial).getSubBlock((size_t)0, (size_t)numSamples), 1.0f - m);
+		block.multiply(m * da);
+		block.addWithMultiply(juce::dsp::AudioBlock<float>(initial).getSubBlock((size_t)0, (size_t)numSamples), 1.0f - (m * da));
+
+		if (a <= 0.0f)
+		{
+			da = 1.0f;
+		}
+		else if (da < 1.0f)
+		{
+			float t = numSamples / sampleRate;
+
+			da += t / (5.0f * a);
+		}
 	}
 }
 

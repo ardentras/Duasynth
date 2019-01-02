@@ -2574,6 +2574,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\DuasynthSynthesiser.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Waveshaper.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>

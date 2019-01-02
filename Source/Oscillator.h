@@ -19,6 +19,7 @@ using std::string;
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Waveforms/DuasynthWaveSound.h"
 #include "Waveforms/DuasynthWaveVoice.h"
+#include "DuasynthSynthesiser.h"
 #include "Knob.h"
 #include "WFView.h"
 
@@ -49,7 +50,7 @@ public:
 
 	void updateSynth();
 
-	Synthesiser& getSynth() { return synth; }
+	DuasynthSynthesiser& getSynth() { return synth; }
 	string getCurrWF() { return curr_wf; }
 private:
 	// This reference is provided as a quick way for your editor to
@@ -67,7 +68,7 @@ private:
 	WFView wfView;
 
 	// Practical Elements
-	Synthesiser synth;
+	DuasynthSynthesiser synth;
 	string curr_wf;
 	list<string> waveforms;
 

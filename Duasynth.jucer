@@ -4,6 +4,8 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="V1ASVu" name="DuasynthSynthesiser.h" compile="0" resource="0"
+            file="Source/DuasynthSynthesiser.h"/>
       <FILE id="PbaLNV" name="Waveshaper.cpp" compile="1" resource="0" file="Source/Waveshaper.cpp"/>
       <FILE id="XqCdeU" name="Waveshaper.h" compile="0" resource="0" file="Source/Waveshaper.h"/>
       <GROUP id="{257C5B05-8CF4-B9CE-8720-1BF83361BE29}" name="Filters">

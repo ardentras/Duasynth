@@ -182,6 +182,11 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 	b_osc.getNextAudioBlock(buffer, midiMessages);
 	b_filter.processSamples(buffer, buffer.getNumSamples());
 
+	if (a_osc.getSynth().hasNoteStarted())
+	{
+		waveshaper.resetParams();
+	}
+
 	waveshaper.processSamples(buffer, buffer.getNumSamples());
 }
 

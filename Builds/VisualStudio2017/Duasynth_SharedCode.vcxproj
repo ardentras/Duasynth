@@ -2042,6 +2042,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\DuasynthSynthesiser.h"/>
     <ClInclude Include="..\..\Source\Waveshaper.h"/>
     <ClInclude Include="..\..\Source\Filters\BandPassFilter.h"/>
     <ClInclude Include="..\..\Source\Filters\FilterType.h"/>

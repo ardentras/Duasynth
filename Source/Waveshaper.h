@@ -30,7 +30,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
-	void prepareToPlay(double sampleRate, int samplesPerBlock) { processorChain.prepare({ sampleRate, (uint32)samplesPerBlock, 2 }); }
+	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void processSamples(AudioBuffer<float>& buffer, int numSamples);
 	void releaseResources();
 
@@ -42,7 +42,8 @@ public:
 
 	bool isWaveshaperActive() { return isActive; }
 
-	void buttonClicked(Button* button) {
+	void buttonClicked(Button* button) 
+	{
 		if (isActive)
 		{
 			isActive = false;
@@ -52,6 +53,14 @@ public:
 		{
 			isActive = true;
 			button->setButtonText("Disable");
+		}
+	}
+
+	void resetParams()
+	{
+		if (a > 0.0f)
+		{
+			da = 0.0f;
 		}
 	}
 
@@ -81,6 +90,7 @@ private:
 	double sampleRate;
 	double m;
 	double a;
+	double da;
 	double k;
 	double c;
 
