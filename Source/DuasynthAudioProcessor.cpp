@@ -106,6 +106,7 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	b_filter.setSampleRate(sampleRate);
 
 	waveshaper.setSampleRate(sampleRate);
+	waveshaper.prepareToPlay(sampleRate, samplesPerBlock);
 
 	midiCollector.reset(sampleRate);
 }

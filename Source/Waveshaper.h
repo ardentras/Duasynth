@@ -30,6 +30,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
+	void prepareToPlay(double sampleRate, int samplesPerBlock) { processorChain.prepare({ sampleRate, (uint32)samplesPerBlock, 2 }); }
 	void processSamples(AudioBuffer<float>& buffer, int numSamples);
 	void releaseResources();
 
@@ -75,9 +76,10 @@ private:
 	TextButton enable;
 
 	// Practical Elements
+	juce::dsp::ProcessorChain<juce::dsp::Gain<float>, juce::dsp::WaveShaper<float>, juce::dsp::Gain<float>> processorChain;
+
 	double sampleRate;
 	double m;
-	double v;
 	double a;
 	double k;
 	double c;

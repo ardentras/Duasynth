@@ -17,9 +17,9 @@ Waveshaper::Waveshaper() :
 	lCurve("curve_knob", "Curve"), theName("name_label", "Waveshaper"),
 	isActive(false)
 {
-	initialiseWaveshaper();
-
 	initialiseUI();
+
+	initialiseWaveshaper();
 }
 
 Waveshaper::~Waveshaper()
@@ -47,8 +47,8 @@ void Waveshaper::initialiseUI()
 	addAndMakeVisible(lMix);
 
 	// Volume
-	volume.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	volume.setValue(0.0f);
+	volume.setRange(0.35f, 1.0f, 1.0f / 100.0f);
+	volume.setValue(((1.0f - 0.35f) * 0.8f) + 0.35f);
 	volume.addListener(this);
 	volume.setName("volume_knob");
 	addAndMakeVisible(volume);
@@ -107,6 +107,13 @@ void Waveshaper::initialiseUI()
 
 void Waveshaper::initialiseWaveshaper()
 {
+	juce::dsp::WaveShaper<float>& waveshaper = processorChain.template get<1>();
+	waveshaper.functionToUse = [](float x) { return tanh(x); };
+
+	auto& preGain = processorChain.template get<0>();
+	preGain.setGainDecibels(30.0f);
+	auto& postGain = processorChain.template get<2>();
+	postGain.setGainDecibels((100 * (((1.0f - 0.35f) * 0.8f) + 0.35f)) - 100.0f);
 }
 
 void Waveshaper::updateWaveshaper()
@@ -149,11 +156,18 @@ void Waveshaper::resized()
 
 void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
-	
+	if (isActive)
+	{
+		auto block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
+		auto context = juce::dsp::ProcessContextReplacing<float>(block);
+		processorChain.process(context);
+		block = context.getOutputBlock();
+	}
 }
 
 void Waveshaper::releaseResources()
 {
+	processorChain.reset();
 }
 
 void Waveshaper::sliderValueChanged(Slider* slider)
@@ -162,11 +176,11 @@ void Waveshaper::sliderValueChanged(Slider* slider)
 	{
 		if (slider->getName() == "mix_knob")
 		{
-			m = slider->getValue();
 		}
 		else if (slider->getName() == "volume_knob")
 		{
-			v = slider->getValue();
+			auto& postGain = processorChain.template get<2>();
+			postGain.setGainDecibels((100 * slider->getValue()) - 100.0f);
 		}
 		else if (slider->getName() == "attack_knob")
 		{
