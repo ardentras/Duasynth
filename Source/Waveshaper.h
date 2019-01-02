@@ -77,7 +77,7 @@ private:
 
 	// Practical Elements
 	juce::dsp::ProcessorChain<juce::dsp::Gain<float>, juce::dsp::WaveShaper<float>, juce::dsp::Gain<float>> processorChain;
-
+	
 	double sampleRate;
 	double m;
 	double a;

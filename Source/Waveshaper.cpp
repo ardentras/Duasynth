@@ -158,10 +158,19 @@ void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
 	if (isActive)
 	{
-		auto block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
-		auto context = juce::dsp::ProcessContextReplacing<float>(block);
+		// Evidently this is the only way to get this block into new memory
+		AudioBuffer<float> initial(buffer.getNumChannels(), numSamples);
+		initial = buffer;
+
+		// Process waveshaping
+		juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
+		juce::dsp::ProcessContextNonReplacing<float> context = juce::dsp::ProcessContextNonReplacing<float>(initial, block);
 		processorChain.process(context);
+
+		// Mix the two signals
 		block = context.getOutputBlock();
+		block.multiply(m);
+		block.addWithMultiply(juce::dsp::AudioBlock<float>(initial).getSubBlock((size_t)0, (size_t)numSamples), 1.0f - m);
 	}
 }
 
@@ -176,6 +185,7 @@ void Waveshaper::sliderValueChanged(Slider* slider)
 	{
 		if (slider->getName() == "mix_knob")
 		{
+			m = slider->getValue();
 		}
 		else if (slider->getName() == "volume_knob")
 		{
