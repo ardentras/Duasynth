@@ -75,12 +75,12 @@ private:
 	Label theName;
 	Label lMix;
 	Knob mix;
-	Label lVolume;
-	Knob volume;
+	Label lPregain;
+	Knob pregain;
+	Label lPostgain;
+	Knob postgain;
 	Label lAttack;
 	Knob attack;
-	Label lKnee;
-	Knob knee;
 	Label lCurve;
 	Knob curve;
 	TextButton enable;
@@ -93,7 +93,6 @@ private:
 	double a;
 	double da;
 	double dda;
-	double k;
 	double c;
 	double dc;
 

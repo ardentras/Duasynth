@@ -12,10 +12,10 @@
 
 //==============================================================================
 Waveshaper::Waveshaper() :
-	lMix("mix_knob", "Wet/Dry"), lVolume("volume_knob", "Volume"),
-	lAttack("attack_knob", "Attack"), lKnee("knee_knob", "Knee"),
+	lMix("mix_knob", "Mix"), lPostgain("post_knob", "Post"),
+	lAttack("attack_knob", "Attack"), lPregain("pre_knob", "Pre"),
 	lCurve("curve_knob", "Curve"), theName("name_label", "Waveshaper"),
-	isActive(false), m(1.0), a(0.0), k(0.0), c(0.0)
+	isActive(false), m(1.0), a(0.0), c(0.0)
 {
 	initialiseUI();
 
@@ -46,17 +46,29 @@ void Waveshaper::initialiseUI()
 	lMix.setJustificationType(Justification::centred);
 	addAndMakeVisible(lMix);
 
-	// Volume
-	volume.setRange(0.35f, 1.0f, 1.0f / 100.0f);
-	volume.setValue(((1.0f - 0.35f) * 0.8f) + 0.35f);
-	volume.addListener(this);
-	volume.setName("volume_knob");
-	addAndMakeVisible(volume);
+	// Pregain
+	pregain.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	pregain.setValue(0.8f);
+	pregain.addListener(this);
+	pregain.setName("pre_knob");
+	addAndMakeVisible(pregain);
 
-	lVolume.setFont(Font(16.0f, Font::plain));
-	lVolume.setColour(Label::textColourId, Colours::lightgrey);
-	lVolume.setJustificationType(Justification::centred);
-	addAndMakeVisible(lVolume);
+	lPregain.setFont(Font(16.0f, Font::plain));
+	lPregain.setColour(Label::textColourId, Colours::white);
+	lPregain.setJustificationType(Justification::centred);
+	addAndMakeVisible(lPregain);
+
+	// Postgain
+	postgain.setRange(0.30f, 1.0f, 1.0f / 100.0f);
+	postgain.setValue(((1.0f - 0.35f) * 0.8f) + 0.35f);
+	postgain.addListener(this);
+	postgain.setName("post_knob");
+	addAndMakeVisible(postgain);
+
+	lPostgain.setFont(Font(16.0f, Font::plain));
+	lPostgain.setColour(Label::textColourId, Colours::lightgrey);
+	lPostgain.setJustificationType(Justification::centred);
+	addAndMakeVisible(lPostgain);
 
 	// Attack
 	attack.setRange(0.0f, 1.0f, 1.0f / 150.0f);
@@ -69,18 +81,6 @@ void Waveshaper::initialiseUI()
 	lAttack.setColour(Label::textColourId, Colours::white);
 	lAttack.setJustificationType(Justification::centred);
 	addAndMakeVisible(lAttack);
-
-	// Knee
-	knee.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	knee.setValue(0.0f);
-	knee.addListener(this);
-	knee.setName("knee_knob");
-	addAndMakeVisible(knee);
-
-	lKnee.setFont(Font(16.0f, Font::plain));
-	lKnee.setColour(Label::textColourId, Colours::white);
-	lKnee.setJustificationType(Justification::centred);
-	addAndMakeVisible(lKnee);
 
 	// Curve
 	curve.setRange(-1.0f, 1.0f, 1.0f / 150.0f);
@@ -111,17 +111,17 @@ void Waveshaper::initialiseWaveshaper()
 	waveshaper.functionToUse = [](float x) { return tanh(x); };
 
 	auto& preGain = processorChain.template get<0>();
-	preGain.setGainDecibels(30.0f);
+	preGain.setGainDecibels(40.0f * 0.8f);
 	auto& postGain = processorChain.template get<2>();
-	postGain.setGainDecibels((100 * (((1.0f - 0.35f) * 0.8f) + 0.35f)) - 100.0f);
+	postGain.setGainDecibels((100 * (((1.0f - 0.3f) * 0.8f) + 0.3f)) - 100.0f);
 }
 
 void Waveshaper::updateWaveshaper()
 {
 	sliderValueChanged(&mix);
-	sliderValueChanged(&volume);
+	sliderValueChanged(&postgain);
 	sliderValueChanged(&attack);
-	sliderValueChanged(&knee);
+	sliderValueChanged(&pregain);
 	sliderValueChanged(&curve);
 }
 
@@ -136,22 +136,22 @@ void Waveshaper::resized()
 	// subcomponents in your editor...
 	theName.setBounds(0.0f, 0.0f, getWidth(), 25.0f);
 
-	mix.setBounds(getWidth() / 4.0f, 20.0f, 50.0f, 50.0f);
-	lMix.setBounds(getWidth() / 4.0f, 62.5, 50.0f, 15.0f);
+	mix.setBounds(getWidth() / 4.0f, 18.0f, 50.0f, 50.0f);
+	lMix.setBounds(getWidth() / 4.0f, 60.5, 50.0f, 15.0f);
 
-	volume.setBounds(0.0f, 70.0f, 50.0f, 50.0f);
-	lVolume.setBounds(0.0f, 112.5f, 50.0f, 15.0f);
+	pregain.setBounds(0.0f, 68.0f, 50.0f, 50.0f);
+	lPregain.setBounds(0.0f, 110.5f, 50.0f, 15.0f);
 
-	attack.setBounds(50.0f, 70.0f, 50.0f, 50.0f);
-	lAttack.setBounds(50.0f, 112.5f, 50.0f, 15.0f);
+	postgain.setBounds(50.0f, 68.0f, 50.0f, 50.0f);
+	lPostgain.setBounds(50.0f, 110.5f, 50.0f, 15.0f);
 
-	knee.setBounds(0.0f, 120.0f, 50.0f, 50.0f);
-	lKnee.setBounds(0.0f, 162.5f, 50.0f, 15.0f);
+	attack.setBounds(0.0f, 118.0f, 50.0f, 50.0f);
+	lAttack.setBounds(0.0f, 160.5f, 50.0f, 15.0f);
 
-	curve.setBounds(50.0f, 120.0f, 50.0f, 50.0f);
-	lCurve.setBounds(50.0f, 162.5f, 50.0f, 15.0f);
+	curve.setBounds(50.0f, 118.0f, 50.0f, 50.0f);
+	lCurve.setBounds(50.0f, 160.5f, 50.0f, 15.0f);
 
-	enable.setBounds((getWidth() / 2.0f) - 25.0f, 180.0f, 50.0f, 18.0f);
+	enable.setBounds((getWidth() / 2.0f) - 25.0f, 182.0f, 50.0f, 18.0f);
 }
 
 void Waveshaper::prepareToPlay(double sampleRate, int samplesPerBlock)
@@ -208,7 +208,12 @@ void Waveshaper::sliderValueChanged(Slider* slider)
 		{
 			m = slider->getValue();
 		}
-		else if (slider->getName() == "volume_knob")
+		else if (slider->getName() == "pre_knob")
+		{
+			auto& preGain = processorChain.template get<0>();
+			preGain.setGainDecibels(40.0f * slider->getValue());
+		}
+		else if (slider->getName() == "post_knob")
 		{
 			auto& postGain = processorChain.template get<2>();
 			postGain.setGainDecibels((100 * slider->getValue()) - 100.0f);
@@ -216,10 +221,6 @@ void Waveshaper::sliderValueChanged(Slider* slider)
 		else if (slider->getName() == "attack_knob")
 		{
 			a = slider->getValue();
-		}
-		else if (slider->getName() == "knee_knob")
-		{
-			k = slider->getValue();
 		}
 		else if (slider->getName() == "curve_knob")
 		{
