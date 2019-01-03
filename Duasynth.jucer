@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="tgRQBv" name="Duasynth" projectType="audioplug" jucerVersion="5.4.1"
-              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              version="0.1.0-alpha" companyName="shaunr" companyEmail="shaunrasmusen@gmail.com"
+              bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
       <FILE id="V1ASVu" name="DuasynthSynthesiser.h" compile="0" resource="0"
