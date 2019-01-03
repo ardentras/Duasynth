@@ -61,6 +61,7 @@ public:
 		if (a > 0.0f)
 		{
 			da = 0.0f;
+			dc = (dda * -1.0f) * c;
 		}
 	}
 
@@ -91,8 +92,10 @@ private:
 	double m;
 	double a;
 	double da;
+	double dda;
 	double k;
 	double c;
+	double dc;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Waveshaper)
 };

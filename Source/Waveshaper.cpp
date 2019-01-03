@@ -15,7 +15,7 @@ Waveshaper::Waveshaper() :
 	lMix("mix_knob", "Wet/Dry"), lVolume("volume_knob", "Volume"),
 	lAttack("attack_knob", "Attack"), lKnee("knee_knob", "Knee"),
 	lCurve("curve_knob", "Curve"), theName("name_label", "Waveshaper"),
-	isActive(false)
+	isActive(false), m(1.0), a(0.0), k(0.0), c(0.0)
 {
 	initialiseUI();
 
@@ -83,7 +83,7 @@ void Waveshaper::initialiseUI()
 	addAndMakeVisible(lKnee);
 
 	// Curve
-	curve.setRange(0.0f, 1.0f, 1.0f / 150.0f);
+	curve.setRange(-1.0f, 1.0f, 1.0f / 150.0f);
 	curve.setValue(0.0f);
 	curve.addListener(this);
 	curve.setName("curve_knob");
@@ -114,8 +114,6 @@ void Waveshaper::initialiseWaveshaper()
 	preGain.setGainDecibels(30.0f);
 	auto& postGain = processorChain.template get<2>();
 	postGain.setGainDecibels((100 * (((1.0f - 0.35f) * 0.8f) + 0.35f)) - 100.0f);
-
-	updateWaveshaper();
 }
 
 void Waveshaper::updateWaveshaper()
@@ -186,8 +184,13 @@ void Waveshaper::processSamples(AudioBuffer<float>& buffer, int numSamples)
 		else if (da < 1.0f)
 		{
 			float t = numSamples / sampleRate;
+			dda = t / (5.0f * a);
 
-			da += t / (5.0f * a);
+			da += dda + dc;
+			if (dc < dda * c)
+			{
+				dc += ((dda * c) * 2.0f) * dda;
+			}
 		}
 	}
 }
