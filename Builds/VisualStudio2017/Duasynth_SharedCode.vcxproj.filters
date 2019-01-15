@@ -469,6 +469,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\PresetSelectModal.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PresetBank.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Waveshaper.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
@@ -2574,6 +2580,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Preset.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PresetSelectModal.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PresetBank.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\DuasynthSynthesiser.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>

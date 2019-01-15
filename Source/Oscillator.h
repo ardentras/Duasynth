@@ -71,6 +71,8 @@ private:
 	DuasynthSynthesiser synth;
 	string curr_wf;
 	list<string> waveforms;
+	
+	bool isChangingVoices;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Oscillator)
 };

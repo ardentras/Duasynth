@@ -15,7 +15,7 @@
 class DuasynthSynthesiser : public Synthesiser
 {
 public:
-	DuasynthSynthesiser() : Synthesiser(), note_started(false) {}
+	DuasynthSynthesiser() : Synthesiser(), note_started(false), note_playing(false) {}
 
 	void clearVoices() { Synthesiser::clearVoices(); }
 
@@ -43,9 +43,17 @@ public:
 
 	virtual void noteOn(int midiChannel, int midiNoteNumber, float velocity) override
 	{
+		note_playing = true;
 		note_started = true;
 
 		Synthesiser::noteOn(midiChannel, midiNoteNumber, velocity);
+	}
+
+	virtual void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) override
+	{
+		note_playing = false;
+
+		Synthesiser::noteOff(midiChannel, midiNoteNumber, velocity, allowTailOff);
 	}
 
 	bool hasNoteStarted() 
@@ -58,6 +66,9 @@ public:
 		return false;
 	}
 
+	bool isNotePlaying() { return note_playing; }
+
 private:
 	bool note_started;
+	bool note_playing;
 };

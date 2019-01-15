@@ -112,8 +112,9 @@ void Oscillator::initialiseSynth()
 
 void Oscillator::updateSynth()
 {
-	synth.clearVoices();
-	synth.clearSounds();
+	isChangingVoices = true;
+
+	releaseResources();
 
 	if (curr_wf == "saw")
 	{
@@ -157,6 +158,8 @@ void Oscillator::updateSynth()
 	sliderValueChanged(&coarse);
 	sliderValueChanged(&fine);
 	sliderValueChanged(&volume);
+
+	isChangingVoices = false;
 }
 
 //==============================================================================
@@ -203,7 +206,10 @@ void Oscillator::releaseResources()
 
 void Oscillator::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
-	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+	if (!isChangingVoices)
+	{
+		synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+	}
 }
 
 void Oscillator::sliderValueChanged(Slider* slider)

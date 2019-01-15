@@ -2,10 +2,17 @@
 
 <JUCERPROJECT id="tgRQBv" name="Duasynth" projectType="audioplug" jucerVersion="5.4.1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              version="0.1.0-alpha" companyName="shaunr" companyEmail="shaunrasmusen@gmail.com"
+              version="0.1.0" companyName="shaunr" companyEmail="shaunrasmusen@gmail.com"
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="BGJmT3" name="Preset.h" compile="0" resource="0" file="Source/Preset.h"/>
+      <FILE id="Wby9mf" name="PresetSelectModal.cpp" compile="1" resource="0"
+            file="Source/PresetSelectModal.cpp"/>
+      <FILE id="ePp3H4" name="PresetSelectModal.h" compile="0" resource="0"
+            file="Source/PresetSelectModal.h"/>
+      <FILE id="nHz4WU" name="PresetBank.cpp" compile="1" resource="0" file="Source/PresetBank.cpp"/>
+      <FILE id="c7VzUb" name="PresetBank.h" compile="0" resource="0" file="Source/PresetBank.h"/>
       <FILE id="V1ASVu" name="DuasynthSynthesiser.h" compile="0" resource="0"
             file="Source/DuasynthSynthesiser.h"/>
       <FILE id="PbaLNV" name="Waveshaper.cpp" compile="1" resource="0" file="Source/Waveshaper.cpp"/>

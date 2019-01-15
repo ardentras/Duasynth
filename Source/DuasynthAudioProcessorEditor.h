@@ -21,6 +21,7 @@
 class DuasynthAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
+	DuasynthAudioProcessorEditor() : AudioProcessorEditor(nullptr), processor(DuasynthAudioProcessor()) {}
 	DuasynthAudioProcessorEditor(DuasynthAudioProcessor& p);
     ~DuasynthAudioProcessorEditor();
 
