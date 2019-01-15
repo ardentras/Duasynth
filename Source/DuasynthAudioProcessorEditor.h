@@ -13,7 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthAudioProcessor.h"
 #include "DuasynthAudioProcessorEditor.h"
-#include "Oscillator.h"
+#include "PresetBank.h"
 
 //==============================================================================
 /**
@@ -29,6 +29,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	DuasynthAudioProcessor& getProcessor() { return processor; }
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
@@ -36,6 +38,8 @@ private:
 	Label oscs;
 	Label filters;
 	Label lfos;
+
+	PresetBank preset;
 
 	const float ELEM_PADDING = 5.0f;
 

@@ -19,8 +19,9 @@ using std::string;
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthAudioProcessorEditor.h"
 
-#include "../cereal/archives/json.hpp"
-using namespace cereal;
+#include "../cereal/archives/binary.hpp"
+using cereal::BinaryInputArchive;
+using cereal::BinaryOutputArchive;
 
 //==============================================================================
 /**
@@ -41,17 +42,19 @@ public:
 	void serialize(DuasynthAudioProcessorEditor dape)
 	{
 		stringstream ss;
-		JSONOutputArchive oarch(ss);
+		BinaryOutputArchive oarch(ss);
+
+		oarch(dape.getProcessor().getAOsc(), dape.getProcessor().getBOsc(), 
+			dape.getProcessor().getAFilter(), dape.getProcessor().getBFilter(), 
+			dape.getProcessor().getWaveshaper());
 
 		parameters = ss.str();
 	}
 
-	DuasynthAudioProcessorEditor* deserialize()
+	void deserialize(DuasynthAudioProcessorEditor* dape)
 	{
-		DuasynthAudioProcessorEditor* dape = new DuasynthAudioProcessorEditor();
-
-		JSONInputArchive iarch();
-		return dape;
+		stringstream ss(parameters);
+		BinaryInputArchive iarch(ss);
 	}
 	
 private:

@@ -12,8 +12,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "Preset.h"
-
 //==============================================================================
 /**
 */
@@ -38,10 +36,10 @@ private:
 	// UI Elements
 	TextButton saveButton;
 	TextButton loadButton;
+	Label theName;
 
 	// Practical Elements
 	//ModalComponentManager modals;
-	Preset currentPreset;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBank)
 };

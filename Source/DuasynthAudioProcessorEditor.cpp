@@ -38,6 +38,8 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 	lfos.setJustificationType(Justification::centred);
 	addAndMakeVisible(lfos);
 
+	addAndMakeVisible(preset);
+
 	addAndMakeVisible(processor.getWaveshaper());
 
 	setSize (500, 600);
@@ -92,6 +94,11 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getBFilter().getHeight());
 
 	// Right Column (Preset, Chorus, WS)
+	preset.setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
+		ELEM_PADDING,
+		preset.getWidth(),
+		preset.getHeight());
 	processor.getWaveshaper().setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40, 
 		ELEM_PADDING + processor.getAFilter().getHeight() + processor.getWaveshaper().getHeight(), 
