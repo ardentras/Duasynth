@@ -40,9 +40,14 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 
 	addAndMakeVisible(preset);
 
+	Button* button = (Button*)preset.getChildComponent(1);
+	button->addListener(this);
+	button = (Button*)preset.getChildComponent(2);
+	button->addListener(this);
+
 	addAndMakeVisible(processor.getWaveshaper());
 
-	setSize (500, 600);
+	setSize (475, 600);
 }
 
 DuasynthAudioProcessorEditor::~DuasynthAudioProcessorEditor()
@@ -105,3 +110,20 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getWaveshaper().getWidth(), 
 		processor.getWaveshaper().getHeight());
 }
+
+void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
+{
+	if (button->getName() == "load")
+	{
+		vector<Slider> params;
+		
+		params = preset.deserialize();
+	}
+	else if (button->getName() == "save")
+	{
+		vector<Slider> params;
+
+		preset.serialize(params);
+	}
+}
+

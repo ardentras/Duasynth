@@ -138,6 +138,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\sqlite\shell.c"/>
+    <ClCompile Include="..\..\Source\sqlite\sqlite3.c"/>
     <ClCompile Include="..\..\Source\PresetSelectModal.cpp"/>
     <ClCompile Include="..\..\Source\PresetBank.cpp"/>
     <ClCompile Include="..\..\Source\Waveshaper.cpp"/>
@@ -2044,6 +2046,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\sqlite\sqlite3.h"/>
+    <ClInclude Include="..\..\Source\sqlite\sqlite3ext.h"/>
     <ClInclude Include="..\..\Source\Preset.h"/>
     <ClInclude Include="..\..\Source\PresetSelectModal.h"/>
     <ClInclude Include="..\..\Source\PresetBank.h"/>

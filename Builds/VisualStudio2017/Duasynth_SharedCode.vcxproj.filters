@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Duasynth\Source\sqlite">
+      <UniqueIdentifier>{B0791E7B-D1DE-17B7-9D52-10FB94428BF2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Duasynth\Source\Filters">
       <UniqueIdentifier>{34417D8E-EFE9-F365-FAC8-BE83D556363F}</UniqueIdentifier>
     </Filter>
@@ -469,6 +472,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\sqlite\shell.c">
+      <Filter>Duasynth\Source\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\sqlite\sqlite3.c">
+      <Filter>Duasynth\Source\sqlite</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PresetSelectModal.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
@@ -2580,6 +2589,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\sqlite\sqlite3.h">
+      <Filter>Duasynth\Source\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\sqlite\sqlite3ext.h">
+      <Filter>Duasynth\Source\sqlite</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Preset.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>

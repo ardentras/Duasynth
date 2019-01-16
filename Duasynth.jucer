@@ -6,6 +6,12 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <GROUP id="{4F92BA5D-B0F6-C037-BFEF-B6CC2177216A}" name="sqlite">
+        <FILE id="S0Uqzz" name="shell.c" compile="1" resource="0" file="Source/sqlite/shell.c"/>
+        <FILE id="fDzhlH" name="sqlite3.c" compile="1" resource="0" file="Source/sqlite/sqlite3.c"/>
+        <FILE id="bI1mgh" name="sqlite3.h" compile="0" resource="0" file="Source/sqlite/sqlite3.h"/>
+        <FILE id="blVRA2" name="sqlite3ext.h" compile="0" resource="0" file="Source/sqlite/sqlite3ext.h"/>
+      </GROUP>
       <FILE id="BGJmT3" name="Preset.h" compile="0" resource="0" file="Source/Preset.h"/>
       <FILE id="Wby9mf" name="PresetSelectModal.cpp" compile="1" resource="0"
             file="Source/PresetSelectModal.cpp"/>

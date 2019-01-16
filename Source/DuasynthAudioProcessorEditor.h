@@ -18,7 +18,7 @@
 //==============================================================================
 /**
 */
-class DuasynthAudioProcessorEditor  : public AudioProcessorEditor
+class DuasynthAudioProcessorEditor  : public AudioProcessorEditor, private Button::Listener
 {
 public:
 	DuasynthAudioProcessorEditor() : AudioProcessorEditor(nullptr), processor(DuasynthAudioProcessor()) {}
@@ -28,6 +28,8 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+
+	void buttonClicked(Button* button) override;
 
 	DuasynthAudioProcessor& getProcessor() { return processor; }
 

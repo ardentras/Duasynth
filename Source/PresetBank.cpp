@@ -10,14 +10,17 @@
 
 #include "PresetBank.h"
 
-PresetBank::PresetBank() : theName("name_label", "Presets")
+PresetBank::PresetBank()
+	: theName("name_label", "Presets"), loadButton("load", ""), saveButton("save", "")
 {
 	initialiseUI();
+
+	sqlite3_open("file:presets.db", &db);
 }
 
 PresetBank::~PresetBank()
 {
-
+	sqlite3_close(db);
 }
 
 void PresetBank::initialiseUI()
@@ -30,13 +33,11 @@ void PresetBank::initialiseUI()
 
 	// Load button
 	loadButton.setButtonText("Load");
-	loadButton.addListener(this);
 	loadButton.changeWidthToFitText();
 	addAndMakeVisible(loadButton);
 
 	// Save button
 	saveButton.setButtonText("Save");
-	saveButton.addListener(this);
 	saveButton.changeWidthToFitText();
 	addAndMakeVisible(saveButton);
 
@@ -57,8 +58,12 @@ void PresetBank::resized()
 	saveButton.setBounds(55.0f, 40.0f, 40.0f, 25.0f);
 }
 
+void PresetBank::serialize(vector<Slider> params)
+{
 
-void PresetBank::buttonClicked(Button* button)
+}
+
+vector<Slider> PresetBank::deserialize()
 {
 
 }
