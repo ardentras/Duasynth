@@ -33,6 +33,9 @@ public:
 	PresetBank();
 	~PresetBank();
 
+	void createPresetsTable();
+	void createPresetParamsTable();
+
 	void initialiseUI();
 
 	//==============================================================================

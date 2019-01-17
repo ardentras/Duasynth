@@ -13,10 +13,12 @@
 PresetBank::PresetBank()
 	: theName("name_label", "Presets"), loadButton("load", ""), saveButton("save", "")
 {
-	char** err;
+	char** err = nullptr;
 	int retval;
 
 	initialiseUI();
+
+	sqlite3_config(SQLITE_CONFIG_URI, -1);
 
 	retval = sqlite3_open("file:presets.db", &db);
 
@@ -26,20 +28,20 @@ PresetBank::PresetBank()
 		exit(-1);
 	}
 
-	retval = sqlite3_exec(db, "SELECT * FROM presets;", NULL, NULL, err);
-	sqlite3_free(err);
-	if (retval != SQLITE_OK)
+	char* stmt = "CREATE TABLE IF NOT EXISTS presets(name TEXT);";
+	sqlite3_exec(db, stmt, NULL, NULL, err);
+	if (err != nullptr)
 	{
-		sqlite3_exec(db, "CREATE TABLE presets(id PRIMARY KEY, name)", NULL, NULL, err);
 		sqlite3_free(err);
+		err = nullptr;
 	}
 
-	retval = sqlite3_exec(db, "SELECT * FROM preset_params;", NULL, NULL, err);
-	sqlite3_free(err);
-	if (retval != SQLITE_OK)
+	char* stmt2 = "CREATE TABLE IF NOT EXISTS preset_params(id INT, name TEXT, params TEXT);";
+	sqlite3_exec(db, stmt2, NULL, NULL, err);
+	if (err != nullptr)
 	{
-		sqlite3_exec(db, "CREATE TABLE preset_params(id, name, params)", NULL, NULL, err);
 		sqlite3_free(err);
+		err = nullptr;
 	}
 }
 
@@ -86,19 +88,21 @@ void PresetBank::resized()
 void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules)
 {
 	string statement, csv;
-	char** err;
+	char** err = nullptr;
 	int retval;
 
 	Preset p;
 
 	p.setName("test");
+	
+	retval = sqlite3_exec(db, "INSERT INTO presets VALUES ('test');", NULL, NULL, err);
 
 	for (pair<string, vector<pair<string, float>>> module : modules)
 	{
 		string name = module.first;
 		vector<pair<string, float>> params = module.second;
 
-		statement = "INSERT INTO preset_params VALUES ((SELECT id FROM preset WHERE name = '" + p.getName() + "), '" + name + "', '";
+		statement = "INSERT INTO preset_params VALUES ((SELECT rowid FROM presets WHERE name = '" + p.getName() + "'), '" + name + "', '";
 		csv = "";
 
 		for (pair<string, float> param : params)
@@ -120,7 +124,12 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 		std::cout << statement << std::endl;
 
 		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
-		sqlite3_free(err);
+		std::cout << retval << std::endl;
+		if (err != nullptr)
+		{
+			sqlite3_free(err);
+			err = nullptr;
+		}
 	}
 
 	presets.push_back(p);
