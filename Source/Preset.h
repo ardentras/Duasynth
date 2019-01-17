@@ -20,7 +20,6 @@ using std::pair;
 using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "DuasynthAudioProcessorEditor.h"
 
 //==============================================================================
 /**
