@@ -27,9 +27,19 @@ PresetBank::PresetBank()
 	}
 
 	retval = sqlite3_exec(db, "SELECT * FROM presets;", NULL, NULL, err);
+	sqlite3_free(err);
 	if (retval != SQLITE_OK)
 	{
+		sqlite3_exec(db, "CREATE TABLE presets(id PRIMARY KEY, name)", NULL, NULL, err);
+		sqlite3_free(err);
+	}
 
+	retval = sqlite3_exec(db, "SELECT * FROM preset_params;", NULL, NULL, err);
+	sqlite3_free(err);
+	if (retval != SQLITE_OK)
+	{
+		sqlite3_exec(db, "CREATE TABLE preset_params(id, name, params)", NULL, NULL, err);
+		sqlite3_free(err);
 	}
 }
 
@@ -79,12 +89,16 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 	char** err;
 	int retval;
 
+	Preset p;
+
+	p.setName("test");
+
 	for (pair<string, vector<pair<string, float>>> module : modules)
 	{
 		string name = module.first;
 		vector<pair<string, float>> params = module.second;
 
-		statement = "INSERT INTO presets VALUES ('" + name + "', '";
+		statement = "INSERT INTO preset_params VALUES ((SELECT id FROM preset WHERE name = '" + p.getName() + "), '" + name + "', '";
 		csv = "";
 
 		for (pair<string, float> param : params)
@@ -99,6 +113,8 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 			}
 		}
 
+		p.addParam(name, csv);
+
 		statement += csv + "');";
 
 		std::cout << statement << std::endl;
@@ -106,6 +122,8 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
 		sqlite3_free(err);
 	}
+
+	presets.push_back(p);
 }
 
 vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore()

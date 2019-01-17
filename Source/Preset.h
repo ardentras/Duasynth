@@ -10,18 +10,17 @@
 
 #pragma once
 
-#include <sstream>
-using std::stringstream;
+#include <vector>
+using std::vector;
+
+#include <utility>
+using std::pair;
 
 #include <string>
 using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthAudioProcessorEditor.h"
-
-#include "../cereal/archives/binary.hpp"
-using cereal::BinaryInputArchive;
-using cereal::BinaryOutputArchive;
 
 //==============================================================================
 /**
@@ -39,25 +38,12 @@ public:
 
 	}
 
-	void serialize(DuasynthAudioProcessorEditor dape)
-	{
-		stringstream ss;
-		BinaryOutputArchive oarch(ss);
+	void setName(string n) { name = n; }
+	string getName() { return name; }
+	void addParam(string name, string csv) { parameters.push_back(pair<string, string>(name, csv)); }
+	vector<pair<string, string>> getParameters() { return parameters; }
 
-		oarch(dape.getProcessor().getAOsc(), dape.getProcessor().getBOsc(), 
-			dape.getProcessor().getAFilter(), dape.getProcessor().getBFilter(), 
-			dape.getProcessor().getWaveshaper());
-
-		parameters = ss.str();
-	}
-
-	void deserialize(DuasynthAudioProcessorEditor* dape)
-	{
-		stringstream ss(parameters);
-		BinaryInputArchive iarch(ss);
-	}
-	
 private:
 	string name;
-	string parameters;
+	vector<pair<string, string>> parameters;
 };

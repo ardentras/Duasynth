@@ -22,6 +22,8 @@ using std::pair;
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "sqlite/sqlite3.h"
 
+#include "Preset.h"
+
 //==============================================================================
 /**
 */
@@ -52,6 +54,7 @@ private:
 	// Practical Elements
 	//ModalComponentManager modals;
 	sqlite3* db;
+	vector<Preset> presets;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBank)
 };
