@@ -13,8 +13,11 @@
 #include <vector>
 using std::vector;
 
-#include <list>
-using std::list;
+#include <utility>
+using std::pair;
+
+#include <string>
+using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
@@ -53,6 +56,7 @@ public:
 	void buttonClicked(Button* button) {
 		if (isActive) 
 		{
+			en = 1;
 			isActive = false;
 			for (int i = 0; i < filter.size(); i++)
 				filter[i]->makeInactive();
@@ -60,10 +64,24 @@ public:
 		}
 		else 
 		{
+			en = 0;
 			isActive = true;
 			updateFilter();
 			button->setButtonText("Disable");
 		}
+	}
+
+	vector<pair<string, float>> serialize()
+	{
+		vector<pair<string, float>> params;
+
+		params.push_back(pair<string, float>("cutoff", f));
+		params.push_back(pair<string, float>("slope", g));
+		params.push_back(pair<string, float>("res", q));
+		params.push_back(pair<string, float>("filter", ft));
+		params.push_back(pair<string, float>("enable", en));
+
+		return params;
 	}
 
 private:
@@ -89,8 +107,10 @@ private:
 	double f;
 	double g;
 	double q;
+	int ft;
+	int en;
 
-	list<FilterType*> filters;
+	vector<FilterType*> filters;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Filter)
 };

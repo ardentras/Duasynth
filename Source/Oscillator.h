@@ -10,8 +10,11 @@
 
 #pragma once
 
-#include <list>
-using std::list;
+#include <vector>
+using std::vector;
+
+#include <utility>
+using std::pair;
 
 #include <string>
 using std::string;
@@ -52,6 +55,20 @@ public:
 
 	DuasynthSynthesiser& getSynth() { return synth; }
 	string getCurrWF() { return curr_wf; }
+
+	vector<pair<string, float>> serialize()
+	{
+		vector<pair<string, float>> params;
+
+		params.push_back(pair<string, float>("coarse", c));
+		params.push_back(pair<string, float>("fine", f));
+		params.push_back(pair<string, float>("octave", o));
+		params.push_back(pair<string, float>("wf", wf));
+		params.push_back(pair<string, float>("volume", v));
+
+		return params;
+	}
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
@@ -61,8 +78,8 @@ private:
 	Knob coarse;
 	Label lFine;
 	Knob fine;
-	Slider octave;
 	Label lOctave;
+	Slider octave;
 	Slider wfSelect;
 	Slider volume;
 	WFView wfView;
@@ -70,7 +87,13 @@ private:
 	// Practical Elements
 	DuasynthSynthesiser synth;
 	string curr_wf;
-	list<string> waveforms;
+	vector<string> waveforms;
+
+	double c;
+	double f;
+	int o;
+	int wf;
+	double v;
 	
 	bool isChangingVoices;
 

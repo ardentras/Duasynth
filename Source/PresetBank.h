@@ -13,6 +13,12 @@
 #include <vector>
 using std::vector;
 
+#include <string>
+using std::string;
+
+#include <utility>
+using std::pair;
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "sqlite/sqlite3.h"
 
@@ -31,8 +37,8 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
-	void serialize(vector<Slider> params);
-	vector<Slider> deserialize();
+	void store(vector<pair<string, vector<pair<string, float>>>> params);
+	vector<pair<string, vector<pair<string, float>>>> unstore();
 
 private:
 	// This reference is provided as a quick way for your editor to

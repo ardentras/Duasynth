@@ -15,7 +15,7 @@ Waveshaper::Waveshaper() :
 	lMix("mix_knob", "Mix"), lPostgain("post_knob", "Post"),
 	lAttack("attack_knob", "Attack"), lPregain("pre_knob", "Pre"),
 	lCurve("curve_knob", "Curve"), theName("name_label", "Waveshaper"),
-	isActive(false), m(1.0), a(0.0), c(0.0)
+	isActive(false), m(1.0), a(0.0), c(0.0), preg(0.8f), postg(((1.0f - 0.35f) * 0.8f) + 0.35f), en(1)
 {
 	initialiseUI();
 
@@ -211,12 +211,14 @@ void Waveshaper::sliderValueChanged(Slider* slider)
 		else if (slider->getName() == "pre_knob")
 		{
 			auto& preGain = processorChain.template get<0>();
-			preGain.setGainDecibels(40.0f * slider->getValue());
+			preg = slider->getValue();
+			preGain.setGainDecibels(40.0f * preg);
 		}
 		else if (slider->getName() == "post_knob")
 		{
 			auto& postGain = processorChain.template get<2>();
-			postGain.setGainDecibels((100 * slider->getValue()) - 100.0f);
+			postg = slider->getValue();
+			postGain.setGainDecibels((100 * postg) - 100.0f);
 		}
 		else if (slider->getName() == "attack_knob")
 		{

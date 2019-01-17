@@ -10,6 +10,12 @@
 
 #pragma once
 
+#include <utility>
+using std::pair;
+
+#include <vector>
+using std::vector;
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthAudioProcessor.h"
 #include "DuasynthAudioProcessorEditor.h"

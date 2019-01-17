@@ -10,6 +10,15 @@
 
 #pragma once
 
+#include <vector>
+using std::vector;
+
+#include <utility>
+using std::pair;
+
+#include <string>
+using std::string;
+
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Knob.h"
@@ -46,11 +55,13 @@ public:
 	{
 		if (isActive)
 		{
+			en = 1;
 			isActive = false;
 			button->setButtonText("Enable");
 		}
 		else
 		{
+			en = 0;
 			isActive = true;
 			button->setButtonText("Disable");
 		}
@@ -63,6 +74,20 @@ public:
 			da = 0.0f;
 			dc = (dda * -1.0f) * c;
 		}
+	}
+
+	vector<pair<string, float>> serialize()
+	{
+		vector<pair<string, float>> params;
+
+		params.push_back(pair<string, float>("mix", m));
+		params.push_back(pair<string, float>("pregain", preg));
+		params.push_back(pair<string, float>("postgain", postg));
+		params.push_back(pair<string, float>("attack", a));
+		params.push_back(pair<string, float>("curve", c));
+		params.push_back(pair<string, float>("enable", en));
+
+		return params;
 	}
 
 private:
@@ -95,6 +120,9 @@ private:
 	double dda;
 	double c;
 	double dc;
+	double preg;
+	double postg;
+	int en;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Waveshaper)
 };

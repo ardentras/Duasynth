@@ -17,7 +17,7 @@
 //==============================================================================
 Filter::Filter()
 	: lCutoff("cutoff_knob", "Cutoff"), lSlope("slope_knob", "Slope"),
-	lRes("res_adj", "Res"), isActive(false)
+	lRes("res_adj", "Res"), isActive(false), f(2.5f), g(0.0), q(1.0f), ft(0), en(1)
 {
 	initialiseFilter();
 
@@ -78,7 +78,7 @@ void Filter::initialiseUI()
 	addAndMakeVisible(filterSelect);
 
 	// Filter view
-	filterView.setFilter(filters.front()->getShape());
+	filterView.setFilter(filters.at(ft)->getShape());
 	addAndMakeVisible(filterView);
 
 	// Enable button
@@ -94,10 +94,12 @@ void Filter::initialiseUI()
 
 void Filter::initialiseFilter()
 {
-	filters.push_front(new NotchFilter(2.5f, 0.0f, 1.0f));
-	filters.push_front(new HighPassFilter(2.5f, 0.0f, 1.0f));
-	filters.push_front(new BandPassFilter(2.5f, 0.0f, 1.0f));
-	filters.push_front(new LowPassFilter(2.5f, 0.0f, 1.0f));
+	ft = 0;
+
+	filters.push_back(new LowPassFilter(2.5f, 0.0f, 1.0f));
+	filters.push_back(new NotchFilter(2.5f, 0.0f, 1.0f));
+	filters.push_back(new HighPassFilter(2.5f, 0.0f, 1.0f));
+	filters.push_back(new BandPassFilter(2.5f, 0.0f, 1.0f));
 }
 
 void Filter::updateFilter()
@@ -182,12 +184,12 @@ void Filter::sliderValueChanged(Slider* slider)
 		q = slider->getValue();
 	}
 
-	filters.front()->createShape(f, g, q);
-	filterView.setFilter(filters.front()->getShape());
+	filters.at(ft)->createShape(f, g, q);
+	filterView.setFilter(filters.at(ft)->getShape());
 
 	if (isActive)
 	{
-		string name = filters.front()->getName();
+		string name = filters.at(ft)->getName();
 		for (int i = 0; i < filter.size(); i++)
 		{
 			if (name == "low_pass")
@@ -214,18 +216,21 @@ void Filter::sliderDragEnded(Slider* slider)
 {
 	if (slider->getName() == "filter_select")
 	{
-		FilterType* temp;
 		if (slider->getValue() >= slider->getMaxValue())
 		{
-			temp = filters.front();
-			filters.pop_front();
-			filters.push_back(temp);
+			ft++;
+			if (ft >= filters.size())
+			{
+				ft = 0;
+			}
 		}
 		else if (slider->getValue() <= slider->getMinValue())
 		{
-			temp = filters.back();
-			filters.pop_back();
-			filters.push_front(temp);
+			ft--;
+			if (ft < 0)
+			{
+				ft = filters.size() - 1;
+			}
 		}
 
 		updateFilter();

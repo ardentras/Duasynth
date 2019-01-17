@@ -13,9 +13,24 @@
 PresetBank::PresetBank()
 	: theName("name_label", "Presets"), loadButton("load", ""), saveButton("save", "")
 {
+	char** err;
+	int retval;
+
 	initialiseUI();
 
-	sqlite3_open("file:presets.db", &db);
+	retval = sqlite3_open("file:presets.db", &db);
+
+	if (retval != SQLITE_OK)
+	{
+		std::cerr << "CRITICAL ERROR: Database for presets failed to open. Closing the program." << std::endl;
+		exit(-1);
+	}
+
+	retval = sqlite3_exec(db, "SELECT * FROM presets;", NULL, NULL, err);
+	if (retval != SQLITE_OK)
+	{
+
+	}
 }
 
 PresetBank::~PresetBank()
@@ -58,12 +73,44 @@ void PresetBank::resized()
 	saveButton.setBounds(55.0f, 40.0f, 40.0f, 25.0f);
 }
 
-void PresetBank::serialize(vector<Slider> params)
+void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules)
 {
+	string statement, csv;
+	char** err;
+	int retval;
 
+	for (pair<string, vector<pair<string, float>>> module : modules)
+	{
+		string name = module.first;
+		vector<pair<string, float>> params = module.second;
+
+		statement = "INSERT INTO presets VALUES ('" + name + "', '";
+		csv = "";
+
+		for (pair<string, float> param : params)
+		{
+			if (param != params.back())
+			{
+				csv += param.first + "," + std::to_string(param.second) + ",";
+			}
+			else
+			{
+				csv += param.first + "," + std::to_string(param.second);
+			}
+		}
+
+		statement += csv + "');";
+
+		std::cout << statement << std::endl;
+
+		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
+		sqlite3_free(err);
+	}
 }
 
-vector<Slider> PresetBank::deserialize()
+vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore()
 {
+	vector<pair<string, vector<pair<string, float>>>> params;
 
+	return params;
 }

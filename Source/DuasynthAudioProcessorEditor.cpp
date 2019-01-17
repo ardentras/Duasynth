@@ -115,15 +115,21 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 {
 	if (button->getName() == "load")
 	{
-		vector<Slider> params;
-		
-		params = preset.deserialize();
+		vector<pair<string, vector<pair<string, float>>>> params;
+
+		params = preset.unstore();
 	}
 	else if (button->getName() == "save")
 	{
-		vector<Slider> params;
+		vector<pair<string, vector<pair<string, float>>>> params;
 
-		preset.serialize(params);
+		params.push_back(pair<string, vector<pair<string, float>>>("a_osc", processor.getAOsc().serialize()));
+		params.push_back(pair<string, vector<pair<string, float>>>("b_osc", processor.getBOsc().serialize()));
+		params.push_back(pair<string, vector<pair<string, float>>>("a_filter", processor.getAFilter().serialize()));
+		params.push_back(pair<string, vector<pair<string, float>>>("b_filter", processor.getBFilter().serialize()));
+		params.push_back(pair<string, vector<pair<string, float>>>("waveshaper", processor.getWaveshaper().serialize()));
+
+		preset.store(params);
 	}
 }
 

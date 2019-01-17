@@ -20,7 +20,7 @@
 //==============================================================================
 Oscillator::Oscillator()
 	: lCoarse("coarse_knob", "Coarse"), lFine("fine_knob", "Fine"),
-	  lOctave("octave_adj", "Oct")
+	  lOctave("octave_adj", "Oct"), c(0.0f), f(0.0f), o(0), wf(0), v(127.0f * 0.8f)
 {
 	initialiseSynth();
 
@@ -60,6 +60,7 @@ void Oscillator::initialiseUI()
 	// Octave adj.
 	octave.setSliderStyle(Slider::SliderStyle::IncDecButtons);
 	octave.setRange(-2.0, 2.0, 1.0);
+	octave.setValue(0.0);
 	octave.setTextBoxIsEditable(false);
 	octave.addListener(this);
 	octave.setName("octave_adj");
@@ -105,7 +106,8 @@ void Oscillator::initialiseSynth()
 	waveforms.push_back("square");
 	//waveforms.push_back("noise");
 
-	curr_wf = waveforms.front();
+	wf = 0;
+	curr_wf = waveforms.at(wf);
 
 	updateSynth();
 }
@@ -221,15 +223,18 @@ void Oscillator::sliderValueChanged(Slider* slider)
 			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
 			if (slider->getName() == "coarse_knob")
 			{
-				voice->setCoarse(slider->getValue());
+				c = slider->getValue();
+				voice->setCoarse(c);
 			}
 			else if (slider->getName() == "fine_knob")
 			{
-				voice->setFine(slider->getValue());
+				f = slider->getValue();
+				voice->setFine(f);
 			}
 			else if (slider->getName() == "volume")
 			{
-				voice->setVolume(slider->getValue());
+				v = slider->getValue();
+				voice->setVolume(v);
 			}
 		}
 	}
@@ -239,10 +244,11 @@ void Oscillator::sliderDragEnded(Slider* slider)
 {
 	if (slider->getName() == "octave_adj")
 	{
+		o = slider->getValue();
 		for (int i = 0; i < synth.getNumVoices(); i++)
 		{
 			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
-			voice->setOct(slider->getValue());
+			voice->setOct(o);
 		}
 	}
 	else if (slider->getName() == "wf_select")
@@ -250,18 +256,22 @@ void Oscillator::sliderDragEnded(Slider* slider)
 		string temp;
 		if (slider->getValue() >= slider->getMaxValue())
 		{
-			temp = waveforms.front();
-			waveforms.pop_front();
-			waveforms.push_back(temp);
+			wf++;
+			if (wf >= waveforms.size())
+			{
+				wf = 0;
+			}
 		}
 		else if (slider->getValue() <= slider->getMinValue())
 		{
-			temp = waveforms.back();
-			waveforms.pop_back();
-			waveforms.push_front(temp);
+			wf--;
+			if (wf < 0)
+			{
+				wf = waveforms.size() - 1;
+			}
 		}
 
-		curr_wf = waveforms.front();
+		curr_wf = waveforms.at(wf);
 
 		updateSynth();
 		
