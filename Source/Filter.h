@@ -84,6 +84,33 @@ public:
 		return params;
 	}
 
+	void deserialize(vector<pair<string, float>> params)
+	{
+		for (pair<string, float> param : params)
+		{
+			if (param.first == "cutoff")
+			{
+				f = param.second;
+			}
+			else if (param.first == "slope")
+			{
+				g = param.second;
+			}
+			else if (param.first == "res")
+			{
+				q = param.second;
+			}
+			else if (param.first == "filter")
+			{
+				ft = param.second;
+			}
+			else if (param.first == "enable")
+			{
+				en = param.second;
+			}
+		}
+	}
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.

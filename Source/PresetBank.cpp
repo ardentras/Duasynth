@@ -121,10 +121,7 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 
 		statement += csv + "');";
 
-		std::cout << statement << std::endl;
-
 		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
-		std::cout << retval << std::endl;
 		if (err != nullptr)
 		{
 			sqlite3_free(err);
@@ -132,10 +129,10 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 		}
 	}
 
-	presets.push_back(p);
+	curr_preset = p;
 }
 
-vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore()
+vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore(string name)
 {
 	vector<pair<string, vector<pair<string, float>>>> params;
 

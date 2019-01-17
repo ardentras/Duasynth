@@ -43,7 +43,7 @@ public:
 	void resized() override;
 
 	void store(vector<pair<string, vector<pair<string, float>>>> params);
-	vector<pair<string, vector<pair<string, float>>>> unstore();
+	vector<pair<string, vector<pair<string, float>>>> unstore(string name);
 
 private:
 	// This reference is provided as a quick way for your editor to
@@ -57,7 +57,7 @@ private:
 	// Practical Elements
 	//ModalComponentManager modals;
 	sqlite3* db;
-	vector<Preset> presets;
+	Preset curr_preset;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBank)
 };

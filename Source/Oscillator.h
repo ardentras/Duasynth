@@ -69,6 +69,33 @@ public:
 		return params;
 	}
 
+	void deserialize(vector<pair<string, float>> params)
+	{
+		for (pair<string, float> param : params)
+		{
+			if (param.first == "coarse")
+			{
+				c = param.second;
+			}
+			else if (param.first == "fine")
+			{
+				f = param.second;
+			}
+			else if (param.first == "octave")
+			{
+				o = param.second;
+			}
+			else if (param.first == "wf")
+			{
+				wf = param.second;
+			}
+			else if (param.first == "volume")
+			{
+				v = param.second;
+			}
+		}
+	}
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.

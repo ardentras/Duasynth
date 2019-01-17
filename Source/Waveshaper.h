@@ -90,6 +90,37 @@ public:
 		return params;
 	}
 
+	void deserialize(vector<pair<string, float>> params)
+	{
+		for (pair<string, float> param : params)
+		{
+			if (param.first == "mix")
+			{
+				m = param.second;
+			}
+			else if (param.first == "pregain")
+			{
+				preg = param.second;
+			}
+			else if (param.first == "postgain")
+			{
+				postg = param.second;
+			}
+			else if (param.first == "attack")
+			{
+				a = param.second;
+			}
+			else if (param.first == "curve")
+			{
+				c = param.second;
+			}
+			else if (param.first == "enable")
+			{
+				en = param.second;
+			}
+		}
+	}
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
