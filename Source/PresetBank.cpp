@@ -10,6 +10,34 @@
 
 #include "PresetBank.h"
 
+int parse_params(void* preset, int count, char** data, char** cols);
+
+int parse_params(void* preset, int count, char** data, char** cols)
+{
+	Preset* p = (Preset*)(preset);
+	vector<pair<string, float>> params;
+	pair<string, float> pr;
+
+	if (data[2] != NULL)
+	{
+		char* tok = strtok(data[2], ",");
+
+		while (tok != NULL)
+		{
+			pr.first = tok;
+			tok = strtok(NULL, ",");
+			pr.second = atof(tok);
+			params.push_back(pr);
+
+			tok = strtok(NULL, ",");
+		}
+
+		p->addParam(data[1], params);
+	}
+
+	return 0;
+}
+
 PresetBank::PresetBank()
 	: theName("name_label", "Presets"), loadButton("load", ""), saveButton("save", "")
 {
@@ -117,7 +145,7 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 			}
 		}
 
-		p.addParam(name, csv);
+		p.addParam(name, params);
 
 		statement += csv + "');";
 
@@ -134,7 +162,18 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 
 vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore(string name)
 {
-	vector<pair<string, vector<pair<string, float>>>> params;
+	string statement, csv;
+	char** err = nullptr;
+	int retval;
 
-	return params;
+	statement = "SELECT * FROM preset_params WHERE id = (SELECT rowid FROM presets WHERE name = 'test');";
+
+	retval = sqlite3_exec(db, statement.c_str(), parse_params, &curr_preset, err);
+	if (err != nullptr)
+	{
+		sqlite3_free(err);
+		err = nullptr;
+	}
+
+	return curr_preset.getParameters();
 }

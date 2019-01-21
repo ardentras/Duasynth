@@ -39,10 +39,10 @@ public:
 
 	void setName(string n) { name = n; }
 	string getName() { return name; }
-	void addParam(string name, string csv) { parameters.push_back(pair<string, string>(name, csv)); }
-	vector<pair<string, string>> getParameters() { return parameters; }
+	void addParam(string name, vector<pair<string, float>> val) { parameters.push_back(pair<string, vector<pair<string, float>>>(name, val)); }
+	vector<pair<string, vector<pair<string, float>>>> getParameters() { return parameters; }
 
 private:
 	string name;
-	vector<pair<string, string>> parameters;
+	vector<pair<string, vector<pair<string, float>>>> parameters;
 };

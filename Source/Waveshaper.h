@@ -97,28 +97,46 @@ public:
 			if (param.first == "mix")
 			{
 				m = param.second;
+				mix.setValue(m);
 			}
 			else if (param.first == "pregain")
 			{
 				preg = param.second;
+				pregain.setValue(preg);
 			}
 			else if (param.first == "postgain")
 			{
 				postg = param.second;
+				postgain.setValue(postg);
 			}
 			else if (param.first == "attack")
 			{
 				a = param.second;
+				attack.setValue(a);
 			}
 			else if (param.first == "curve")
 			{
 				c = param.second;
+				curve.setValue(c);
 			}
 			else if (param.first == "enable")
 			{
 				en = param.second;
+
+				if (en == 1)
+				{
+					isActive = false;
+					enable.setButtonText("Enable");
+				}
+				else
+				{
+					isActive = true;
+					enable.setButtonText("Disable");
+				}
 			}
 		}
+
+		updateWaveshaper();
 	}
 
 private:

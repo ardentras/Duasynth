@@ -155,6 +155,7 @@ void Oscillator::updateSynth()
 	// the annoying Ptr wrapper on getSound()'s return type
 	DuasynthWaveSound* temp = (DuasynthWaveSound*)&*(synth.getSound(0));
 	wfView.setWaveform(temp->getShape());
+	wfView.resized();
 
 	sliderDragEnded(&octave);
 	sliderValueChanged(&coarse);

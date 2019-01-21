@@ -76,24 +76,30 @@ public:
 			if (param.first == "coarse")
 			{
 				c = param.second;
+				coarse.setValue(c);
 			}
 			else if (param.first == "fine")
 			{
 				f = param.second;
+				fine.setValue(f);
 			}
 			else if (param.first == "octave")
 			{
 				o = param.second;
+				octave.setValue(o);
 			}
 			else if (param.first == "wf")
 			{
 				wf = param.second;
+				curr_wf = waveforms.at(wf);
 			}
 			else if (param.first == "volume")
 			{
 				v = param.second;
 			}
 		}
+
+		updateSynth();
 	}
 
 private:

@@ -202,31 +202,28 @@ void Waveshaper::releaseResources()
 
 void Waveshaper::sliderValueChanged(Slider* slider)
 {
-	if (isActive)
+	if (slider->getName() == "mix_knob")
 	{
-		if (slider->getName() == "mix_knob")
-		{
-			m = slider->getValue();
-		}
-		else if (slider->getName() == "pre_knob")
-		{
-			auto& preGain = processorChain.template get<0>();
-			preg = slider->getValue();
-			preGain.setGainDecibels(40.0f * preg);
-		}
-		else if (slider->getName() == "post_knob")
-		{
-			auto& postGain = processorChain.template get<2>();
-			postg = slider->getValue();
-			postGain.setGainDecibels((100 * postg) - 100.0f);
-		}
-		else if (slider->getName() == "attack_knob")
-		{
-			a = slider->getValue();
-		}
-		else if (slider->getName() == "curve_knob")
-		{
-			c = slider->getValue();
-		}
+		m = slider->getValue();
+	}
+	else if (slider->getName() == "pre_knob")
+	{
+		auto& preGain = processorChain.template get<0>();
+		preg = slider->getValue();
+		preGain.setGainDecibels(40.0f * preg);
+	}
+	else if (slider->getName() == "post_knob")
+	{
+		auto& postGain = processorChain.template get<2>();
+		postg = slider->getValue();
+		postGain.setGainDecibels((100 * postg) - 100.0f);
+	}
+	else if (slider->getName() == "attack_knob")
+	{
+		a = slider->getValue();
+	}
+	else if (slider->getName() == "curve_knob")
+	{
+		c = slider->getValue();
 	}
 }

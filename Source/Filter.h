@@ -91,14 +91,17 @@ public:
 			if (param.first == "cutoff")
 			{
 				f = param.second;
+				cutoff.setValue(f);
 			}
 			else if (param.first == "slope")
 			{
 				g = param.second;
+				slope.setValue(g);
 			}
 			else if (param.first == "res")
 			{
 				q = param.second;
+				res.setValue(q);
 			}
 			else if (param.first == "filter")
 			{
@@ -107,8 +110,21 @@ public:
 			else if (param.first == "enable")
 			{
 				en = param.second;
+
+				if (en == 1)
+				{
+					isActive = false;
+					enable.setButtonText("Enable");
+				}
+				else
+				{
+					isActive = true;
+					enable.setButtonText("Disable");
+				}
 			}
 		}
+
+		updateFilter();
 	}
 
 private:
