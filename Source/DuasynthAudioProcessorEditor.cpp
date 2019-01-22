@@ -113,48 +113,84 @@ void DuasynthAudioProcessorEditor::resized()
 
 void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 {
+	vector<pair<string, vector<pair<string, float>>>> params;
+	string name;
+
 	if (button->getName() == "load")
 	{
-		vector<pair<string, vector<pair<string, float>>>> params;
-		string name;
+		DialogWindow::LaunchOptions lo;
+		LoadPresetComponent* lpc = new LoadPresetComponent();
+		OptionalScopedPointer<Component> osp;
+		osp.set(lpc, false);
 
-		params = preset.unstore(name);
+		lo.dialogTitle = "Load Preset";
+		lo.content = osp;
 
-		for (pair<string, vector<pair<string, float>>> param : params)
+		int retval = lo.runModal();
+
+		if (retval == 2)
 		{
-			if (param.first == "a_osc")
+			TextEditor* t = (TextEditor*)lpc->getChildComponent(1);
+
+			name = t->getText().toStdString();
+
+			params = preset.unstore(name);
+
+			for (pair<string, vector<pair<string, float>>> param : params)
 			{
-				processor.getAOsc().deserialize(param.second);
-			}
-			else if (param.first == "b_osc")
-			{
-				processor.getBOsc().deserialize(param.second);
-			}
-			else if (param.first == "a_filter")
-			{
-				processor.getAFilter().deserialize(param.second);
-			}
-			else if (param.first == "b_filter")
-			{
-				processor.getBFilter().deserialize(param.second);
-			}
-			else if (param.first == "waveshaper")
-			{
-				processor.getWaveshaper().deserialize(param.second);
+				if (param.first == "a_osc")
+				{
+					processor.getAOsc().deserialize(param.second);
+				}
+				else if (param.first == "b_osc")
+				{
+					processor.getBOsc().deserialize(param.second);
+				}
+				else if (param.first == "a_filter")
+				{
+					processor.getAFilter().deserialize(param.second);
+				}
+				else if (param.first == "b_filter")
+				{
+					processor.getBFilter().deserialize(param.second);
+				}
+				else if (param.first == "waveshaper")
+				{
+					processor.getWaveshaper().deserialize(param.second);
+				}
 			}
 		}
+
+		delete lpc;
 	}
 	else if (button->getName() == "save")
 	{
-		vector<pair<string, vector<pair<string, float>>>> params;
+		DialogWindow::LaunchOptions lo;
+		CreatePresetComponent* cpc = new CreatePresetComponent();
+		OptionalScopedPointer<Component> osp;
+		osp.set(cpc, false);
 
-		params.push_back(pair<string, vector<pair<string, float>>>("a_osc", processor.getAOsc().serialize()));
-		params.push_back(pair<string, vector<pair<string, float>>>("b_osc", processor.getBOsc().serialize()));
-		params.push_back(pair<string, vector<pair<string, float>>>("a_filter", processor.getAFilter().serialize()));
-		params.push_back(pair<string, vector<pair<string, float>>>("b_filter", processor.getBFilter().serialize()));
-		params.push_back(pair<string, vector<pair<string, float>>>("waveshaper", processor.getWaveshaper().serialize()));
+		lo.dialogTitle = "Create Preset";
+		lo.content = osp;
 
-		preset.store(params);
+		int retval = lo.runModal();
+
+		if (retval == 2)
+		{
+			TextEditor* t = (TextEditor*)cpc->getChildComponent(1);
+
+			name = t->getText().toStdString();
+
+			params.push_back(pair<string, vector<pair<string, float>>>("a_osc", processor.getAOsc().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("b_osc", processor.getBOsc().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("a_filter", processor.getAFilter().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("b_filter", processor.getBFilter().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("waveshaper", processor.getWaveshaper().serialize()));
+
+			preset.store(name, params);
+		}
+
+		delete cpc;
 	}
 }
 

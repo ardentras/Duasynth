@@ -19,6 +19,8 @@ using std::vector;
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DuasynthAudioProcessor.h"
 #include "DuasynthAudioProcessorEditor.h"
+#include "CreatePresetComponent.h"
+#include "LoadPresetComponent.h"
 #include "PresetBank.h"
 
 //==============================================================================

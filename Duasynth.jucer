@@ -6,6 +6,14 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="gwPyeI" name="LoadPresetComponent.cpp" compile="1" resource="0"
+            file="Source/LoadPresetComponent.cpp"/>
+      <FILE id="YgFD3X" name="LoadPresetComponent.h" compile="0" resource="0"
+            file="Source/LoadPresetComponent.h"/>
+      <FILE id="o25ocW" name="CreatePresetComponent.cpp" compile="1" resource="0"
+            file="Source/CreatePresetComponent.cpp"/>
+      <FILE id="bySgB1" name="CreatePresetComponent.h" compile="0" resource="0"
+            file="Source/CreatePresetComponent.h"/>
       <GROUP id="{4F92BA5D-B0F6-C037-BFEF-B6CC2177216A}" name="sqlite">
         <FILE id="S0Uqzz" name="shell.c" compile="1" resource="0" file="Source/sqlite/shell.c"/>
         <FILE id="fDzhlH" name="sqlite3.c" compile="1" resource="0" file="Source/sqlite/sqlite3.c"/>

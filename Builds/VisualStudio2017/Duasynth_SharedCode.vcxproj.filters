@@ -472,6 +472,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LoadPresetComponent.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CreatePresetComponent.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\sqlite\shell.c">
       <Filter>Duasynth\Source\sqlite</Filter>
     </ClCompile>
@@ -2589,6 +2595,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LoadPresetComponent.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CreatePresetComponent.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\sqlite\sqlite3.h">
       <Filter>Duasynth\Source\sqlite</Filter>
     </ClInclude>

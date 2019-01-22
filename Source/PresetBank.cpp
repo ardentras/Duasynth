@@ -113,24 +113,52 @@ void PresetBank::resized()
 	saveButton.setBounds(55.0f, 40.0f, 40.0f, 25.0f);
 }
 
-void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules)
+void PresetBank::store(string name, vector<pair<string, vector<pair<string, float>>>> modules)
 {
 	string statement, csv;
 	char** err = nullptr;
 	int retval;
+	bool exists = false;
 
 	Preset p;
 
-	p.setName("test");
-	
-	retval = sqlite3_exec(db, "INSERT INTO presets VALUES ('test');", NULL, NULL, err);
+	p.setName(name);
+
+	statement = "SELECT * FROM presets WHERE name = '" + name + "';";
+
+	retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
+	if (err != nullptr)
+	{
+		sqlite3_free(err);
+		err = nullptr;
+	}
+
+	if (!exists)
+	{
+		statement = "INSERT INTO presets VALUES ('" + name + "');";
+
+		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
+		if (err != nullptr)
+		{
+			sqlite3_free(err);
+			err = nullptr;
+		}
+	}
 
 	for (pair<string, vector<pair<string, float>>> module : modules)
 	{
 		string name = module.first;
 		vector<pair<string, float>> params = module.second;
 
-		statement = "INSERT INTO preset_params VALUES ((SELECT rowid FROM presets WHERE name = '" + p.getName() + "'), '" + name + "', '";
+		if (exists)
+		{
+			statement = "UPDATE preset_params SET params = '";
+		}
+		else
+		{
+			statement = "INSERT INTO preset_params VALUES ((SELECT rowid FROM presets WHERE name = '" + p.getName() + "'), '" + name + "', '";
+		}
+
 		csv = "";
 
 		for (pair<string, float> param : params)
@@ -147,7 +175,14 @@ void PresetBank::store(vector<pair<string, vector<pair<string, float>>>> modules
 
 		p.addParam(name, params);
 
-		statement += csv + "');";
+		if (exists)
+		{
+			statement = " WHERE id = (SELECT rowid FROM presets WHERE name = '" + p.getName() + "') AND name = '" + name + "';";
+		}
+		else
+		{
+			statement += csv + "');";
+		}
 
 		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
 		if (err != nullptr)
@@ -166,7 +201,7 @@ vector<pair<string, vector<pair<string, float>>>> PresetBank::unstore(string nam
 	char** err = nullptr;
 	int retval;
 
-	statement = "SELECT * FROM preset_params WHERE id = (SELECT rowid FROM presets WHERE name = 'test');";
+	statement = "SELECT * FROM preset_params WHERE id = (SELECT rowid FROM presets WHERE name = '" + name + "');";
 
 	retval = sqlite3_exec(db, statement.c_str(), parse_params, &curr_preset, err);
 	if (err != nullptr)

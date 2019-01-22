@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    PresetBank.h
-    Created: 14 Jan 2019 7:53:19pm
+    CreatePresetComponent.h
+    Created: 21 Jan 2019 3:32:17pm
     Author:  shaun.rasmusen
 
   ==============================================================================
@@ -10,37 +10,24 @@
 
 #pragma once
 
-#include <vector>
-using std::vector;
-
-#include <string>
-using std::string;
-
-#include <utility>
-using std::pair;
-
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "sqlite/sqlite3.h"
-
-#include "Preset.h"
 
 //==============================================================================
 /**
 */
-class PresetBank : public Component
+class CreatePresetComponent : public Component, private Button::Listener
 {
 public:
-	PresetBank();
-	~PresetBank();
+	CreatePresetComponent();
+	~CreatePresetComponent();
 
 	void initialiseUI();
+
+	void buttonClicked(Button* button);
 
 	//==============================================================================
 	void paint(Graphics&) override;
 	void resized() override;
-
-	void store(string name, vector<pair<string, vector<pair<string, float>>>> params);
-	vector<pair<string, vector<pair<string, float>>>> unstore(string name);
 
 private:
 	// This reference is provided as a quick way for your editor to
@@ -48,13 +35,11 @@ private:
 
 	// UI Elements
 	TextButton saveButton;
-	TextButton loadButton;
+	TextButton cancelButton;
+	TextEditor text;
 	Label theName;
 
 	// Practical Elements
-	//ModalComponentManager modals;
-	sqlite3* db;
-	Preset curr_preset;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBank)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CreatePresetComponent)
 };
