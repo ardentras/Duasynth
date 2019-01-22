@@ -10,7 +10,17 @@
 
 #include "PresetBank.h"
 
+int preset_exists(void* exists, int count, char** data, char** cols);
 int parse_presets(void* combobox, int count, char** data, char** cols);
+int parse_params(void* preset, int count, char** data, char** cols);
+
+int preset_exists(void* exists, int count, char** data, char** cols)
+{
+	bool* e = (bool*)exists;
+	*e = true;
+
+	return 0;
+}
 
 int parse_presets(void* combobox, int count, char** data, char** cols)
 {
@@ -20,8 +30,6 @@ int parse_presets(void* combobox, int count, char** data, char** cols)
 
 	return 0;
 }
-
-int parse_params(void* preset, int count, char** data, char** cols);
 
 int parse_params(void* preset, int count, char** data, char** cols)
 {
@@ -153,7 +161,7 @@ void PresetBank::store(string name, vector<pair<string, vector<pair<string, floa
 
 	statement = "SELECT * FROM presets WHERE name = '" + name + "';";
 
-	retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
+	retval = sqlite3_exec(db, statement.c_str(), preset_exists, &exists, err);
 	if (err != nullptr)
 	{
 		sqlite3_free(err);
@@ -170,6 +178,10 @@ void PresetBank::store(string name, vector<pair<string, vector<pair<string, floa
 			sqlite3_free(err);
 			err = nullptr;
 		}
+	}
+	else
+	{
+		printf("Exists\n");
 	}
 
 	for (pair<string, vector<pair<string, float>>> module : modules)
