@@ -123,6 +123,8 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 		OptionalScopedPointer<Component> osp;
 		osp.set(lpc, false);
 
+		lpc->setComboBox(preset.getPresets());
+
 		lo.dialogTitle = "Load Preset";
 		lo.content = osp;
 
@@ -130,9 +132,9 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 
 		if (retval == 2)
 		{
-			TextEditor* t = (TextEditor*)lpc->getChildComponent(1);
+			ComboBox* cb = (ComboBox*)lpc->getChildComponent(1);
 
-			name = t->getText().toStdString();
+			name = cb->getItemText(cb->getSelectedItemIndex()).toStdString();
 
 			params = preset.unstore(name);
 

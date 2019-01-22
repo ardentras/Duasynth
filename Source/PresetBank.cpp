@@ -10,6 +10,17 @@
 
 #include "PresetBank.h"
 
+int parse_presets(void* combobox, int count, char** data, char** cols);
+
+int parse_presets(void* combobox, int count, char** data, char** cols)
+{
+	ComboBox* cb = (ComboBox*)combobox;
+
+	cb->addItem(data[1], atoi(data[0]));
+
+	return 0;
+}
+
 int parse_params(void* preset, int count, char** data, char** cols);
 
 int parse_params(void* preset, int count, char** data, char** cols)
@@ -113,6 +124,22 @@ void PresetBank::resized()
 	saveButton.setBounds(55.0f, 40.0f, 40.0f, 25.0f);
 }
 
+ComboBox* PresetBank::getPresets()
+{
+	ComboBox* cb = new ComboBox();
+	char** err = nullptr;
+	int retval;
+
+	retval = sqlite3_exec(db, "SELECT rowid, name FROM presets;", parse_presets, cb, err);
+	if (err != nullptr)
+	{
+		sqlite3_free(err);
+		err = nullptr;
+	}
+
+	return cb;
+}
+
 void PresetBank::store(string name, vector<pair<string, vector<pair<string, float>>>> modules)
 {
 	string statement, csv;
@@ -177,12 +204,14 @@ void PresetBank::store(string name, vector<pair<string, vector<pair<string, floa
 
 		if (exists)
 		{
-			statement = " WHERE id = (SELECT rowid FROM presets WHERE name = '" + p.getName() + "') AND name = '" + name + "';";
+			statement += csv + "' WHERE id = (SELECT rowid FROM presets WHERE name = '" + p.getName() + "') AND name = '" + name + "';";
 		}
 		else
 		{
 			statement += csv + "');";
 		}
+
+		std::cout << statement << std::endl;
 
 		retval = sqlite3_exec(db, statement.c_str(), NULL, NULL, err);
 		if (err != nullptr)

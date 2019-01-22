@@ -39,6 +39,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
+	ComboBox* getPresets();
 	void store(string name, vector<pair<string, vector<pair<string, float>>>> params);
 	vector<pair<string, vector<pair<string, float>>>> unstore(string name);
 

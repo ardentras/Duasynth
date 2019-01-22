@@ -29,6 +29,15 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
+	void setComboBox(ComboBox* cb)
+	{
+		text.clear();
+		for (int i = 0; i < cb->getNumItems(); i++)
+		{
+			text.addItem(cb->getItemText(i), cb->getItemId(i));
+		}
+	}
+
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
@@ -36,7 +45,7 @@ private:
 	// UI Elements
 	TextButton loadButton;
 	TextButton cancelButton;
-	TextEditor text;
+	ComboBox text;
 	Label theName;
 
 	// Practical Elements

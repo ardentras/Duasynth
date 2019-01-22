@@ -29,8 +29,6 @@ void LoadPresetComponent::initialiseUI()
 	addAndMakeVisible(theName);
 
 	// Text Input
-	text.setMultiLine(false);
-	text.setFont(Font(16.0f, Font::plain));
 	text.setColour(Label::textColourId, Colours::black);
 	addAndMakeVisible(text);
 
