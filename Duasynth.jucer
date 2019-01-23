@@ -6,6 +6,8 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="g0T8Hm" name="Chorus.cpp" compile="1" resource="0" file="Source/Chorus.cpp"/>
+      <FILE id="tlGJQu" name="Chorus.h" compile="0" resource="0" file="Source/Chorus.h"/>
       <FILE id="gwPyeI" name="LoadPresetComponent.cpp" compile="1" resource="0"
             file="Source/LoadPresetComponent.cpp"/>
       <FILE id="YgFD3X" name="LoadPresetComponent.h" compile="0" resource="0"

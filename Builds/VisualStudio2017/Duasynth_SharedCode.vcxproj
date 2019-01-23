@@ -138,6 +138,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Chorus.cpp"/>
     <ClCompile Include="..\..\Source\LoadPresetComponent.cpp"/>
     <ClCompile Include="..\..\Source\CreatePresetComponent.cpp"/>
     <ClCompile Include="..\..\Source\sqlite\shell.c"/>
@@ -2048,6 +2049,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Chorus.h"/>
     <ClInclude Include="..\..\Source\LoadPresetComponent.h"/>
     <ClInclude Include="..\..\Source\CreatePresetComponent.h"/>
     <ClInclude Include="..\..\Source\sqlite\sqlite3.h"/>

@@ -14,6 +14,7 @@
 #include "Oscillator.h"
 #include "Filter.h"
 #include "Waveshaper.h"
+#include "Chorus.h"
 
 //==============================================================================
 /**
@@ -64,6 +65,7 @@ public:
 	Oscillator& getBOsc() { return b_osc; }
 	Filter& getAFilter() { return a_filter; }
 	Filter& getBFilter() { return b_filter; }
+	Chorus& getChorus() { return chorus; }
 	Waveshaper& getWaveshaper() { return waveshaper; }
 
 private:
@@ -72,6 +74,7 @@ private:
 	Oscillator b_osc;
 	Filter a_filter;
 	Filter b_filter;
+	Chorus chorus;
 	Waveshaper waveshaper;
 
 	MidiMessageCollector midiCollector;

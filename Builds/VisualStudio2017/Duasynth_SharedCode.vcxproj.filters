@@ -472,6 +472,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Chorus.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\LoadPresetComponent.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
@@ -2595,6 +2598,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Chorus.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\LoadPresetComponent.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>

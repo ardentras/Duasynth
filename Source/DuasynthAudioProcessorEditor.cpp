@@ -45,6 +45,8 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 	button = (Button*)preset.getChildComponent(2);
 	button->addListener(this);
 
+	addAndMakeVisible(processor.getChorus());
+
 	addAndMakeVisible(processor.getWaveshaper());
 
 	setSize (475, 600);
@@ -98,15 +100,27 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getBFilter().getWidth(), 
 		processor.getBFilter().getHeight());
 
+	// LFOs
+	lfos.setBounds(
+		ELEM_PADDING,
+		20.0f + ELEM_PADDING + processor.getAOsc().getHeight() + oscs.getBounds().getHeight() + processor.getAFilter().getHeight() + filters.getHeight(),
+		(processor.getAFilter().getWidth() + ELEM_PADDING) * 2,
+		25.0f);
+
 	// Right Column (Preset, Chorus, WS)
 	preset.setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
 		ELEM_PADDING,
 		preset.getWidth(),
 		preset.getHeight());
+	processor.getChorus().setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
+		ELEM_PADDING + preset.getHeight() + 20,
+		processor.getWaveshaper().getWidth(),
+		processor.getWaveshaper().getHeight());
 	processor.getWaveshaper().setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40, 
-		ELEM_PADDING + processor.getAFilter().getHeight() + processor.getWaveshaper().getHeight(), 
+		ELEM_PADDING + preset.getHeight() + processor.getChorus().getHeight() + 40, 
 		processor.getWaveshaper().getWidth(), 
 		processor.getWaveshaper().getHeight());
 }
@@ -156,6 +170,10 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 				{
 					processor.getBFilter().deserialize(param.second);
 				}
+				else if (param.first == "chorus")
+				{
+					processor.getChorus().deserialize(param.second);
+				}
 				else if (param.first == "waveshaper")
 				{
 					processor.getWaveshaper().deserialize(param.second);
@@ -187,6 +205,7 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 			params.push_back(pair<string, vector<pair<string, float>>>("b_osc", processor.getBOsc().serialize()));
 			params.push_back(pair<string, vector<pair<string, float>>>("a_filter", processor.getAFilter().serialize()));
 			params.push_back(pair<string, vector<pair<string, float>>>("b_filter", processor.getBFilter().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("chorus", processor.getChorus().serialize()));
 			params.push_back(pair<string, vector<pair<string, float>>>("waveshaper", processor.getWaveshaper().serialize()));
 
 			preset.store(name, params);
