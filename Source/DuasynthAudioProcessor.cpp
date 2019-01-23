@@ -105,6 +105,8 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	a_filter.setSampleRate(sampleRate);
 	b_filter.setSampleRate(sampleRate);
 
+	chorus.setSampleRate(sampleRate);
+
 	waveshaper.setSampleRate(sampleRate);
 	waveshaper.prepareToPlay(sampleRate, samplesPerBlock);
 
@@ -181,6 +183,8 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 	a_filter.processSamples(buffer, buffer.getNumSamples());
 	b_osc.getNextAudioBlock(buffer, midiMessages);
 	b_filter.processSamples(buffer, buffer.getNumSamples());
+
+	chorus.processSamples(buffer, buffer.getNumSamples());
 
 	if (a_osc.getSynth().hasNoteStarted())
 	{

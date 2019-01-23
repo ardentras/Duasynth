@@ -41,6 +41,7 @@ public:
 
 	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void processSamples(AudioBuffer<float>& buffer, int numSamples);
+	void processLFO(juce::dsp::AudioBlock<float> block, int numSamples);
 	void releaseResources();
 
 	void updateChorus();
@@ -163,6 +164,10 @@ private:
 	double p;
 	double w;
 	int en;
+
+	double currentAngle;
+	double angleDelta;
+	double level;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Chorus)
 };

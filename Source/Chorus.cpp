@@ -15,7 +15,8 @@ Chorus::Chorus() :
 	lMix("mix_knob", "Mix"), lPitch("pitch_knob", "Pitch"),
 	lWidth("width_knob", "Width"), lSpeed("speed_knob", "Speed"),
 	lDepth("depth_knob", "Depth"), theName("name_label", "Chorus"),
-	isActive(false), m(1.0), p(0.0), w(0.5), s(0.5f), d(0.5f), en(1)
+	isActive(false), m(0.0), p(0.0), w(0.5), s(19.9 / 2.0), d(63.0), en(1),
+	currentAngle(0.0), angleDelta(0.0)
 {
 	initialiseUI();
 
@@ -71,8 +72,8 @@ void Chorus::initialiseUI()
 	addAndMakeVisible(lWidth);
 
 	// LFO Speed
-	speed.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	speed.setValue(0.5f);
+	speed.setRange(0.1f, 20.0f, 19.9f / 150.0f);
+	speed.setValue(19.9f / 2.0f);
 	speed.addListener(this);
 	speed.setName("speed_knob");
 	addAndMakeVisible(speed);
@@ -83,8 +84,8 @@ void Chorus::initialiseUI()
 	addAndMakeVisible(lSpeed);
 
 	// LFO Depth
-	depth.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	depth.setValue(0.5f);
+	depth.setRange(0.0f, 127.0f, 1.0f / 127.0f);
+	depth.setValue(63.0f);
 	depth.addListener(this);
 	depth.setName("depth_knob");
 	addAndMakeVisible(depth);
@@ -107,7 +108,10 @@ void Chorus::initialiseUI()
 
 void Chorus::initialiseChorus()
 {
+	level = d * 0.15;
 
+	double cyclesPerSample = s / sampleRate;
+	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
 void Chorus::updateChorus()
@@ -156,7 +160,39 @@ void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
 {
 	if (isActive)
 	{
-		
+		// Evidently this is the only way to get this block into new memory
+		AudioBuffer<float> initial(buffer.getNumChannels(), numSamples);
+		initial = buffer;
+
+		// Process waveshaping
+		juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
+		//juce::dsp::ProcessContextNonReplacing<float> context = juce::dsp::ProcessContextNonReplacing<float>(initial, block);
+		processLFO(block, numSamples);
+
+		// Mix the two signals
+		//block = context.getOutputBlock();
+		block.multiply(m);
+		block.addWithMultiply(juce::dsp::AudioBlock<float>(initial).getSubBlock((size_t)0, (size_t)numSamples), 1.0f - m);
+	}
+}
+
+void Chorus::processLFO(juce::dsp::AudioBlock<float> block, int numSamples)
+{
+	if (angleDelta != 0.0)
+	{
+		while (--numSamples >= 0)
+		{
+			double currentSample;
+
+			currentSample = (double)(level * sin(currentAngle));
+
+			currentAngle += angleDelta;
+
+			if (currentAngle > (MathConstants<double>::twoPi))
+			{
+				currentAngle -= MathConstants<double>::twoPi;
+			}
+		}
 	}
 }
 
