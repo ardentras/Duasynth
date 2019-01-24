@@ -472,6 +472,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\cpu_detect_x86.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FIRFilter.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Chorus.cpp">
       <Filter>Duasynth\Source</Filter>
     </ClCompile>
@@ -2598,6 +2604,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\cpu_detect.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FIRFilter.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Chorus.h">
       <Filter>Duasynth\Source</Filter>
     </ClInclude>

@@ -19,7 +19,12 @@ using std::pair;
 #include <string>
 using std::string;
 
+#include <cassert>
+
 #include "../JuceLibraryCode/JuceHeader.h"
+
+#include "FIRFilter.h"
+using soundtouch::FIRFilter;
 
 #include "Knob.h"
 
@@ -41,7 +46,8 @@ public:
 
 	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void processSamples(AudioBuffer<float>& buffer, int numSamples);
-	void processLFO(juce::dsp::AudioBlock<float> block, int numSamples);
+	void processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::AudioBlock<float> initial, int numSamples);
+	int transposeMulti(juce::dsp::AudioBlock<float>& dest, juce::dsp::AudioBlock<float> src, int &srcSamples, int numChannels);
 	void releaseResources();
 
 	void updateChorus();
@@ -51,6 +57,8 @@ public:
 	void setSampleRate(double rate) { sampleRate = rate; }
 
 	bool isChorusActive() { return isActive; }
+
+	void setActive(bool active) { isActive = active; }
 
 	void buttonClicked(Button* button)
 	{
@@ -157,13 +165,19 @@ private:
 	TextButton enable;
 
 	// Practical Elements
+	FIRFilter *AAFilter;
 	double sampleRate;
+	int spb;
+
 	double m;
 	double s;
 	double d;
 	double p;
 	double w;
+	double fract;
 	int en;
+
+	int cntr;
 
 	double currentAngle;
 	double angleDelta;

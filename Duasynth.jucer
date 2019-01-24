@@ -6,6 +6,11 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="QhTWpH" name="cpu_detect_x86.cpp" compile="1" resource="0"
+            file="Source/cpu_detect_x86.cpp"/>
+      <FILE id="q8QGCJ" name="cpu_detect.h" compile="0" resource="0" file="Source/cpu_detect.h"/>
+      <FILE id="zgmTUz" name="FIRFilter.cpp" compile="1" resource="0" file="Source/FIRFilter.cpp"/>
+      <FILE id="KGNPxF" name="FIRFilter.h" compile="0" resource="0" file="Source/FIRFilter.h"/>
       <FILE id="g0T8Hm" name="Chorus.cpp" compile="1" resource="0" file="Source/Chorus.cpp"/>
       <FILE id="tlGJQu" name="Chorus.h" compile="0" resource="0" file="Source/Chorus.h"/>
       <FILE id="gwPyeI" name="LoadPresetComponent.cpp" compile="1" resource="0"

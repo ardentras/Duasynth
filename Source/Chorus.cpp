@@ -10,12 +10,19 @@
 
 #include "Chorus.h"
 
+// cubic interpolation coefficients
+static const float _coeffs[] =
+{ -0.5f,  1.0f, -0.5f, 0.0f,
+   1.5f, -2.5f,  0.0f, 1.0f,
+  -1.5f,  2.0f,  0.5f, 0.0f,
+   0.5f, -0.5f,  0.0f, 0.0f };
+
 //==============================================================================
 Chorus::Chorus() :
 	lMix("mix_knob", "Mix"), lPitch("pitch_knob", "Pitch"),
 	lWidth("width_knob", "Width"), lSpeed("speed_knob", "Speed"),
 	lDepth("depth_knob", "Depth"), theName("name_label", "Chorus"),
-	isActive(false), m(0.0), p(0.0), w(0.5), s(19.9 / 2.0), d(63.0), en(1),
+	isActive(false), m(0.0), p(1.0), w(0.5), s(9.99 / 2), d(63.0), en(1),
 	currentAngle(0.0), angleDelta(0.0)
 {
 	initialiseUI();
@@ -48,8 +55,8 @@ void Chorus::initialiseUI()
 	addAndMakeVisible(lMix);
 
 	// Pitch
-	pitch.setRange(-1.0f, 1.0f, 1.0f / 150.0f);
-	pitch.setValue(0.0f);
+	pitch.setRange(0.85f, 1.15f, 1.0f / 150.0f);
+	pitch.setValue(1.0f);
 	pitch.addListener(this);
 	pitch.setName("pitch_knob");
 	addAndMakeVisible(pitch);
@@ -72,8 +79,8 @@ void Chorus::initialiseUI()
 	addAndMakeVisible(lWidth);
 
 	// LFO Speed
-	speed.setRange(0.1f, 20.0f, 19.9f / 150.0f);
-	speed.setValue(19.9f / 2.0f);
+	speed.setRange(0.01f, 10.0f, 9.99f / 150.0f);
+	speed.setValue(9.99f / 2.0f);
 	speed.addListener(this);
 	speed.setName("speed_knob");
 	addAndMakeVisible(speed);
@@ -108,10 +115,15 @@ void Chorus::initialiseUI()
 
 void Chorus::initialiseChorus()
 {
-	level = d * 0.15;
+	level = d * 0.5;
 
-	double cyclesPerSample = s / sampleRate;
-	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
+	angleDelta = s / sampleRate * 2.0 * MathConstants<double>::pi;
+
+	fract = 0;
+
+	AAFilter = FIRFilter::newInstance();
+
+	cntr = 0;
 }
 
 void Chorus::updateChorus()
@@ -137,14 +149,14 @@ void Chorus::resized()
 	mix.setBounds(getWidth() / 4.0f, 18.0f, 50.0f, 50.0f);
 	lMix.setBounds(getWidth() / 4.0f, 60.5, 50.0f, 15.0f);
 
-	speed.setBounds(0.0f, 68.0f, 50.0f, 50.0f);
-	lSpeed.setBounds(0.0f, 110.5f, 50.0f, 15.0f);
+	width.setBounds(0.0f, 68.0f, 50.0f, 50.0f);
+	lWidth.setBounds(0.0f, 110.5f, 50.0f, 15.0f);
 
 	pitch.setBounds(50.0f, 68.0f, 50.0f, 50.0f);
 	lPitch.setBounds(50.0f, 110.5f, 50.0f, 15.0f);
 
-	width.setBounds(0.0f, 118.0f, 50.0f, 50.0f);
-	lWidth.setBounds(0.0f, 160.5f, 50.0f, 15.0f);
+	speed.setBounds(0.0f, 118.0f, 50.0f, 50.0f);
+	lSpeed.setBounds(0.0f, 160.5f, 50.0f, 15.0f);
 
 	depth.setBounds(50.0f, 118.0f, 50.0f, 50.0f);
 	lDepth.setBounds(50.0f, 160.5f, 50.0f, 15.0f);
@@ -154,6 +166,14 @@ void Chorus::resized()
 
 void Chorus::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+	this->sampleRate = sampleRate;
+	spb = samplesPerBlock;
+	fract = 0;
+	juce::dsp::ProcessSpec ps;
+	
+	ps.maximumBlockSize = samplesPerBlock;
+	ps.sampleRate = sampleRate;
+	ps.numChannels = 2;
 }
 
 void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
@@ -166,28 +186,45 @@ void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
 
 		// Process waveshaping
 		juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
-		//juce::dsp::ProcessContextNonReplacing<float> context = juce::dsp::ProcessContextNonReplacing<float>(initial, block);
-		processLFO(block, numSamples);
+		processLFO(block, initial, numSamples);
 
 		// Mix the two signals
-		//block = context.getOutputBlock();
 		block.multiply(m);
 		block.addWithMultiply(juce::dsp::AudioBlock<float>(initial).getSubBlock((size_t)0, (size_t)numSamples), 1.0f - m);
 	}
 }
 
-void Chorus::processLFO(juce::dsp::AudioBlock<float> block, int numSamples)
+void Chorus::processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::AudioBlock<float> initial, int numSamples)
 {
+	int startSample = 0;
+	float orig_sample;
+	float voic_sample;
+
+	level = d * 0.5;
+
+	angleDelta = s / sampleRate * 2.0 * MathConstants<double>::pi;
+
 	if (angleDelta != 0.0)
 	{
 		while (--numSamples >= 0)
 		{
+			float temp, vol1, fract_float;
 			double currentSample;
 
-			currentSample = (double)(level * sin(currentAngle));
+			currentSample = (double)(0.5 * (level / 127.0f) * sin(currentAngle));
+			
+			transposeMulti(block, initial, numSamples, initial.getNumChannels());
+
+			for (int i = 0; i < initial.getNumChannels(); i++)
+			{
+				orig_sample = initial.getSample(i, startSample);
+
+				voic_sample = block.getSample(i, startSample);
+				//voic_sample += currentSample;
+				block.setSample(i, startSample, voic_sample + orig_sample);
+			}
 
 			currentAngle += angleDelta;
-
 			if (currentAngle > (MathConstants<double>::twoPi))
 			{
 				currentAngle -= MathConstants<double>::twoPi;
@@ -195,6 +232,64 @@ void Chorus::processLFO(juce::dsp::AudioBlock<float> block, int numSamples)
 		}
 	}
 }
+
+int Chorus::transposeMulti(juce::dsp::AudioBlock<float>& dest, juce::dsp::AudioBlock<float> src, int &srcSamples, int numChannels)
+{
+	int i;
+	int srcSampleEnd = srcSamples - 4;
+	int srcCount = 0;
+	int inc = 0;
+	double rate = p;
+
+	//if (p >= 1.0f)
+	//{
+	//	AAFilter->evaluate(dest.getChannelPointer(0), src.getChannelPointer(0), srcSamples, numChannels);
+	//}
+
+	i = 0;
+	while (srcCount < srcSampleEnd)
+	{
+		const float x3 = 1.0f;
+		const float x2 = (float)fract;    // x
+		const float x1 = x2 * x2;           // x^2
+		const float x0 = x1 * x2;           // x^3
+		float y0, y1, y2, y3;
+
+		y0 = _coeffs[0] * x0 + _coeffs[1] * x1 + _coeffs[2] * x2 + _coeffs[3] * x3;
+		y1 = _coeffs[4] * x0 + _coeffs[5] * x1 + _coeffs[6] * x2 + _coeffs[7] * x3;
+		y2 = _coeffs[8] * x0 + _coeffs[9] * x1 + _coeffs[10] * x2 + _coeffs[11] * x3;
+		y3 = _coeffs[12] * x0 + _coeffs[13] * x1 + _coeffs[14] * x2 + _coeffs[15] * x3;
+
+		for (int c = 0; c < numChannels; c++)
+		{
+			float out;
+			out = (y0 * src.getSample(c, inc)) + (y1 * src.getSample(c, inc + 1)) + (y2 * src.getSample(c, inc + 2)) + (y3 * src.getSample(c, inc + 3));
+			//out = y0 * psrc[c] + y1 * psrc[c + numChannels] + y2 * psrc[c + 2 * numChannels] + y3 * psrc[c + 3 * numChannels];
+			dest.setSample(c, i, out);
+			//pdest[0] = (float)out;
+			//pdest++;
+		}
+		i++;
+
+		// update position fraction
+		fract += rate;
+		// update whole positions
+		int whole = (int)fract;
+		fract -= whole;
+		inc += whole;
+		//psrc += numChannels * whole;
+		srcCount += whole;
+	}
+	srcSamples = srcCount;
+
+	//if (p < 1.0f)
+	//{
+	//	AAFilter->evaluate(dest.getChannelPointer(0), src.getChannelPointer(0), srcSamples, numChannels);
+	//}
+
+	return i;
+}
+
 
 void Chorus::releaseResources()
 {
@@ -209,6 +304,77 @@ void Chorus::sliderValueChanged(Slider* slider)
 	else if (slider->getName() == "pitch_knob")
 	{
 		p = slider->getValue();
+
+		int length = 64;
+		double cutoffFreq = p > 1.0 ? 0.5 / p : 0.5 * p;
+		unsigned int i;
+		double cntTemp, temp, tempCoeff, h, w;
+		double wc;
+		double scaleCoeff, sum;
+		double *work;
+		float *coeffs;
+
+		assert(length >= 2);
+		assert(length % 4 == 0);
+		assert(cutoffFreq >= 0);
+		assert(cutoffFreq <= 0.5);
+
+		work = new double[length];
+		coeffs = new float[length];
+
+		wc = 2.0 * MathConstants<double>::pi * cutoffFreq;
+		tempCoeff = MathConstants<double>::twoPi / (double)length;
+
+		sum = 0;
+		for (i = 0; i < length; i++)
+		{
+			cntTemp = (double)i - (double)(length / 2);
+
+			temp = cntTemp * wc;
+			if (temp != 0)
+			{
+				h = sin(temp) / temp;                     // sinc function
+			}
+			else
+			{
+				h = 1.0;
+			}
+			w = 0.54 + 0.46 * cos(tempCoeff * cntTemp);       // hamming window
+
+			temp = w * h;
+			work[i] = temp;
+
+			// calc net sum of coefficients 
+			sum += temp;
+		}
+
+		// ensure the sum of coefficients is larger than zero
+		assert(sum > 0);
+
+		// ensure we've really designed a lowpass filter...
+		assert(work[length / 2] > 0);
+		assert(work[length / 2 + 1] > -1e-6);
+		assert(work[length / 2 - 1] > -1e-6);
+
+		// Calculate a scaling coefficient in such a way that the result can be
+		// divided by 16384
+		scaleCoeff = 16384.0f / sum;
+
+		for (i = 0; i < length; i++)
+		{
+			temp = work[i] * scaleCoeff;
+			// scale & round to nearest integer
+			temp += (temp >= 0) ? 0.5 : -0.5;
+			// ensure no overfloods
+			assert(temp >= -32768 && temp <= 32767);
+			coeffs[i] = (float)(temp / 16384.0f);
+		}
+
+		// Set coefficients. Use divide factor 14 => divide result by 2^14 = 16384
+		AAFilter->setCoefficients(coeffs, length, 14);
+
+		delete[] work;
+		delete[] coeffs;
 	}
 	else if (slider->getName() == "width_knob")
 	{
