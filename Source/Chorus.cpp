@@ -32,6 +32,7 @@ Chorus::Chorus() :
 
 Chorus::~Chorus()
 {
+	delete[] filterCoeffs;
 }
 
 void Chorus::initialiseUI()
@@ -121,9 +122,11 @@ void Chorus::initialiseChorus()
 
 	fract = 0;
 
-	AAFilter = FIRFilter::newInstance();
+	resultDivider = 16384;
 
-	cntr = 0;
+	filterCoeffs = NULL;
+
+	setCoeffs();
 }
 
 void Chorus::updateChorus()
@@ -169,11 +172,6 @@ void Chorus::prepareToPlay(double sampleRate, int samplesPerBlock)
 	this->sampleRate = sampleRate;
 	spb = samplesPerBlock;
 	fract = 0;
-	juce::dsp::ProcessSpec ps;
-	
-	ps.maximumBlockSize = samplesPerBlock;
-	ps.sampleRate = sampleRate;
-	ps.numChannels = 2;
 }
 
 void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
@@ -221,7 +219,7 @@ void Chorus::processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::Au
 
 				voic_sample = block.getSample(i, startSample);
 				//voic_sample += currentSample;
-				block.setSample(i, startSample, voic_sample + orig_sample);
+				block.setSample(i, startSample, voic_sample);
 			}
 
 			currentAngle += angleDelta;
@@ -241,10 +239,46 @@ int Chorus::transposeMulti(juce::dsp::AudioBlock<float>& dest, juce::dsp::AudioB
 	int inc = 0;
 	double rate = p;
 
-	//if (p >= 1.0f)
-	//{
-	//	AAFilter->evaluate(dest.getChannelPointer(0), src.getChannelPointer(0), srcSamples, numChannels);
-	//}
+//	if (p >= 1.0f)
+//	{
+//		int j, k, end;
+//		// when using floating point samples, use a scaler instead of a divider
+//		// because division is much slower operation than multiplying.
+//		double dScaler = 1.0 / (double)resultDivider;
+//
+//		assert(filterCoeffs != NULL);
+//
+//		end = 2 * (srcSamples - 64);
+//
+//#pragma omp parallel for
+//		for (j = 0, k = 0; j < end; j += 2, k++)
+//		{
+//			const float *ptr;
+//			double suml, sumr;
+//			unsigned int i;
+//
+//			suml = sumr = 0;
+//			ptr = src.getChannelPointer(0) + j;
+//			for (i = 0; i < 64; i += 4)
+//			{
+//				// loop is unrolled by factor of 4 here for efficiency
+//				suml += ptr[2 * i + 0] * filterCoeffs[i + 0] +
+//					ptr[2 * i + 2] * filterCoeffs[i + 1] +
+//					ptr[2 * i + 4] * filterCoeffs[i + 2] +
+//					ptr[2 * i + 6] * filterCoeffs[i + 3];
+//				sumr += ptr[2 * i + 1] * filterCoeffs[i + 0] +
+//					ptr[2 * i + 3] * filterCoeffs[i + 1] +
+//					ptr[2 * i + 5] * filterCoeffs[i + 2] +
+//					ptr[2 * i + 7] * filterCoeffs[i + 3];
+//			}
+//
+//			suml *= dScaler;
+//			sumr *= dScaler;
+//
+//			dest.setSample(0, k, (float)suml);
+//			dest.setSample(1, k, (float)sumr);
+//		}
+//	}
 
 	i = 0;
 	while (srcCount < srcSampleEnd)
@@ -282,10 +316,46 @@ int Chorus::transposeMulti(juce::dsp::AudioBlock<float>& dest, juce::dsp::AudioB
 	}
 	srcSamples = srcCount;
 
-	//if (p < 1.0f)
-	//{
-	//	AAFilter->evaluate(dest.getChannelPointer(0), src.getChannelPointer(0), srcSamples, numChannels);
-	//}
+//	if (p < 1.0f)
+//	{
+//		int j, k, end;
+//		// when using floating point samples, use a scaler instead of a divider
+//		// because division is much slower operation than multiplying.
+//		double dScaler = 1.0 / (double)resultDivider;
+//
+//		assert(filterCoeffs != NULL);
+//
+//		end = 2 * (srcSamples - 64);
+//
+//#pragma omp parallel for
+//		for (j = 0, k = 0; j < end; j += 2, k++)
+//		{
+//			const float *ptr;
+//			double suml, sumr;
+//			unsigned int i;
+//
+//			suml = sumr = 0;
+//			ptr = src.getChannelPointer(0) + j;
+//			for (i = 0; i < 64; i += 4)
+//			{
+//				// loop is unrolled by factor of 4 here for efficiency
+//				suml += ptr[2 * i + 0] * filterCoeffs[i + 0] +
+//					ptr[2 * i + 2] * filterCoeffs[i + 1] +
+//					ptr[2 * i + 4] * filterCoeffs[i + 2] +
+//					ptr[2 * i + 6] * filterCoeffs[i + 3];
+//				sumr += ptr[2 * i + 1] * filterCoeffs[i + 0] +
+//					ptr[2 * i + 3] * filterCoeffs[i + 1] +
+//					ptr[2 * i + 5] * filterCoeffs[i + 2] +
+//					ptr[2 * i + 7] * filterCoeffs[i + 3];
+//			}
+//
+//			suml *= dScaler;
+//			sumr *= dScaler;
+//
+//			dest.setSample(0, k, (float)suml);
+//			dest.setSample(1, k, (float)sumr);
+//		}
+//	}
 
 	return i;
 }
@@ -305,76 +375,7 @@ void Chorus::sliderValueChanged(Slider* slider)
 	{
 		p = slider->getValue();
 
-		int length = 64;
-		double cutoffFreq = p > 1.0 ? 0.5 / p : 0.5 * p;
-		unsigned int i;
-		double cntTemp, temp, tempCoeff, h, w;
-		double wc;
-		double scaleCoeff, sum;
-		double *work;
-		float *coeffs;
-
-		assert(length >= 2);
-		assert(length % 4 == 0);
-		assert(cutoffFreq >= 0);
-		assert(cutoffFreq <= 0.5);
-
-		work = new double[length];
-		coeffs = new float[length];
-
-		wc = 2.0 * MathConstants<double>::pi * cutoffFreq;
-		tempCoeff = MathConstants<double>::twoPi / (double)length;
-
-		sum = 0;
-		for (i = 0; i < length; i++)
-		{
-			cntTemp = (double)i - (double)(length / 2);
-
-			temp = cntTemp * wc;
-			if (temp != 0)
-			{
-				h = sin(temp) / temp;                     // sinc function
-			}
-			else
-			{
-				h = 1.0;
-			}
-			w = 0.54 + 0.46 * cos(tempCoeff * cntTemp);       // hamming window
-
-			temp = w * h;
-			work[i] = temp;
-
-			// calc net sum of coefficients 
-			sum += temp;
-		}
-
-		// ensure the sum of coefficients is larger than zero
-		assert(sum > 0);
-
-		// ensure we've really designed a lowpass filter...
-		assert(work[length / 2] > 0);
-		assert(work[length / 2 + 1] > -1e-6);
-		assert(work[length / 2 - 1] > -1e-6);
-
-		// Calculate a scaling coefficient in such a way that the result can be
-		// divided by 16384
-		scaleCoeff = 16384.0f / sum;
-
-		for (i = 0; i < length; i++)
-		{
-			temp = work[i] * scaleCoeff;
-			// scale & round to nearest integer
-			temp += (temp >= 0) ? 0.5 : -0.5;
-			// ensure no overfloods
-			assert(temp >= -32768 && temp <= 32767);
-			coeffs[i] = (float)(temp / 16384.0f);
-		}
-
-		// Set coefficients. Use divide factor 14 => divide result by 2^14 = 16384
-		AAFilter->setCoefficients(coeffs, length, 14);
-
-		delete[] work;
-		delete[] coeffs;
+		setCoeffs();
 	}
 	else if (slider->getName() == "width_knob")
 	{
@@ -388,4 +389,82 @@ void Chorus::sliderValueChanged(Slider* slider)
 	{
 		d = slider->getValue();
 	}
+}
+
+void Chorus::setCoeffs()
+{
+	int length = 64;
+	double cutoffFreq = p > 1.0 ? 0.5 / p : 0.5 * p;
+	unsigned int i;
+	double cntTemp, temp, tempCoeff, h, w;
+	double wc;
+	double scaleCoeff, sum;
+	double *work;
+	float *coeffs;
+
+	assert(length >= 2);
+	assert(length % 4 == 0);
+	assert(cutoffFreq >= 0);
+	assert(cutoffFreq <= 0.5);
+
+	work = new double[length];
+	coeffs = new float[length];
+
+	wc = 2.0 * MathConstants<double>::pi * cutoffFreq;
+	tempCoeff = MathConstants<double>::twoPi / (double)length;
+
+	sum = 0;
+	for (i = 0; i < length; i++)
+	{
+		cntTemp = (double)i - (double)(length / 2);
+
+		temp = cntTemp * wc;
+		if (temp != 0)
+		{
+			h = sin(temp) / temp;                     // sinc function
+		}
+		else
+		{
+			h = 1.0;
+		}
+		w = 0.54 + 0.46 * cos(tempCoeff * cntTemp);       // hamming window
+
+		temp = w * h;
+		work[i] = temp;
+
+		// calc net sum of coefficients 
+		sum += temp;
+	}
+
+	// ensure the sum of coefficients is larger than zero
+	assert(sum > 0);
+
+	// ensure we've really designed a lowpass filter...
+	assert(work[length / 2] > 0);
+	assert(work[length / 2 + 1] > -1e-6);
+	assert(work[length / 2 - 1] > -1e-6);
+
+	// Calculate a scaling coefficient in such a way that the result can be
+	// divided by 16384
+	scaleCoeff = 16384.0f / sum;
+
+	for (i = 0; i < length; i++)
+	{
+		temp = work[i] * scaleCoeff;
+		// scale & round to nearest integer
+		temp += (temp >= 0) ? 0.5 : -0.5;
+		// ensure no overfloods
+		assert(temp >= -32768 && temp <= 32767);
+		coeffs[i] = (float)(temp / 16384.0f);
+	}
+
+	// Set coefficients. Use divide factor 14 => divide result by 2^14 = 16384
+
+
+	delete[] filterCoeffs;
+	filterCoeffs = new float[64];
+	memcpy(filterCoeffs, coeffs, 64 * sizeof(float));
+
+	delete[] work;
+	delete[] coeffs;
 }

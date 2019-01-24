@@ -144,6 +144,8 @@ public:
 		updateChorus();
 	}
 
+	void setCoeffs();
+
 private:
 	// This reference is provided as s quick way for your editor to
 	// access the processor object that created it.
@@ -165,7 +167,8 @@ private:
 	TextButton enable;
 
 	// Practical Elements
-	FIRFilter *AAFilter;
+	float *filterCoeffs;
+	float resultDivider;
 	double sampleRate;
 	int spb;
 
@@ -176,8 +179,6 @@ private:
 	double w;
 	double fract;
 	int en;
-
-	int cntr;
 
 	double currentAngle;
 	double angleDelta;
