@@ -23,8 +23,8 @@ using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "FIRFilter.h"
-using soundtouch::FIRFilter;
+#include "Stk/DelayL.h"
+using stk::DelayL;
 
 #include "Knob.h"
 
@@ -47,7 +47,6 @@ public:
 	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void processSamples(AudioBuffer<float>& buffer, int numSamples);
 	void processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::AudioBlock<float> initial, int numSamples);
-	int transposeMulti(juce::dsp::AudioBlock<float>& dest, juce::dsp::AudioBlock<float> src, int &srcSamples, int numChannels);
 	void releaseResources();
 
 	void updateChorus();
@@ -144,8 +143,6 @@ public:
 		updateChorus();
 	}
 
-	void setCoeffs();
-
 private:
 	// This reference is provided as s quick way for your editor to
 	// access the processor object that created it.
@@ -167,8 +164,7 @@ private:
 	TextButton enable;
 
 	// Practical Elements
-	float *filterCoeffs;
-	float resultDivider;
+	DelayL delayline;
 	double sampleRate;
 	int spb;
 
@@ -177,7 +173,6 @@ private:
 	double d;
 	double p;
 	double w;
-	double fract;
 	int en;
 
 	double currentAngle;

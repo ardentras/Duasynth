@@ -6,11 +6,13 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
-      <FILE id="QhTWpH" name="cpu_detect_x86.cpp" compile="1" resource="0"
-            file="Source/cpu_detect_x86.cpp"/>
-      <FILE id="q8QGCJ" name="cpu_detect.h" compile="0" resource="0" file="Source/cpu_detect.h"/>
-      <FILE id="zgmTUz" name="FIRFilter.cpp" compile="1" resource="0" file="Source/FIRFilter.cpp"/>
-      <FILE id="KGNPxF" name="FIRFilter.h" compile="0" resource="0" file="Source/FIRFilter.h"/>
+      <GROUP id="{C323DDC5-6D9E-0A76-20A0-C78192527FF7}" name="Stk">
+        <FILE id="uPE4Zr" name="DelayL.cpp" compile="1" resource="0" file="Source/Stk/DelayL.cpp"/>
+        <FILE id="u9fpKI" name="DelayL.h" compile="0" resource="0" file="Source/Stk/DelayL.h"/>
+        <FILE id="Y8lheR" name="Stk.cpp" compile="1" resource="0" file="Source/Stk/Stk.cpp"/>
+        <FILE id="P0GpmO" name="Stk.h" compile="0" resource="0" file="Source/Stk/Stk.h"/>
+        <FILE id="aTd7p1" name="StkFilter.h" compile="0" resource="0" file="Source/Stk/StkFilter.h"/>
+      </GROUP>
       <FILE id="g0T8Hm" name="Chorus.cpp" compile="1" resource="0" file="Source/Chorus.cpp"/>
       <FILE id="tlGJQu" name="Chorus.h" compile="0" resource="0" file="Source/Chorus.h"/>
       <FILE id="gwPyeI" name="LoadPresetComponent.cpp" compile="1" resource="0"

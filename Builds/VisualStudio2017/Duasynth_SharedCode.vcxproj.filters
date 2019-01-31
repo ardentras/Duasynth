@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Duasynth\Source\Stk">
+      <UniqueIdentifier>{8B7381B0-EDC1-72E2-7C3A-7623C949DA57}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Duasynth\Source\sqlite">
       <UniqueIdentifier>{B0791E7B-D1DE-17B7-9D52-10FB94428BF2}</UniqueIdentifier>
     </Filter>
@@ -472,11 +475,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\cpu_detect_x86.cpp">
-      <Filter>Duasynth\Source</Filter>
+    <ClCompile Include="..\..\Source\Stk\DelayL.cpp">
+      <Filter>Duasynth\Source\Stk</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FIRFilter.cpp">
-      <Filter>Duasynth\Source</Filter>
+    <ClCompile Include="..\..\Source\Stk\Stk.cpp">
+      <Filter>Duasynth\Source\Stk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Chorus.cpp">
       <Filter>Duasynth\Source</Filter>
@@ -2604,11 +2607,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\cpu_detect.h">
-      <Filter>Duasynth\Source</Filter>
+    <ClInclude Include="..\..\Source\Stk\DelayL.h">
+      <Filter>Duasynth\Source\Stk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FIRFilter.h">
-      <Filter>Duasynth\Source</Filter>
+    <ClInclude Include="..\..\Source\Stk\Stk.h">
+      <Filter>Duasynth\Source\Stk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Stk\StkFilter.h">
+      <Filter>Duasynth\Source\Stk</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Chorus.h">
       <Filter>Duasynth\Source</Filter>

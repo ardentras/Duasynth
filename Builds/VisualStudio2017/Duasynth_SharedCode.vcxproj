@@ -138,8 +138,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\cpu_detect_x86.cpp"/>
-    <ClCompile Include="..\..\Source\FIRFilter.cpp"/>
+    <ClCompile Include="..\..\Source\Stk\DelayL.cpp"/>
+    <ClCompile Include="..\..\Source\Stk\Stk.cpp"/>
     <ClCompile Include="..\..\Source\Chorus.cpp"/>
     <ClCompile Include="..\..\Source\LoadPresetComponent.cpp"/>
     <ClCompile Include="..\..\Source\CreatePresetComponent.cpp"/>
@@ -2051,8 +2051,9 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\cpu_detect.h"/>
-    <ClInclude Include="..\..\Source\FIRFilter.h"/>
+    <ClInclude Include="..\..\Source\Stk\DelayL.h"/>
+    <ClInclude Include="..\..\Source\Stk\Stk.h"/>
+    <ClInclude Include="..\..\Source\Stk\StkFilter.h"/>
     <ClInclude Include="..\..\Source\Chorus.h"/>
     <ClInclude Include="..\..\Source\LoadPresetComponent.h"/>
     <ClInclude Include="..\..\Source\CreatePresetComponent.h"/>
