@@ -22,7 +22,7 @@ Chorus::Chorus() :
 	lMix("mix_knob", "Mix"), lPitch("pitch_knob", "Pitch"),
 	lWidth("width_knob", "Width"), lSpeed("speed_knob", "Speed"),
 	lDepth("depth_knob", "Depth"), theName("name_label", "Chorus"),
-	isActive(false), m(1.0), p(0.0), w(0.5), s(0.01), d(0.0), en(1),
+	isActive(false), m(1.0), p(0.0), w(0.0), s(0.01), d(0.0), en(1),
 	currentAngle(0.0), angleDelta(0.0)
 {
 	initialiseUI();
@@ -68,7 +68,7 @@ void Chorus::initialiseUI()
 
 	// Width
 	width.setRange(0.0f, 1.0f, 1.0f / 150.0f);
-	width.setValue(0.5f);
+	width.setValue(0.0f);
 	width.addListener(this);
 	width.setName("width_knob");
 	addAndMakeVisible(width);
@@ -118,6 +118,11 @@ void Chorus::initialiseChorus()
 	level = p * 0.15;
 
 	angleDelta = s / sampleRate * 2.0 * MathConstants<double>::pi;
+
+	param.width = 1.0;
+	param.wetLevel = w;
+	auto& reverb = processorChain.template get<0>();
+	reverb.setParameters(param);
 }
 
 void Chorus::updateChorus()
@@ -162,6 +167,8 @@ void Chorus::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	this->sampleRate = sampleRate;
 	spb = samplesPerBlock;
+
+	processorChain.prepare({ sampleRate, (uint32)samplesPerBlock, 2 });
 }
 
 void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
@@ -175,6 +182,13 @@ void Chorus::processSamples(AudioBuffer<float>& buffer, int numSamples)
 		// Process waveshaping
 		juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)numSamples);
 		processLFO(block, initial, numSamples);
+
+		// Process waveshaping
+		juce::dsp::ProcessContextReplacing<float> context(block);
+		processorChain.process(context);
+
+		// Mix the two signals
+		block = context.getOutputBlock();
 
 		// Mix the two signals
 		double mix = m * (1.0f - d);
@@ -198,8 +212,6 @@ void Chorus::processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::Au
 			double currentSample;
 
 			currentSample = (double)(0.5 * (level / 127.0f) * sin(currentAngle));
-
-			//transposeMulti(block, initial, numSamples, initial.getNumChannels());
 			
 			delayline.setDelay(delayline.getDelay() + currentSample);
 
@@ -221,6 +233,7 @@ void Chorus::processLFO(juce::dsp::AudioBlock<float>& block, const juce::dsp::Au
 
 void Chorus::releaseResources()
 {
+	processorChain.reset();
 }
 
 void Chorus::sliderValueChanged(Slider* slider)
@@ -228,10 +241,6 @@ void Chorus::sliderValueChanged(Slider* slider)
 	if (slider->getName() == "mix_knob")
 	{
 		m = slider->getValue();
-		if (m > 0.5)
-			m = 0.66f + (m / 3.0f);
-		else
-			m = (m / 3.0f);
 	}
 	else if (slider->getName() == "pitch_knob")
 	{
@@ -240,6 +249,10 @@ void Chorus::sliderValueChanged(Slider* slider)
 	else if (slider->getName() == "width_knob")
 	{
 		w = slider->getValue();
+
+		param.wetLevel = w;
+		auto& reverb = processorChain.template get<0>();
+		reverb.setParameters(param);
 	}
 	else if (slider->getName() == "speed_knob")
 	{

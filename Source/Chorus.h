@@ -75,11 +75,6 @@ public:
 		}
 	}
 
-	void resetParams()
-	{
-		
-	}
-
 	vector<pair<string, float>> serialize()
 	{
 		vector<pair<string, float>> params;
@@ -164,6 +159,8 @@ private:
 	TextButton enable;
 
 	// Practical Elements
+	juce::dsp::Reverb::Parameters param;
+	juce::dsp::ProcessorChain<juce::dsp::Reverb> processorChain;
 	DelayL delayline;
 	double sampleRate;
 	int spb;
