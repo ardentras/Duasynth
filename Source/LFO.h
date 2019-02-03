@@ -156,6 +156,7 @@ private:
 
 	// Practical Elements
 	string curr_wf;
+	DuasynthWaveVoice* generator;
 	vector<string> waveforms;
 
 	double a;

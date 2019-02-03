@@ -21,7 +21,7 @@
 //==============================================================================
 LFO::LFO()
 	: lAmp("amp_knob", "Amp"), lFreq("freq_knob", "Freq"), canBind(false),
-	isActive(false), a(0.0f), f(0.0f), wf(0), en(1)
+	isActive(false), a(0.0f), f(0.0f), wf(0), en(1), generator(nullptr)
 {
 	initialiseLFO();
 
@@ -108,25 +108,36 @@ void LFO::initialiseLFO()
 void LFO::updateLFO()
 {
 	releaseResources();
+	DuasynthWaveSound* wf;
 
 	if (curr_wf == "saw")
 	{
+		wf = new SawWaveSound();
+		generator = new SawWaveVoice();
 	}
 	else if (curr_wf == "triangle")
 	{
+		wf = new TriangleWaveSound();
+		generator = new TriangleWaveVoice();
 	}
 	else if (curr_wf == "sine")
 	{
+		wf = new SineWaveSound();
+		generator = new SineWaveVoice();
 	}
 	else if (curr_wf == "square")
 	{
+		wf = new SquareWaveSound();
+		generator = new SquareWaveVoice();
 	}
 
-	//wfView.setWaveform(temp->getShape());
+	wfView.setWaveform(wf->getShape());
 	wfView.resized();
 
 	sliderValueChanged(&amplitude);
 	sliderValueChanged(&freq);
+
+	delete wf;
 }
 
 //==============================================================================
@@ -170,11 +181,11 @@ void LFO::sliderValueChanged(Slider* slider)
 {
 	if (slider->getName() == "amp_knob")
 	{
-		
+		a = slider->getValue();
 	}
 	else if (slider->getName() == "freq_knob")
 	{
-
+		f = slider->getValue();
 	}
 }
 
