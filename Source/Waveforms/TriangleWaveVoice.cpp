@@ -16,6 +16,15 @@ bool TriangleWaveVoice::canPlaySound(SynthesiserSound* sound)
 	return true;
 }
 
+void TriangleWaveVoice::startNote(float f, float a)
+{
+	currentAngle = 0.0;
+	level = a * 0.15;
+	tailOff = 0.0;
+
+	angleDelta = f / getSampleRate() * 2.0 * MathConstants<double>::pi;
+}
+
 void TriangleWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
 {
 	currentAngle = 0.0;

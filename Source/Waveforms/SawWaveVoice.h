@@ -20,6 +20,7 @@ public:
 	~SawWaveVoice() {}
 
 	bool canPlaySound(SynthesiserSound*) override;
+	void startNote(float f, float a) override;
 	void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;
 	void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 	void stopNote(float velocity, bool allowTailOff) override;

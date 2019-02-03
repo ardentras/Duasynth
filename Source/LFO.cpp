@@ -97,17 +97,17 @@ void LFO::initialiseLFO()
 	waveforms.push_back("triangle");
 	waveforms.push_back("sine");
 	waveforms.push_back("square");
-	//waveforms.push_back("noise");
 
 	wf = 0;
 	curr_wf = waveforms.at(wf);
 
 	updateLFO();
+
+	buff.setSize(1, 1);
 }
 
 void LFO::updateLFO()
 {
-	releaseResources();
 	DuasynthWaveSound* wf;
 
 	if (curr_wf == "saw")
@@ -164,21 +164,16 @@ void LFO::resized()
 	lFreq.setBounds(100.0f, getHeight() - 15.0f, 50.0f, 15.0f);
 }
 
-void LFO::prepareToPlay(double sampleRate, int samplesPerBlock)
+double LFO::tick()
 {
+	generator->renderNextBlock(buff, 0, 1);
 
-}
-
-void LFO::releaseResources()
-{
-}
-
-void LFO::getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
-{
+	return buff.getSample(0, 0);
 }
 
 void LFO::sliderValueChanged(Slider* slider)
 {
+	generator->stopNote(a, false);
 	if (slider->getName() == "amp_knob")
 	{
 		a = slider->getValue();
@@ -187,6 +182,7 @@ void LFO::sliderValueChanged(Slider* slider)
 	{
 		f = slider->getValue();
 	}
+	generator->startNote(f, a);
 }
 
 void LFO::sliderDragEnded(Slider* slider)

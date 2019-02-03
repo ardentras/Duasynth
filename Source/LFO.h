@@ -41,9 +41,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
-	void prepareToPlay(double sampleRate, int samplesPerBlock);
-	void releaseResources();
-	void getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages);
+	double tick();
 
 	void sliderValueChanged(Slider* slider) override;
 	void sliderDragEnded(Slider* slider) override;
@@ -157,6 +155,7 @@ private:
 	// Practical Elements
 	string curr_wf;
 	DuasynthWaveVoice* generator;
+	AudioBuffer<double> buff;
 	vector<string> waveforms;
 
 	double a;
