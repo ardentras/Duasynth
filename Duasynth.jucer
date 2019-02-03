@@ -6,6 +6,8 @@
               bundleIdentifier="com.shaunrasmusen.duasynth" aaxIdentifier="com.shaunrasmusen.duasynth">
   <MAINGROUP id="tVEWWM" name="Duasynth">
     <GROUP id="{AFB28CC2-F6DA-070D-0969-79AD82D8BA07}" name="Source">
+      <FILE id="PsTuZj" name="LFO.cpp" compile="1" resource="0" file="Source/LFO.cpp"/>
+      <FILE id="kowelV" name="LFO.h" compile="0" resource="0" file="Source/LFO.h"/>
       <GROUP id="{C323DDC5-6D9E-0A76-20A0-C78192527FF7}" name="Stk">
         <FILE id="uPE4Zr" name="DelayL.cpp" compile="1" resource="0" file="Source/Stk/DelayL.cpp"/>
         <FILE id="u9fpKI" name="DelayL.h" compile="0" resource="0" file="Source/Stk/DelayL.h"/>

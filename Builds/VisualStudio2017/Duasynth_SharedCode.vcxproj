@@ -138,6 +138,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LFO.cpp"/>
     <ClCompile Include="..\..\Source\Stk\DelayL.cpp"/>
     <ClCompile Include="..\..\Source\Stk\Stk.cpp"/>
     <ClCompile Include="..\..\Source\Chorus.cpp"/>
@@ -2051,6 +2052,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LFO.h"/>
     <ClInclude Include="..\..\Source\Stk\DelayL.h"/>
     <ClInclude Include="..\..\Source\Stk\Stk.h"/>
     <ClInclude Include="..\..\Source\Stk\StkFilter.h"/>

@@ -15,6 +15,7 @@
 #include "Filter.h"
 #include "Waveshaper.h"
 #include "Chorus.h"
+#include "LFO.h"
 
 //==============================================================================
 /**
@@ -67,6 +68,8 @@ public:
 	Filter& getBFilter() { return b_filter; }
 	Chorus& getChorus() { return chorus; }
 	Waveshaper& getWaveshaper() { return waveshaper; }
+	LFO& getALFO() { return a_lfo; }
+	LFO& getBLFO() { return b_lfo; }
 
 private:
     //==============================================================================
@@ -76,6 +79,8 @@ private:
 	Filter b_filter;
 	Chorus chorus;
 	Waveshaper waveshaper;
+	LFO a_lfo;
+	LFO b_lfo;
 
 	MidiMessageCollector midiCollector;
 

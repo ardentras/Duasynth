@@ -37,6 +37,8 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 	lfos.setColour(Label::textColourId, Colours::white);
 	lfos.setJustificationType(Justification::centred);
 	addAndMakeVisible(lfos);
+	addAndMakeVisible(processor.getALFO());
+	addAndMakeVisible(processor.getBLFO());
 
 	addAndMakeVisible(preset);
 
@@ -106,6 +108,16 @@ void DuasynthAudioProcessorEditor::resized()
 		20.0f + ELEM_PADDING + processor.getAOsc().getHeight() + oscs.getBounds().getHeight() + processor.getAFilter().getHeight() + filters.getHeight(),
 		(processor.getAFilter().getWidth() + ELEM_PADDING) * 2,
 		25.0f);
+	processor.getALFO().setBounds(
+		ELEM_PADDING,
+		20.0f + ELEM_PADDING + processor.getAOsc().getHeight() + oscs.getBounds().getHeight() + filters.getBounds().getHeight() + processor.getAFilter().getHeight() + lfos.getBounds().getHeight(),
+		processor.getALFO().getWidth(),
+		processor.getALFO().getHeight());
+	processor.getBLFO().setBounds(
+		(ELEM_PADDING * 2) + processor.getAFilter().getWidth(),
+		20.0f + ELEM_PADDING + processor.getAOsc().getHeight() + oscs.getBounds().getHeight() + filters.getBounds().getHeight() + processor.getAFilter().getHeight() + lfos.getBounds().getHeight(),
+		processor.getBLFO().getWidth(),
+		processor.getBLFO().getHeight());
 
 	// Right Column (Preset, Chorus, WS)
 	preset.setBounds(
@@ -178,6 +190,14 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 				{
 					processor.getWaveshaper().deserialize(param.second);
 				}
+				else if (param.first == "a_lfo")
+				{
+					processor.getALFO().deserialize(param.second);
+				}
+				else if (param.first == "b_lfo")
+				{
+					processor.getBLFO().deserialize(param.second);
+				}
 			}
 		}
 
@@ -207,6 +227,8 @@ void DuasynthAudioProcessorEditor::buttonClicked(Button* button)
 			params.push_back(pair<string, vector<pair<string, float>>>("b_filter", processor.getBFilter().serialize()));
 			params.push_back(pair<string, vector<pair<string, float>>>("chorus", processor.getChorus().serialize()));
 			params.push_back(pair<string, vector<pair<string, float>>>("waveshaper", processor.getWaveshaper().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("a_lfo", processor.getALFO().serialize()));
+			params.push_back(pair<string, vector<pair<string, float>>>("b_lfo", processor.getBLFO().serialize()));
 
 			preset.store(name, params);
 		}

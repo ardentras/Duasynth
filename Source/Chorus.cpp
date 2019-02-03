@@ -10,13 +10,6 @@
 
 #include "Chorus.h"
 
-// cubic interpolation coefficients
-static const float _coeffs[] =
-{ -0.5f,  1.0f, -0.5f, 0.0f,
-   1.5f, -2.5f,  0.0f, 1.0f,
-  -1.5f,  2.0f,  0.5f, 0.0f,
-   0.5f, -0.5f,  0.0f, 0.0f };
-
 //==============================================================================
 Chorus::Chorus() :
 	lMix("mix_knob", "Mix"), lPitch("pitch_knob", "Pitch"),

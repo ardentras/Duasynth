@@ -475,6 +475,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LFO.cpp">
+      <Filter>Duasynth\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Stk\DelayL.cpp">
       <Filter>Duasynth\Source\Stk</Filter>
     </ClCompile>
@@ -2607,6 +2610,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LFO.h">
+      <Filter>Duasynth\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Stk\DelayL.h">
       <Filter>Duasynth\Source\Stk</Filter>
     </ClInclude>
