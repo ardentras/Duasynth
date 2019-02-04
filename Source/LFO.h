@@ -61,13 +61,20 @@ public:
 	void startLFO();
 	void stopLFO();
 
-	void addBind(Knob* knob) { binds.push_back(knob); }
+	void addBind(Knob* knob) 
+	{
+		knob->setBound(true); binds.push_back(knob); 
+		knob->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour::fromRGB(0, 150, 0));
+	}
 	void removeBind(Knob* knob) 
 	{
+		Knob k;
 		for (int i = 0; i < binds.size(); i++)
 		{
 			if (binds[i] == knob)
 			{
+				knob->setColour(Slider::ColourIds::rotarySliderFillColourId, k.findColour(Slider::ColourIds::rotarySliderFillColourId));
+				knob->setBound(false);
 				binds.erase(binds.begin() + i);
 			}
 		}
@@ -96,9 +103,19 @@ public:
 			{
 				canBind = false;
 				button->setToggleState(canBind, false);
+
+				Knob knob;
+				for (Knob* k : binds)
+				{
+					k->setColour(Slider::ColourIds::rotarySliderFillColourId, knob.findColour(Slider::ColourIds::rotarySliderFillColourId));
+				}
 			}
 			else
 			{
+				for (Knob* k : binds)
+				{
+					k->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour::fromRGB(0, 150, 0));
+				}
 				canBind = true;
 				button->setToggleState(canBind, false);
 			}

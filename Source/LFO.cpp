@@ -261,4 +261,17 @@ void LFO::sliderDragEnded(Slider* slider)
 
 		wfView.resized();
 	}
+	else if (dynamic_cast<Knob*>(slider) != nullptr && canBind)
+	{
+		std::cout << slider->getName() << std::endl;
+		Knob* k = (Knob*)slider;
+		if (k->isBound())
+		{
+			removeBind(k);
+		}
+		else
+		{
+			addBind(k);
+		}
+	}
 }

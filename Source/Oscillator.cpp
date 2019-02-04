@@ -24,8 +24,8 @@ Oscillator::Oscillator(LFO& a, LFO& b) : Oscillator()
 	coarse.addListener(&b);
 	fine.addListener(&a);
 	fine.addListener(&b);
-	volume.addListener(&a);
-	volume.addListener(&b);
+	//volume.addListener(&a);
+	//volume.addListener(&b);
 }
 
 Oscillator::Oscillator()

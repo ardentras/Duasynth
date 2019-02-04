@@ -12,7 +12,7 @@
 #include "Knob.h"
 
 //==============================================================================
-Knob::Knob() : Slider()
+Knob::Knob() : Slider(), bound(false)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.

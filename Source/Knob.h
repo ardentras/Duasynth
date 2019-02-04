@@ -24,6 +24,11 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	bool isBound() { return bound; }
+	void setBound(bool b) { bound = b; }
+
 private:
+	bool bound;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Knob)
 };
