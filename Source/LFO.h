@@ -19,16 +19,20 @@ using std::pair;
 #include <string>
 using std::string;
 
+#include <windows.h>
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Waveforms/DuasynthWaveSound.h"
 #include "Waveforms/DuasynthWaveVoice.h"
 #include "Knob.h"
 #include "WFView.h"
 
+#define SAMPLE_RATE 4096
+
 //==============================================================================
 /**
 */
-class LFO : public Component, private Slider::Listener, private Button::Listener
+class LFO : public Component, public Slider::Listener, private Button::Listener
 {
 public:
 	LFO();
@@ -52,19 +56,36 @@ public:
 
 	bool isLFOActive() { return isActive; }
 
+	bool canLFOBind() { return canBind; }
+
+	void startLFO();
+	void stopLFO();
+
+	void addBind(Knob* knob) { binds.push_back(knob); }
+	void removeBind(Knob* knob) 
+	{
+		for (int i = 0; i < binds.size(); i++)
+		{
+			if (binds[i] == knob)
+			{
+				binds.erase(binds.begin() + i);
+			}
+		}
+	}
+
 	void buttonClicked(Button* button) {
 		if (button->getName() == "enable")
 		{
 			if (isActive)
 			{
 				en = 1;
-				isActive = false;
+				stopLFO();
 				button->setButtonText("Enable");
 			}
 			else
 			{
 				en = 0;
-				isActive = true;
+				startLFO();
 				updateLFO();
 				button->setButtonText("Disable");
 			}
@@ -157,6 +178,10 @@ private:
 	DuasynthWaveVoice* generator;
 	AudioBuffer<double> buff;
 	vector<string> waveforms;
+	vector<Knob*> binds;
+
+	DWORD threadID;
+	HANDLE thread;
 
 	double a;
 	double f;

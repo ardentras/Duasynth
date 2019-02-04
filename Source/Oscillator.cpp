@@ -18,6 +18,16 @@
 #include "Waveforms/SquareWaveVoice.h"
 
 //==============================================================================
+Oscillator::Oscillator(LFO& a, LFO& b) : Oscillator()
+{
+	coarse.addListener(&a);
+	coarse.addListener(&b);
+	fine.addListener(&a);
+	fine.addListener(&b);
+	volume.addListener(&a);
+	volume.addListener(&b);
+}
+
 Oscillator::Oscillator()
 	: lCoarse("coarse_knob", "Coarse"), lFine("fine_knob", "Fine"),
 	  lOctave("octave_adj", "Oct"), c(0.0f), f(0.0f), o(0), wf(0), v(127.0f * 0.8f)

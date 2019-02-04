@@ -20,8 +20,10 @@ using std::pair;
 using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
 #include "Waveforms/DuasynthWaveSound.h"
 #include "Waveforms/DuasynthWaveVoice.h"
+#include "LFO.h"
 #include "DuasynthSynthesiser.h"
 #include "Knob.h"
 #include "WFView.h"
@@ -35,7 +37,8 @@ class Oscillator  : public Component, private Slider::Listener
 {
 public:
 	Oscillator();
-    ~Oscillator();
+	Oscillator(LFO& a, LFO& b);
+	~Oscillator();
 
 	void initialiseUI();
 	void initialiseSynth();

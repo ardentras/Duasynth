@@ -15,6 +15,17 @@
 #include "Filters/NotchFilter.h"
 
 //==============================================================================
+Filter::Filter(LFO& a, LFO& b)
+	: Filter()
+{
+	cutoff.addListener(&a);
+	cutoff.addListener(&b);
+	slope.addListener(&a);
+	slope.addListener(&b);
+	res.addListener(&a);
+	res.addListener(&b);
+}
+
 Filter::Filter()
 	: lCutoff("cutoff_knob", "Cutoff"), lSlope("slope_knob", "Slope"),
 	lRes("res_adj", "Res"), isActive(false), f(2.5f), g(0.0), q(1.0f), ft(0), en(1)

@@ -11,6 +11,20 @@
 #include "Waveshaper.h"
 
 //==============================================================================
+Waveshaper::Waveshaper(LFO& a, LFO& b) : Waveshaper()
+{
+	mix.addListener(&a);
+	mix.addListener(&b);
+	postgain.addListener(&a);
+	postgain.addListener(&b);
+	pregain.addListener(&a);
+	pregain.addListener(&b);
+	attack.addListener(&a);
+	attack.addListener(&b);
+	curve.addListener(&a);
+	curve.addListener(&b);
+}
+
 Waveshaper::Waveshaper() :
 	lMix("mix_knob", "Mix"), lPostgain("post_knob", "Post"),
 	lAttack("attack_knob", "Attack"), lPregain("pre_knob", "Pre"),

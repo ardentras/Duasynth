@@ -26,6 +26,7 @@ using std::string;
 #include "Stk/DelayL.h"
 using stk::DelayL;
 
+#include "LFO.h"
 #include "Knob.h"
 
 //==============================================================================
@@ -35,6 +36,7 @@ class Chorus : public Component, private Slider::Listener, private Button::Liste
 {
 public:
 	Chorus();
+	Chorus(LFO& a, LFO& b);
 	~Chorus();
 
 	void initialiseUI();

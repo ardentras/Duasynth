@@ -11,6 +11,20 @@
 #include "Chorus.h"
 
 //==============================================================================
+Chorus::Chorus(LFO& a, LFO& b) : Chorus()
+{
+	mix.addListener(&a);
+	mix.addListener(&b);
+	pitch.addListener(&a);
+	pitch.addListener(&b);
+	width.addListener(&a);
+	width.addListener(&b);
+	speed.addListener(&a);
+	speed.addListener(&b);
+	depth.addListener(&a);
+	depth.addListener(&b);
+}
+
 Chorus::Chorus() :
 	lMix("mix_knob", "Mix"), lPitch("pitch_knob", "Pitch"),
 	lWidth("width_knob", "Width"), lSpeed("speed_knob", "Speed"),

@@ -21,6 +21,7 @@ using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "LFO.h"
 #include "Knob.h"
 
 //==============================================================================
@@ -30,6 +31,7 @@ class Waveshaper : public Component, private Slider::Listener, private Button::L
 {
 public:
 	Waveshaper();
+	Waveshaper(LFO& a, LFO& b);
 	~Waveshaper();
 
 	void initialiseUI();

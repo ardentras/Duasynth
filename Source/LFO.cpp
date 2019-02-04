@@ -18,11 +18,16 @@
 #include "Waveforms/SquareWaveSound.h"
 #include "Waveforms/SquareWaveVoice.h"
 
+DWORD WINAPI threadFunc(LPVOID lpParam);
+
 //==============================================================================
 LFO::LFO()
-	: lAmp("amp_knob", "Amp"), lFreq("freq_knob", "Freq"), canBind(false),
-	isActive(false), a(0.0f), f(0.0f), wf(0), en(1), generator(nullptr)
+	: lAmp("amp_knob", "Amp"), lFreq("freq_knob", "Freq"),
+	a(0.0f), f(0.0f), wf(0), en(1), generator(nullptr)
 {
+	isActive = false;
+	canBind = false;
+
 	initialiseLFO();
 
 	initialiseUI();
@@ -108,7 +113,7 @@ void LFO::initialiseLFO()
 
 void LFO::updateLFO()
 {
-	DuasynthWaveSound* wf;
+	DuasynthWaveSound* wf = nullptr;
 
 	if (curr_wf == "saw")
 	{
@@ -131,13 +136,61 @@ void LFO::updateLFO()
 		generator = new SquareWaveVoice();
 	}
 
-	wfView.setWaveform(wf->getShape());
+	generator->setCurrentPlaybackSampleRate(SAMPLE_RATE);
+
+	if (wf != nullptr)
+	{
+		wfView.setWaveform(wf->getShape());
+	}
 	wfView.resized();
 
 	sliderValueChanged(&amplitude);
 	sliderValueChanged(&freq);
 
 	delete wf;
+}
+
+void LFO::startLFO()
+{
+	if (!isActive)
+	{
+		isActive = true;
+		thread = CreateThread(NULL, 0, threadFunc, this, 0, &threadID);
+
+		if (thread == NULL)
+		{
+			std::cerr << "CRITICAL: Failed to create thread for LFO clock. Exiting..." << std::endl;
+			exit(-1);
+		}
+	}
+}
+
+void LFO::stopLFO()
+{
+	if (isActive)
+	{
+		isActive = false;
+		WaitForSingleObject(thread, INFINITE);
+	}
+}
+
+DWORD WINAPI threadFunc(LPVOID lpParam)
+{
+	LFO* lfo = (LFO*)lpParam;
+
+	while (lfo->isLFOActive())
+	{
+
+	}
+
+	return 0;
+}
+
+double LFO::tick()
+{
+	generator->renderNextBlock(buff, 0, 1);
+
+	return buff.getSample(0, 0);
 }
 
 //==============================================================================
@@ -164,25 +217,20 @@ void LFO::resized()
 	lFreq.setBounds(100.0f, getHeight() - 15.0f, 50.0f, 15.0f);
 }
 
-double LFO::tick()
-{
-	generator->renderNextBlock(buff, 0, 1);
-
-	return buff.getSample(0, 0);
-}
-
 void LFO::sliderValueChanged(Slider* slider)
 {
-	generator->stopNote(a, false);
 	if (slider->getName() == "amp_knob")
 	{
+		generator->stopNote(a, false);
 		a = slider->getValue();
+		generator->startNote(f, a);
 	}
 	else if (slider->getName() == "freq_knob")
 	{
+		generator->stopNote(a, false);
 		f = slider->getValue();
+		generator->startNote(f, a);
 	}
-	generator->startNote(f, a);
 }
 
 void LFO::sliderDragEnded(Slider* slider)

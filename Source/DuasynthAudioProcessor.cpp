@@ -12,17 +12,20 @@
 #include "DuasynthAudioProcessorEditor.h"
 
 //==============================================================================
-DuasynthAudioProcessor::DuasynthAudioProcessor()
+DuasynthAudioProcessor::DuasynthAudioProcessor() :
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+     AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
 #endif
+	a_lfo(), b_lfo(), a_osc(a_lfo, b_lfo), b_osc(a_lfo, b_lfo), 
+	a_filter(a_lfo, b_lfo), b_filter(a_lfo, b_lfo), waveshaper(a_lfo, b_lfo),
+	chorus(a_lfo, b_lfo)
 {
 
 }

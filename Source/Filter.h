@@ -21,6 +21,7 @@ using std::string;
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "LFO.h"
 #include "Knob.h"
 #include "FilterView.h"
 #include "Filters/FilterType.h"
@@ -32,6 +33,7 @@ class Filter : public Component, private Slider::Listener, private Button::Liste
 {
 public:
 	Filter();
+	Filter(LFO& a, LFO& b);
 	~Filter();
 
 	void initialiseUI();
