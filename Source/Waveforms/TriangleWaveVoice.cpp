@@ -19,7 +19,7 @@ bool TriangleWaveVoice::canPlaySound(SynthesiserSound* sound)
 void TriangleWaveVoice::startNote(float f, float a)
 {
 	currentAngle = 0.0;
-	level = a * 0.15;
+	level = a * 62;
 	tailOff = 0.0;
 
 	angleDelta = f / getSampleRate() * 2.0 * MathConstants<double>::pi;

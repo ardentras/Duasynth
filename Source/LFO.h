@@ -19,20 +19,18 @@ using std::pair;
 #include <string>
 using std::string;
 
-#include <windows.h>
-
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Waveforms/DuasynthWaveSound.h"
 #include "Waveforms/DuasynthWaveVoice.h"
 #include "Knob.h"
 #include "WFView.h"
 
-#define SAMPLE_RATE 4096
+#define SAMPLE_RATE 512
 
 //==============================================================================
 /**
 */
-class LFO : public Component, public Slider::Listener, private Button::Listener
+class LFO : public Component, public Timer, public Slider::Listener, private Button::Listener
 {
 public:
 	LFO();
@@ -45,7 +43,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 
-	double tick();
+	void timerCallback() override;
 
 	void sliderValueChanged(Slider* slider) override;
 	void sliderDragEnded(Slider* slider) override;
@@ -66,6 +64,7 @@ public:
 		knob->setBound(true); binds.push_back(knob); 
 		knob->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour::fromRGB(0, 150, 0));
 	}
+
 	void removeBind(Knob* knob) 
 	{
 		Knob k;
@@ -80,47 +79,7 @@ public:
 		}
 	}
 
-	void buttonClicked(Button* button) {
-		if (button->getName() == "enable")
-		{
-			if (isActive)
-			{
-				en = 1;
-				stopLFO();
-				button->setButtonText("Enable");
-			}
-			else
-			{
-				en = 0;
-				startLFO();
-				updateLFO();
-				button->setButtonText("Disable");
-			}
-		}
-		else if (button->getName() == "bind")
-		{
-			if (canBind)
-			{
-				canBind = false;
-				button->setToggleState(canBind, false);
-
-				Knob knob;
-				for (Knob* k : binds)
-				{
-					k->setColour(Slider::ColourIds::rotarySliderFillColourId, knob.findColour(Slider::ColourIds::rotarySliderFillColourId));
-				}
-			}
-			else
-			{
-				for (Knob* k : binds)
-				{
-					k->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour::fromRGB(0, 150, 0));
-				}
-				canBind = true;
-				button->setToggleState(canBind, false);
-			}
-		}
-	}
+	void buttonClicked(Button* button);
 
 	vector<pair<string, float>> serialize()
 	{
@@ -134,44 +93,7 @@ public:
 		return params;
 	}
 
-	void deserialize(vector<pair<string, float>> params)
-	{
-		for (pair<string, float> param : params)
-		{
-			if (param.first == "amp")
-			{
-				a = param.second;
-				amplitude.setValue(a);
-			}
-			else if (param.first == "freq")
-			{
-				f = param.second;
-				freq.setValue(f);
-			}
-			else if (param.first == "wf")
-			{
-				wf = param.second;
-				curr_wf = waveforms.at(wf);
-			}
-			else if (param.first == "enable")
-			{
-				en = param.second;
-
-				if (en == 1)
-				{
-					isActive = false;
-					enable.setButtonText("Enable");
-				}
-				else
-				{
-					isActive = true;
-					enable.setButtonText("Disable");
-				}
-			}
-		}
-
-		updateLFO();
-	}
+	void deserialize(vector<pair<string, float>> params);
 
 private:
 	// This reference is provided as a quick way for your editor to
@@ -196,9 +118,7 @@ private:
 	AudioBuffer<double> buff;
 	vector<string> waveforms;
 	vector<Knob*> binds;
-
-	DWORD threadID;
-	HANDLE thread;
+	double val, last_val;
 
 	double a;
 	double f;

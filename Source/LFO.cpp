@@ -18,12 +18,10 @@
 #include "Waveforms/SquareWaveSound.h"
 #include "Waveforms/SquareWaveVoice.h"
 
-DWORD WINAPI threadFunc(LPVOID lpParam);
-
 //==============================================================================
 LFO::LFO()
 	: lAmp("amp_knob", "Amp"), lFreq("freq_knob", "Freq"),
-	a(0.0f), f(0.0f), wf(0), en(1), generator(nullptr)
+	a(0.0f), f(0.001f), wf(0), en(1), generator(nullptr), buff(1, 16)
 {
 	isActive = false;
 	canBind = false;
@@ -39,8 +37,8 @@ LFO::~LFO()
 
 void LFO::initialiseUI()
 {
-	// Coarse tuning
-	amplitude.setRange(-1.0f, 1.0f, 1.0 / 150.0);
+	// Amplitude
+	amplitude.setRange(0.0f, 1.0f, 1.0 / 150.0);
 	amplitude.setValue(0.0f);
 	amplitude.addListener(this);
 	amplitude.setName("amp_knob");
@@ -51,8 +49,8 @@ void LFO::initialiseUI()
 	lAmp.setJustificationType(Justification::centred);
 	addAndMakeVisible(lAmp);
 
-	// Fine tuning
-	freq.setRange(0.001f, 10.0f, 1.0 / 150.0);
+	// Frequency
+	freq.setRange(0.001f, 1.0f, 1.0 / 150.0);
 	freq.setValue(0.0f);
 	freq.addListener(this);
 	freq.setName("freq_knob");
@@ -108,12 +106,16 @@ void LFO::initialiseLFO()
 
 	updateLFO();
 
-	buff.setSize(1, 1);
+	buff.clear();
 }
 
 void LFO::updateLFO()
 {
 	DuasynthWaveSound* wf = nullptr;
+	if (generator != nullptr)
+	{
+		delete generator;
+	}
 
 	if (curr_wf == "saw")
 	{
@@ -137,6 +139,7 @@ void LFO::updateLFO()
 	}
 
 	generator->setCurrentPlaybackSampleRate(SAMPLE_RATE);
+	generator->setVolume(1);
 
 	if (wf != nullptr)
 	{
@@ -155,13 +158,7 @@ void LFO::startLFO()
 	if (!isActive)
 	{
 		isActive = true;
-		thread = CreateThread(NULL, 0, threadFunc, this, 0, &threadID);
-
-		if (thread == NULL)
-		{
-			std::cerr << "CRITICAL: Failed to create thread for LFO clock. Exiting..." << std::endl;
-			exit(-1);
-		}
+		startTimerHz(SAMPLE_RATE);
 	}
 }
 
@@ -170,27 +167,26 @@ void LFO::stopLFO()
 	if (isActive)
 	{
 		isActive = false;
-		WaitForSingleObject(thread, INFINITE);
+		stopTimer();
 	}
 }
 
-DWORD WINAPI threadFunc(LPVOID lpParam)
+void LFO::timerCallback()
 {
-	LFO* lfo = (LFO*)lpParam;
+	double range, val;
 
-	while (lfo->isLFOActive())
-	{
-
-	}
-
-	return 0;
-}
-
-double LFO::tick()
-{
+	buff.clear();
 	generator->renderNextBlock(buff, 0, 1);
+	val = buff.getSample(0, 0);
 
-	return buff.getSample(0, 0);
+	for (Knob* k : binds)
+	{
+		range = k->getMaximum() - k->getMinimum();
+		//k->setValue();
+		k->valueChanged();
+	}
+
+	last_val = val;
 }
 
 //==============================================================================
@@ -263,7 +259,6 @@ void LFO::sliderDragEnded(Slider* slider)
 	}
 	else if (dynamic_cast<Knob*>(slider) != nullptr && canBind)
 	{
-		std::cout << slider->getName() << std::endl;
 		Knob* k = (Knob*)slider;
 		if (k->isBound())
 		{
@@ -274,4 +269,86 @@ void LFO::sliderDragEnded(Slider* slider)
 			addBind(k);
 		}
 	}
+}
+
+void LFO::buttonClicked(Button* button) 
+{
+	if (button->getName() == "enable")
+	{
+		if (isActive)
+		{
+			en = 1;
+			stopLFO();
+			button->setButtonText("Enable");
+		}
+		else
+		{
+			en = 0;
+			startLFO();
+			updateLFO();
+			button->setButtonText("Disable");
+		}
+	}
+	else if (button->getName() == "bind")
+	{
+		if (canBind)
+		{
+			canBind = false;
+			button->setToggleState(canBind, false);
+
+			Knob knob;
+			for (Knob* k : binds)
+			{
+				k->setColour(Slider::ColourIds::rotarySliderFillColourId, knob.findColour(Slider::ColourIds::rotarySliderFillColourId));
+			}
+		}
+		else
+		{
+			for (Knob* k : binds)
+			{
+				k->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour::fromRGB(0, 150, 0));
+			}
+			canBind = true;
+			button->setToggleState(canBind, false);
+		}
+	}
+}
+
+void LFO::deserialize(vector<pair<string, float>> params)
+{
+	for (pair<string, float> param : params)
+	{
+		if (param.first == "amp")
+		{
+			a = param.second;
+			amplitude.setValue(a);
+		}
+		else if (param.first == "freq")
+		{
+			f = param.second;
+			freq.setValue(f);
+		}
+		else if (param.first == "wf")
+		{
+			wf = param.second;
+			curr_wf = waveforms.at(wf);
+		}
+		else if (param.first == "enable")
+		{
+			en = param.second;
+
+			if (en == 1)
+			{
+				isActive = false;
+				enable.setButtonText("Enable");
+			}
+			else
+			{
+				isActive = true;
+				enable.setButtonText("Disable");
+			}
+		}
+	}
+
+	updateLFO();
 }
