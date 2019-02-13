@@ -36,6 +36,25 @@ void SawWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSoun
 	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
+double SawWaveVoice::renderNextSample()
+{
+	double currentSample;
+
+	if (angleDelta != 0.0)
+	{
+		currentSample = (double)(level / MathConstants<double>::pi * currentAngle);
+		
+		currentAngle += angleDelta;
+
+		if (currentAngle > (MathConstants<double>::twoPi))
+		{
+			currentAngle -= MathConstants<double>::twoPi;
+		}
+	}
+
+	return currentSample;
+}
+
 void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
 	if (angleDelta != 0.0)

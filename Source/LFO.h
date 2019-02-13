@@ -115,7 +115,6 @@ private:
 	// Practical Elements
 	string curr_wf;
 	DuasynthWaveVoice* generator;
-	AudioBuffer<double> buff;
 	vector<string> waveforms;
 	vector<Knob*> binds;
 	double val, last_val;

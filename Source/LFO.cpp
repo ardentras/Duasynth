@@ -21,7 +21,7 @@
 //==============================================================================
 LFO::LFO()
 	: lAmp("amp_knob", "Amp"), lFreq("freq_knob", "Freq"),
-	a(0.0f), f(0.001f), wf(0), en(1), generator(nullptr), buff(1, 16)
+	a(0.0f), f(0.001f), wf(0), en(1), generator(nullptr), last_val(0)
 {
 	isActive = false;
 	canBind = false;
@@ -38,7 +38,7 @@ LFO::~LFO()
 void LFO::initialiseUI()
 {
 	// Amplitude
-	amplitude.setRange(0.0f, 1.0f, 1.0 / 150.0);
+	amplitude.setRange(0.0f, 0.8f, 1.0 / 150.0);
 	amplitude.setValue(0.0f);
 	amplitude.addListener(this);
 	amplitude.setName("amp_knob");
@@ -105,8 +105,6 @@ void LFO::initialiseLFO()
 	curr_wf = waveforms.at(wf);
 
 	updateLFO();
-
-	buff.clear();
 }
 
 void LFO::updateLFO()
@@ -141,6 +139,8 @@ void LFO::updateLFO()
 	generator->setCurrentPlaybackSampleRate(SAMPLE_RATE);
 	generator->setVolume(1);
 
+	last_val = generator->renderNextSample();
+
 	if (wf != nullptr)
 	{
 		wfView.setWaveform(wf->getShape());
@@ -173,16 +173,84 @@ void LFO::stopLFO()
 
 void LFO::timerCallback()
 {
-	double range, val;
+	double range, val, delta;
 
-	buff.clear();
-	generator->renderNextBlock(buff, 0, 1);
-	val = buff.getSample(0, 0);
+	val = generator->renderNextSample();
 
 	for (Knob* k : binds)
 	{
 		range = k->getMaximum() - k->getMinimum();
-		//k->setValue();
+
+		delta = range * (val - last_val) * .01;
+		
+		std::cout << val << ", " << last_val << ", " << val-last_val << std::endl;
+
+		if (k->getValue() == k->getMaximum() && k->getSurplus() > 0)
+		{
+			double new_delta = k->getSurplus() - delta;
+
+			if (new_delta < 0)
+			{
+				k->setSurplus(0);
+				k->setLessInterval(k->getMaximum() + new_delta);
+				if (abs(k->getLessInterval()) >= k->getInterval())
+				{
+					k->setValue(k->getValue() + k->getLessInterval());
+					k->setLessInterval(k->getLessInterval() - k->getInterval());
+				}
+			}
+			else
+			{
+				k->setSurplus(k->getSurplus() + delta);
+			}
+			std::cout << "gt " << k->getSurplus() << ", " << delta << std::endl;
+		}
+		else if (k->getValue() == k->getMinimum() && k->getSurplus() < 0)
+		{
+			double new_delta = k->getSurplus() + delta;
+
+			if (new_delta > 0)
+			{
+				k->setSurplus(0);
+				k->setLessInterval(k->getMinimum() + new_delta);
+				if (abs(k->getLessInterval()) >= k->getInterval())
+				{
+					k->setValue(k->getValue() + k->getLessInterval());
+					k->setLessInterval(k->getLessInterval() - k->getInterval());
+				}
+			}
+			else
+			{
+				k->setSurplus(k->getSurplus() + delta);
+			}
+			std::cout << "lt " << k->getSurplus() << ", " << delta << std::endl;
+		}
+		else
+		{
+			if (k->getValue() + delta > k->getMaximum())
+			{
+				double new_delta = k->getValue() + delta - k->getMaximum();
+				k->setValue(k->getMaximum());
+				k->setSurplus(new_delta);
+			}
+			else if (k->getValue() + delta < k->getMinimum())
+			{
+				double new_delta = k->getValue() - delta + k->getMaximum();
+				k->setValue(k->getMinimum());
+				k->setSurplus(new_delta);
+			}
+			else
+			{
+				k->setLessInterval(k->getLessInterval() + delta);
+				if (abs(k->getLessInterval()) >= k->getInterval())
+				{
+					k->setValue(k->getValue() + k->getLessInterval());
+					k->setLessInterval(0);
+				}
+				std::cout << "in " << k->getLessInterval() << ", " << delta << std::endl;
+			}
+		}
+
 		k->valueChanged();
 	}
 

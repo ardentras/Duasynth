@@ -23,6 +23,7 @@ public:
 	void startNote(float f, float a) override;
 	void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;
 	void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
+	double renderNextSample() override;
 	void stopNote(float velocity, bool allowTailOff) override;
 
 	/** Called to let the voice know that the pitch wheel has been moved.

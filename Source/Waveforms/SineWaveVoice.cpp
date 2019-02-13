@@ -36,6 +36,25 @@ void SineWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSou
 	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
+double SineWaveVoice::renderNextSample()
+{
+	double currentSample;
+
+	if (angleDelta != 0.0)
+	{
+		currentSample = (double)(level * sin(currentAngle));
+
+		currentAngle += angleDelta;
+
+		if (currentAngle > (MathConstants<double>::twoPi))
+		{
+			currentAngle -= MathConstants<double>::twoPi;
+		}
+	}
+
+	return currentSample;
+}
+
 void SineWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
 	if (angleDelta != 0.0)

@@ -19,6 +19,7 @@ public:
 	virtual ~DuasynthWaveVoice() {}
 
 	virtual void startNote(float f, float a) {}
+	virtual double renderNextSample() { return 0.0; }
 
 	virtual void setOct(double val) { angleDelta *= std::pow(2.0, val - oct); oct = val; }
 	virtual void setCoarse(double val) { angleDelta *= std::pow(2.0, ((val - coarse) * 100.0) / 1200.0); coarse = val; }

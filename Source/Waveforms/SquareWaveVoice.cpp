@@ -36,6 +36,32 @@ void SquareWaveVoice::startNote(int midiNoteNumber, float velocity, SynthesiserS
 	angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
+double SquareWaveVoice::renderNextSample()
+{
+	double currentSample;
+
+	if (angleDelta != 0.0)
+	{
+		if (currentAngle < MathConstants<double>::pi)
+		{
+			currentSample = (double)(level);
+		}
+		else
+		{
+			currentSample = (double)(level * -1);
+		}
+
+		currentAngle += angleDelta;
+
+		if (currentAngle > (MathConstants<double>::twoPi))
+		{
+			currentAngle -= MathConstants<double>::twoPi;
+		}
+	}
+
+	return currentSample;
+}
+
 void SquareWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
 	if (angleDelta != 0.0)

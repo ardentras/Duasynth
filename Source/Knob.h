@@ -27,8 +27,16 @@ public:
 	bool isBound() { return bound; }
 	void setBound(bool b) { bound = b; }
 
+	double getSurplus() { return surplus; }
+	void setSurplus(double s) { surplus = s; }
+
+	double getLessInterval() { return less_interval; }
+	void setLessInterval(double li) { less_interval = li; }
+
 private:
 	bool bound;
+	double surplus;
+	double less_interval;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Knob)
 };
