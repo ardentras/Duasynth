@@ -164,6 +164,8 @@ bool DuasynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
+	AudioBuffer<float> buff2;
+
     auto totalNumInputChannels  = buffer.getNumChannels();
     auto totalNumOutputChannels = buffer.getNumChannels();
 
@@ -185,7 +187,6 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
-	AudioBuffer<float> buff2;
 	buff2.makeCopyOf(buffer);
 
 	a_osc.getNextAudioBlock(buffer, midiMessages);
@@ -193,9 +194,19 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 	b_osc.getNextAudioBlock(buff2, midiMessages);
 	b_filter.processSamples(buff2, buff2.getNumSamples());
 
+	juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)buffer.getNumSamples());
+	juce::dsp::AudioBlock<float> block2 = juce::dsp::AudioBlock<float>(buff2).getSubBlock((size_t)0, (size_t)buff2.getNumSamples());
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         //float* channelData = buffer.getWritePointer (channel);
+		for (int i = 0; i < buffer.getNumSamples() / buffer.getNumChannels(); i++)
+		{
+			block.addSample(channel, i, block2.getSample(channel, i) * am);
+		}
+
+		buff2.applyGain(channel, 0, buffer.getNumSamples(), 1.0f - am);
+
 		buffer.addFrom(channel, 0, buff2, channel, 0, buffer.getNumSamples());
     }
 

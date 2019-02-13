@@ -163,7 +163,7 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getWaveshaper().getHeight());
 }
 
-void DuasynthAudioProcessorEditor::sliderDragEnded(Slider* slider)
+void DuasynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
 	if (slider->getName() == "fm_knob")
 	{

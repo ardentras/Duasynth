@@ -37,8 +37,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-	void sliderValueChanged(Slider* slider) override {}
-	void sliderDragEnded(Slider* slider) override;
+	void sliderValueChanged(Slider* slider) override;
+	void sliderDragEnded(Slider* slider) override {}
 	void buttonClicked(Button* button) override;
 
 	DuasynthAudioProcessor& getProcessor() { return processor; }
