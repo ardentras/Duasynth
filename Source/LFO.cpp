@@ -147,8 +147,8 @@ void LFO::updateLFO()
 	}
 	wfView.resized();
 
-	sliderValueChanged(&amplitude);
-	sliderValueChanged(&freq);
+	sliderDragEnded(&amplitude);
+	sliderDragEnded(&freq);
 
 	delete wf;
 }
@@ -281,22 +281,6 @@ void LFO::resized()
 	lFreq.setBounds(100.0f, getHeight() - 15.0f, 50.0f, 15.0f);
 }
 
-void LFO::sliderValueChanged(Slider* slider)
-{
-	if (slider->getName() == "amp_knob")
-	{
-		generator->stopNote(a, false);
-		a = slider->getValue();
-		generator->startNote(f, a);
-	}
-	else if (slider->getName() == "freq_knob")
-	{
-		generator->stopNote(a, false);
-		f = slider->getValue();
-		generator->startNote(f, a);
-	}
-}
-
 void LFO::sliderDragEnded(Slider* slider)
 {
 	if (slider->getName() == "wf_select")
@@ -336,6 +320,18 @@ void LFO::sliderDragEnded(Slider* slider)
 		{
 			addBind(k);
 		}
+	}
+	else if (slider->getName() == "amp_knob")
+	{
+		generator->stopNote(a, false);
+		a = slider->getValue();
+		generator->startNote(f, a);
+	}
+	else if (slider->getName() == "freq_knob")
+	{
+		generator->stopNote(a, false);
+		f = slider->getValue();
+		generator->startNote(f, a);
 	}
 }
 

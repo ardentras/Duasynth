@@ -14,7 +14,7 @@
 //==============================================================================
 DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcessor& p)
 	: AudioProcessorEditor(&p), processor(p), oscs("", "Oscillators"),
-	filters("", "Filters"), lfos("", "LFOs")
+	filters("", "Filters"), lfos("", "LFOs"), mods("", "AM Mod FM")
 {
 	// Oscillators label
 	oscs.setFont(Font(24.0f, Font::plain));
@@ -40,12 +40,23 @@ DuasynthAudioProcessorEditor::DuasynthAudioProcessorEditor(DuasynthAudioProcesso
 	addAndMakeVisible(processor.getALFO());
 	addAndMakeVisible(processor.getBLFO());
 
+	// Presets
 	addAndMakeVisible(preset);
 
 	Button* button = (Button*)preset.getChildComponent(1);
 	button->addListener(this);
 	button = (Button*)preset.getChildComponent(2);
 	button->addListener(this);
+
+	// Modulations Label
+	mods.setFont(Font(24.0f, Font::plain));
+	mods.setColour(Label::textColourId, Colours::white);
+	mods.setJustificationType(Justification::centred);
+	addAndMakeVisible(mods);
+	addAndMakeVisible(processor.getAMMod());
+	addAndMakeVisible(processor.getFMMod());
+	processor.getAMMod().addListener(this);
+	processor.getFMMod().addListener(this);
 
 	addAndMakeVisible(processor.getChorus());
 
@@ -119,22 +130,49 @@ void DuasynthAudioProcessorEditor::resized()
 		processor.getBLFO().getWidth(),
 		processor.getBLFO().getHeight());
 
-	// Right Column (Preset, Chorus, WS)
+	// Right Column (Preset, Mods, Chorus, WS)
 	preset.setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
 		ELEM_PADDING,
 		preset.getWidth(),
 		preset.getHeight());
+	mods.setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
+		ELEM_PADDING + preset.getHeight(),
+		preset.getWidth(),
+		25.0f);
+	processor.getAMMod().setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 33,
+		ELEM_PADDING + preset.getHeight() + 30.0f,
+		50.0f,
+		50.0f);
+	processor.getFMMod().setBounds(
+		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 100,
+		ELEM_PADDING + preset.getHeight() + 30.0f,
+		50.0f,
+		50.0f);
 	processor.getChorus().setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40,
-		ELEM_PADDING + preset.getHeight() + 20,
+		ELEM_PADDING + preset.getHeight() + 80,
 		processor.getWaveshaper().getWidth(),
 		processor.getWaveshaper().getHeight());
 	processor.getWaveshaper().setBounds(
 		(ELEM_PADDING * 3) + (processor.getAFilter().getWidth() * 2) + 40, 
-		ELEM_PADDING + preset.getHeight() + processor.getChorus().getHeight() + 40, 
+		ELEM_PADDING + preset.getHeight() + processor.getChorus().getHeight() + 100, 
 		processor.getWaveshaper().getWidth(), 
 		processor.getWaveshaper().getHeight());
+}
+
+void DuasynthAudioProcessorEditor::sliderDragEnded(Slider* slider)
+{
+	if (slider->getName() == "fm_knob")
+	{
+		processor.setFM(slider->getValue());
+	}
+	else if (slider->getName() == "am_knob")
+	{
+		processor.setAM(slider->getValue());
+	}
 }
 
 void DuasynthAudioProcessorEditor::buttonClicked(Button* button)

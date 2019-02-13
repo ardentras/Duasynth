@@ -45,7 +45,7 @@ public:
 
 	void timerCallback() override;
 
-	void sliderValueChanged(Slider* slider) override;
+	void sliderValueChanged(Slider* slider) override {}
 	void sliderDragEnded(Slider* slider) override;
 
 	void updateLFO();

@@ -26,7 +26,7 @@ using std::vector;
 //==============================================================================
 /**
 */
-class DuasynthAudioProcessorEditor  : public AudioProcessorEditor, private Button::Listener
+class DuasynthAudioProcessorEditor  : public AudioProcessorEditor, private Button::Listener, private Slider::Listener
 {
 public:
 	DuasynthAudioProcessorEditor() : AudioProcessorEditor(nullptr), processor(DuasynthAudioProcessor()) {}
@@ -37,6 +37,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	void sliderValueChanged(Slider* slider) override {}
+	void sliderDragEnded(Slider* slider) override;
 	void buttonClicked(Button* button) override;
 
 	DuasynthAudioProcessor& getProcessor() { return processor; }
@@ -48,6 +50,7 @@ private:
 	Label oscs;
 	Label filters;
 	Label lfos;
+	Label mods;
 
 	PresetBank preset;
 

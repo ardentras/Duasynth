@@ -25,9 +25,17 @@ DuasynthAudioProcessor::DuasynthAudioProcessor() :
 #endif
 	a_lfo(), b_lfo(), a_osc(a_lfo, b_lfo), b_osc(a_lfo, b_lfo), 
 	a_filter(a_lfo, b_lfo), b_filter(a_lfo, b_lfo), waveshaper(a_lfo, b_lfo),
-	chorus(a_lfo, b_lfo)
+	chorus(a_lfo, b_lfo), am(0.0), fm(0.0)
 {
+	// AM Mod
+	am_mod.setRange(0.0f, 1.0f, 1.0f / 150);
+	am_mod.setValue(0.0f);
+	am_mod.setName("am_knob");
 
+	// FM Mod
+	fm_mod.setRange(0.0f, 1.0f, 1.0f / 150);
+	fm_mod.setValue(0.0f);
+	fm_mod.setName("fm_knob");
 }
 
 DuasynthAudioProcessor::~DuasynthAudioProcessor()
@@ -156,8 +164,8 @@ bool DuasynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    auto totalNumInputChannels  = buffer.getNumChannels();
+    auto totalNumOutputChannels = buffer.getNumChannels();
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -177,16 +185,19 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 
 	midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        float* channelData = buffer.getWritePointer (channel);
-
-    }
+	AudioBuffer<float> buff2;
+	buff2.makeCopyOf(buffer);
 
 	a_osc.getNextAudioBlock(buffer, midiMessages);
 	a_filter.processSamples(buffer, buffer.getNumSamples());
-	b_osc.getNextAudioBlock(buffer, midiMessages);
-	b_filter.processSamples(buffer, buffer.getNumSamples());
+	b_osc.getNextAudioBlock(buff2, midiMessages);
+	b_filter.processSamples(buff2, buff2.getNumSamples());
+
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        //float* channelData = buffer.getWritePointer (channel);
+		buffer.addFrom(channel, 0, buff2, channel, 0, buffer.getNumSamples());
+    }
 
 	chorus.processSamples(buffer, buffer.getNumSamples());
 	

@@ -71,6 +71,11 @@ public:
 	LFO& getALFO() { return a_lfo; }
 	LFO& getBLFO() { return b_lfo; }
 
+	Knob& getAMMod() { return am_mod; }
+	void setAM(double val) { am = val; }
+	Knob& getFMMod() { return fm_mod; }
+	void setFM(double val) { fm = val; }
+
 private:
     //==============================================================================
 	Oscillator a_osc;
@@ -81,6 +86,11 @@ private:
 	Waveshaper waveshaper;
 	LFO a_lfo;
 	LFO b_lfo;
+
+	Knob am_mod;
+	double am;
+	Knob fm_mod;
+	double fm;
 
 	MidiMessageCollector midiCollector;
 
