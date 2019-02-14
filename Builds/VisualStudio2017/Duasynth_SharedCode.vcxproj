@@ -161,6 +161,8 @@
     <ClCompile Include="..\..\Source\Waveforms\SquareWaveVoice.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveSound.cpp"/>
     <ClCompile Include="..\..\Source\Waveforms\TriangleWaveVoice.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\WhiteNoiseSound.cpp"/>
+    <ClCompile Include="..\..\Source\Waveforms\WhiteNoiseVoice.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessor.cpp"/>
     <ClCompile Include="..\..\Source\DuasynthAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\Source\Filter.cpp"/>
@@ -2081,6 +2083,8 @@
     <ClInclude Include="..\..\Source\Waveforms\SquareWaveVoice.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveSound.h"/>
     <ClInclude Include="..\..\Source\Waveforms\TriangleWaveVoice.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\WhiteNoiseSound.h"/>
+    <ClInclude Include="..\..\Source\Waveforms\WhiteNoiseVoice.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessor.h"/>
     <ClInclude Include="..\..\Source\DuasynthAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\Source\Filter.h"/>

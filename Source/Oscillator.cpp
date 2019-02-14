@@ -16,6 +16,8 @@
 #include "Waveforms/SineWaveVoice.h"
 #include "Waveforms/SquareWaveSound.h"
 #include "Waveforms/SquareWaveVoice.h"
+#include "Waveforms/WhiteNoiseSound.h"
+#include "Waveforms/WhiteNoiseVoice.h"
 
 //==============================================================================
 Oscillator::Oscillator(LFO& a, LFO& b) : Oscillator()
@@ -114,7 +116,7 @@ void Oscillator::initialiseSynth()
 	waveforms.push_back("triangle");
 	waveforms.push_back("sine");
 	waveforms.push_back("square");
-	//waveforms.push_back("noise");
+	waveforms.push_back("noise");
 
 	wf = 0;
 	curr_wf = waveforms.at(wf);
@@ -158,6 +160,14 @@ void Oscillator::updateSynth()
 		{
 			synth.addVoice(new SquareWaveVoice());
 			synth.addSound(new SquareWaveSound());
+		}
+	}
+	else if (curr_wf == "noise")
+	{
+		for (int i = 0; i < NUM_VOICES; i++)
+		{
+			synth.addVoice(new WhiteNoiseVoice());
+			synth.addSound(new WhiteNoiseSound());
 		}
 	}
 

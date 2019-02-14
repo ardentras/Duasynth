@@ -91,6 +91,14 @@
               file="Source/Waveforms/TriangleWaveVoice.cpp"/>
         <FILE id="USWREs" name="TriangleWaveVoice.h" compile="0" resource="0"
               file="Source/Waveforms/TriangleWaveVoice.h"/>
+        <FILE id="srY1DO" name="WhiteNoiseSound.cpp" compile="1" resource="0"
+              file="Source/Waveforms/WhiteNoiseSound.cpp"/>
+        <FILE id="hmOIYc" name="WhiteNoiseSound.h" compile="0" resource="0"
+              file="Source/Waveforms/WhiteNoiseSound.h"/>
+        <FILE id="tLypx3" name="WhiteNoiseVoice.cpp" compile="1" resource="0"
+              file="Source/Waveforms/WhiteNoiseVoice.cpp"/>
+        <FILE id="EHktai" name="WhiteNoiseVoice.h" compile="0" resource="0"
+              file="Source/Waveforms/WhiteNoiseVoice.h"/>
       </GROUP>
       <FILE id="RgB44k" name="DuasynthAudioProcessor.cpp" compile="1" resource="0"
             file="Source/DuasynthAudioProcessor.cpp"/>
