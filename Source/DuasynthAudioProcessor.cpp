@@ -122,18 +122,6 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	waveshaper.setSampleRate(sampleRate);
 	waveshaper.prepareToPlay(sampleRate, samplesPerBlock);
 
-	for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
-	{
-		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)a_osc.getSynth().getVoice(i);
-		voice->setFMBuffSize(samplesPerBlock);
-	}
-
-	for (int i = 0; i < b_osc.getSynth().getNumVoices(); i++)
-	{
-		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)b_osc.getSynth().getVoice(i);
-		voice->setFMBuffSize(samplesPerBlock);
-	}
-
 	midiCollector.reset(sampleRate);
 }
 
@@ -209,6 +197,7 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 		for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
 		{
 			a_osc.setFMBuff(b_osc.getFMBuff(i), i, fm);
+			b_osc.setFMBuff(nullptr, i, 0);
 		}
 	}
 

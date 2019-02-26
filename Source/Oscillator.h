@@ -47,7 +47,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-	AudioBuffer<float>* getFMBuff(int i) 
+	float* getFMBuff(int i) 
 	{
 		if (!isChangingVoices)
 		{
@@ -60,7 +60,7 @@ public:
 		}
 	}
 
-	void setFMBuff(AudioBuffer<float>* buff, int i, float level)
+	void setFMBuff(float* buff, int i, float level)
 	{
 		if (!isChangingVoices)
 		{

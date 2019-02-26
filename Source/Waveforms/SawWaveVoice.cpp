@@ -8,6 +8,7 @@
   ==============================================================================
 */
 #include <cmath>
+#include <math.h>
 
 #include "SawWaveVoice.h"
 
@@ -58,32 +59,18 @@ double SawWaveVoice::renderNextSample()
 void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
 	if (angleDelta != 0.0)
-	{
-		/*float fm_angle;
-		buff.clear();*/
+	{ 
 		if (tailOff > 0.0)
 		{
 			while (--numSamples >= 0)
 			{
-				//fm_angle = fm_buff.getSample(0, startSample);
-				//if (fm_angle < 0.000001)
-				//{
-				//	fm_angle = last_fm;
-				//}
 				double currentSample = (double)(level * (volume / 127.0f) / MathConstants<double>::pi * currentAngle * tailOff);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				
-				//if (fm_angle >= 0.00001)
-				//{
-				//	currentAngle += angleDelta + fm_angle;
-				//}
-				//else
-				{
-					currentAngle += angleDelta;
-				}
+				currentAngle = fmod(currentAngle + (fm_buff == nullptr ? 1 : 1.0 - (*fm_buff * fm_level)) * angleDelta, MathConstants<double>::twoPi);
 
-				//buff.addSample(0, startSample, angleDelta);
+				buff = currentAngle;
 				++startSample;
 				tailOff *= 0.99;
 				if (tailOff <= 0.005)
@@ -103,25 +90,14 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 		{
 			while (--numSamples >= 0)
 			{
-				//fm_angle = fm_buff.getSample(0, startSample);
-				//if (fm_angle < 0.000001)
-				//{
-				//	fm_angle = last_fm;
-				//}
+
 				double currentSample = (double)(level * (volume / 127.0f) / MathConstants<double>::pi * currentAngle);
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
 				
-				//if (fm_angle >= 0.00001)
-				//{
-				//	currentAngle += angleDelta + fm_angle;
-				//}
-				//else
-				{
-					currentAngle += angleDelta;
-				}
+				currentAngle = fmod(currentAngle + (fm_buff == nullptr ? 1 : 1.0 - (*fm_buff * fm_level)) * angleDelta, MathConstants<double>::twoPi);
 
-				//buff.addSample(0, startSample, angleDelta);
+				buff = currentAngle;
 				++startSample;
 
 				if (currentAngle > (MathConstants<double>::twoPi))
