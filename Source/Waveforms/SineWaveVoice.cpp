@@ -59,17 +59,32 @@ void SineWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startS
 {
 	if (angleDelta != 0.0)
 	{
+		//float fm_angle;
+		//buff.clear();
 		if (tailOff > 0.0)
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample;
-
-				currentSample = (double)(level * (volume / 127.0f) * sin(currentAngle) * tailOff);
+				//fm_angle = fm_buff.getSample(0, startSample);
+				//if (fm_angle < 0.000001)
+				//{
+				//	fm_angle = last_fm;
+				//}
+				double currentSample = (double)(level * (volume / 127.0f) * sin(currentAngle) * tailOff);
 
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
-				currentAngle += angleDelta;
+
+				//if (fm_angle >= 0.00001)
+				//{
+				//	currentAngle += angleDelta + fm_angle;
+				//}
+				//else
+				{
+					currentAngle += angleDelta;
+				}
+				//buff.addSample(0, startSample, angleDelta);
+
 				++startSample;
 				tailOff *= 0.99;
 				if (tailOff <= 0.005)
@@ -89,13 +104,26 @@ void SineWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startS
 		{
 			while (--numSamples >= 0)
 			{
-				double currentSample;
-
-				currentSample = (double)(level * (volume / 127.0f) * sin(currentAngle));
+				//fm_angle = fm_buff.getSample(0, startSample);
+				//if (fm_angle < 0.000001)
+				//{
+				//	fm_angle = last_fm;
+				//}
+				double currentSample = (double)(level * (volume / 127.0f) * sin(currentAngle));
 
 				for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
 					outputBuffer.addSample(i, startSample, currentSample);
-				currentAngle += angleDelta;
+				
+				//if (fm_angle >= 0.00001)
+				//{
+				//	currentAngle += angleDelta + fm_angle;
+				//}
+				//else
+				{
+					currentAngle += angleDelta;
+				}
+				//buff.addSample(0, startSample, angleDelta);
+
 				++startSample;
 
 				if (currentAngle > (MathConstants<double>::twoPi))

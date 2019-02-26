@@ -14,12 +14,40 @@
 class DuasynthWaveVoice : public SynthesiserVoice
 {
 public:
-	DuasynthWaveVoice() : coarse(0.0), fine(0.0), oct(0.0) {}
+	DuasynthWaveVoice() : coarse(0.0), fine(0.0), oct(0.0), buff(nullptr), fm_buff(nullptr) {}
 
-	virtual ~DuasynthWaveVoice() {}
+	virtual ~DuasynthWaveVoice() 
+	{
+		delete buff; 
+	}
 
 	virtual void startNote(float f, float a) {}
 	virtual double renderNextSample() { return 0.0; }
+
+	virtual void setFMBuffSize(int size)
+	{
+		if (buff != nullptr)
+		{
+			delete buff;
+		}
+		buff = new AudioBuffer<float>(1, size);
+		buff->clear();
+	}
+
+	virtual void setFMBuff(AudioBuffer<float>* buffer, float level)
+	{
+		fm_level = level;
+		if (buffer != nullptr)
+		{
+			fm_buff = buff;
+			last_fm = fm_buff->getSample(0, 0);
+		}
+	}
+
+	virtual AudioBuffer<float>* getFMBuff()
+	{
+		return buff;
+	}
 
 	virtual void setOct(double val) { angleDelta *= std::pow(2.0, val - oct); oct = val; }
 	virtual void setCoarse(double val) { angleDelta *= std::pow(2.0, ((val - coarse) * 100.0) / 1200.0); coarse = val; }
@@ -36,4 +64,9 @@ protected:
 	double fine;
 	double oct;
 	double volume;
+
+	AudioBuffer<float>* buff;
+	AudioBuffer<float>* fm_buff;
+	float fm_level;
+	float last_fm;
 };

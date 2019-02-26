@@ -47,6 +47,28 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	AudioBuffer<float>* getFMBuff(int i) 
+	{
+		if (!isChangingVoices)
+		{
+			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
+			return voice->getFMBuff();
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
+	void setFMBuff(AudioBuffer<float>* buff, int i, float level)
+	{
+		if (!isChangingVoices)
+		{
+			DuasynthWaveVoice* voice = (DuasynthWaveVoice*)synth.getVoice(i);
+			voice->setFMBuff(buff, level);
+		}
+	}
+
 	void prepareToPlay(double sampleRate, int samplesPerBlock);
 	void releaseResources();
 	void getNextAudioBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages);
@@ -58,6 +80,7 @@ public:
 
 	DuasynthSynthesiser& getSynth() { return synth; }
 	string getCurrWF() { return curr_wf; }
+	bool getChangingVoices() { return isChangingVoices; }
 
 	vector<pair<string, float>> serialize()
 	{

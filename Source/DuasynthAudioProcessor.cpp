@@ -122,6 +122,18 @@ void DuasynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 	waveshaper.setSampleRate(sampleRate);
 	waveshaper.prepareToPlay(sampleRate, samplesPerBlock);
 
+	for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
+	{
+		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)a_osc.getSynth().getVoice(i);
+		voice->setFMBuffSize(samplesPerBlock);
+	}
+
+	for (int i = 0; i < b_osc.getSynth().getNumVoices(); i++)
+	{
+		DuasynthWaveVoice* voice = (DuasynthWaveVoice*)b_osc.getSynth().getVoice(i);
+		voice->setFMBuffSize(samplesPerBlock);
+	}
+
 	midiCollector.reset(sampleRate);
 }
 
@@ -189,11 +201,20 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 
 	buff2.makeCopyOf(buffer);
 
-	a_osc.getNextAudioBlock(buffer, midiMessages);
-	a_filter.processSamples(buffer, buffer.getNumSamples());
 	b_osc.getNextAudioBlock(buff2, midiMessages);
 	b_filter.processSamples(buff2, buff2.getNumSamples());
 
+	if (!a_osc.getChangingVoices() && !b_osc.getChangingVoices())
+	{
+		for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
+		{
+			a_osc.setFMBuff(b_osc.getFMBuff(i), i, fm);
+		}
+	}
+
+	a_osc.getNextAudioBlock(buffer, midiMessages);
+	a_filter.processSamples(buffer, buffer.getNumSamples());
+	
 	juce::dsp::AudioBlock<float> block = juce::dsp::AudioBlock<float>(buffer).getSubBlock((size_t)0, (size_t)buffer.getNumSamples());
 	juce::dsp::AudioBlock<float> block2 = juce::dsp::AudioBlock<float>(buff2).getSubBlock((size_t)0, (size_t)buff2.getNumSamples());
 
@@ -205,7 +226,7 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 			block.addSample(channel, i, block2.getSample(channel, i) * am);
 		}
 
-		buff2.applyGain(channel, 0, buffer.getNumSamples(), 1.0f - am);
+		buff2.applyGain(channel, 0, buffer.getNumSamples(), 1.0f - (fm > am ? fm : am));
 
 		buffer.addFrom(channel, 0, buff2, channel, 0, buffer.getNumSamples());
     }
