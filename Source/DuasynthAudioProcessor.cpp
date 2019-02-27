@@ -192,13 +192,10 @@ void DuasynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
 	b_osc.getNextAudioBlock(buff2, midiMessages);
 	b_filter.processSamples(buff2, buff2.getNumSamples());
 
-	if (!a_osc.getChangingVoices() && !b_osc.getChangingVoices())
+	for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
 	{
-		for (int i = 0; i < a_osc.getSynth().getNumVoices(); i++)
-		{
-			a_osc.setFMBuff(b_osc.getFMBuff(i), i, fm);
-			b_osc.setFMBuff(nullptr, i, 0);
-		}
+		a_osc.setFMBuff(b_osc.getFMBuff(i), i, fm);
+		b_osc.setFMBuff(nullptr, i, 0);
 	}
 
 	a_osc.getNextAudioBlock(buffer, midiMessages);

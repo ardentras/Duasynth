@@ -25,6 +25,10 @@ public:
 
 	virtual void setFMBuff(float* buffer, float level)
 	{
+		if (fm_buff != buffer)
+		{
+			std::cout << buffer << std::endl;
+		}
 		fm_level = level;
 		fm_buff = buffer;
 	}

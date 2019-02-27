@@ -70,7 +70,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 				
 				currentAngle = fmod(currentAngle + (fm_buff == nullptr ? 1 : 1.0 - (*fm_buff * fm_level)) * angleDelta, MathConstants<double>::twoPi);
 
-				buff = currentAngle;
+				buff = currentAngle * (volume / 127.0f);
 				++startSample;
 				tailOff *= 0.99;
 				if (tailOff <= 0.005)
@@ -97,7 +97,7 @@ void SawWaveVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSa
 				
 				currentAngle = fmod(currentAngle + (fm_buff == nullptr ? 1 : 1.0 - (*fm_buff * fm_level)) * angleDelta, MathConstants<double>::twoPi);
 
-				buff = currentAngle;
+				buff = currentAngle * (volume / 127.0f);
 				++startSample;
 
 				if (currentAngle > (MathConstants<double>::twoPi))
